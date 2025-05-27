@@ -1,28 +1,36 @@
-### 3.5.2. Llama3 학습 파라미터 설정
+### H100 최적화 Llama3 학습 파라미터 설정
 model_name: "allganize/Llama-3-Alpha-Ko-8B-Instruct"
 dataset_path: "."
-max_seq_length: 512
+max_seq_length: 4096  # H100이면 충분히 가능
 output_dir: "./llama-3.1-korean-8b-hf-20-epoch"
 report_to: "wandb"
-learning_rate: 0.00005
-lr_scheduler_type: "linear"
-num_train_epochs: 5
-per_device_train_batch_size: 1
-per_device_eval_batch_size: 1
-gradient_accumulation_steps: 4
+learning_rate: 0.0001  # 배치 크기가 커지면 LR도 올릴 수 있음
+lr_scheduler_type: "cosine"  # cosine이 더 좋은 성능
+num_train_epochs: 10
+per_device_train_batch_size: 8  # H100이면 8~16도 가능
+per_device_eval_batch_size: 8
+gradient_accumulation_steps: 4  # 배치 크기가 커서 줄일 수 있음
 optim: "adamw_torch_fused"
-logging_steps: 10
-save_strategy: "epoch"
+logging_steps: 5
+save_strategy: "steps"
+save_steps: 100
+eval_strategy: "steps"
+eval_steps: 100
 weight_decay: 0.01
-max_grad_norm: 0.5
-warmup_ratio: 0.03
+max_grad_norm: 1.0
+warmup_ratio: 0.05
 bf16: true
 tf32: true
-gradient_checkpointing: true
-<<<<<<< HEAD:Fine-tuning/2.Finetuning/full_fine_tuning_config.yaml
-<<<<<<< HEAD
-#fsdp: "full_shard auto_wrap"
-#fsdp_config:
-#  backward_prefetch: "backward_pre"
-#  forward_prefetch: "false"
-#  use_orig_params: "false"
+gradient_checkpointing: false  # H100 메모리 여유로우면 끄는게 더 빠름
+dataloader_num_workers: 8  # H100 시스템은 보통 CPU도 좋음
+group_by_length: true  # 효율성 증대
+load_best_model_at_end: true
+metric_for_best_model: "eval_loss"
+greater_is_better: false
+# H100 멀티 GPU 사용시 FSDP 설정
+fsdp: "full_shard auto_wrap"
+fsdp_config:
+  backward_prefetch: "backward_pre"
+  forward_prefetch: "true"  # H100에서는 켜는게 좋음
+  use_orig_params: "true"
+  cpu_ram_efficient_loading: true
