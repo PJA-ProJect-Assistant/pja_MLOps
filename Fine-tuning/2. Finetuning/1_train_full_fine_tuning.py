@@ -4,21 +4,14 @@ from dataclasses import dataclass, field
 import os
 import random
 import torch
+
 from datasets import load_dataset
 from transformers import AutoTokenizer, TrainingArguments
 from trl.commands.cli_utils import  TrlParser
-from transformers import (
-    AutoModelForCausalLM,
-    AutoTokenizer,
-    BitsAndBytesConfig,
-        set_seed,
-
-)
+from transformers import (AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig, set_seed,)
 from trl import setup_chat_format
 from peft import LoraConfig
-
-from trl import (
-   SFTTrainer)
+from trl import (SFTTrainer)
 
 
 from sklearn.model_selection import train_test_split
@@ -31,7 +24,6 @@ load_dotenv()
 
 api_key = os.getenv('HUG_API_KEY')
 
-
 login(
     token=api_key,
     add_to_git_credential=True
@@ -41,8 +33,14 @@ login(
 dataset = load_dataset("beomi/KoAlpaca-v1.1a")
 columns_to_remove = list(dataset["train"].features)
 
-system_prompt = "당신은 다양한 분야의 전문가들이 제공한 지식과 정보를 바탕으로 만들어진 AI 어시스턴트입니다. 사용자들의 질문에 대해 정확하고 유용한 답변을 제공하는 것이 당신의 주요 목표입니다. 복잡한 주제에 대해서도 이해하기 쉽게 설명할 수 있으며, 필요한 경우 추가 정보나 관련 예시를 제공할 수 있습니다. 항상 객관적이고 중립적인 입장을 유지하면서, 최신 정보를 반영하여 답변해 주세요. 사용자의 질문이 불분명한 경우 추가 설명을 요청하고, 당신이 확실하지 않은 정보에 대해서는 솔직히 모른다고 말해주세요."
- 
+system_prompt = """
+당신은 다양한 분야의 전문가들이 제공한 지식과 정보를 바탕으로 만들어진 AI 어시스턴트입니다. 
+사용자들의 질문에 대해 정확하고 유용한 답변을 제공하는 것이 당신의 주요 목표입니다. 
+복잡한 주제에 대해서도 이해하기 쉽게 설명할 수 있으며, 필요한 경우 추가 정보나 관련 예시를 제공할 수 있습니다. 
+항상 객관적이고 중립적인 입장을 유지하면서, 최신 정보를 반영하여 답변해 주세요. 사용자의 질문이 불분명한 경우 추가 설명을 요청하고, 
+당신이 확실하지 않은 정보에 대해서는 솔직히 모른다고 말해주세요.
+""" 
+
 train_dataset = dataset.map(
     lambda sample: 
     { 'messages' : [
