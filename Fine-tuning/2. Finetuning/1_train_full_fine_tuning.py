@@ -4,15 +4,16 @@ from dataclasses import dataclass, field
 import os
 import random
 import torch
+import json
 
 from datasets import load_dataset
+from datasets import Dataset
 from transformers import AutoTokenizer, TrainingArguments
-from trl.commands.cli_utils import  TrlParser
+from trl.commands.cli_utils import TrlParser
 from transformers import (AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig, set_seed,)
 from trl import setup_chat_format
 from peft import LoraConfig
 from trl import (SFTTrainer)
-
 
 from sklearn.model_selection import train_test_split
 
@@ -26,12 +27,11 @@ api_key = os.getenv('HUG_API_KEY')
 
 login(
     token=api_key,
-    add_to_git_credential=True
 )
 
 ### 3.5.3. 데이터셋 준비 
-dataset = load_dataset("beomi/KoAlpaca-v1.1a")
-columns_to_remove = list(dataset["train"].features)
+with open('../data/finetuning_dataset.json', 'r', encoding='utf-8') as f:
+        data = json.load(f)
 
 system_prompt = """
 당신은 다양한 분야의 전문가들이 제공한 지식과 정보를 바탕으로 만들어진 AI 어시스턴트입니다. 
@@ -41,21 +41,25 @@ system_prompt = """
 당신이 확실하지 않은 정보에 대해서는 솔직히 모른다고 말해주세요.
 """ 
 
-train_dataset = dataset.map(
-    lambda sample: 
-    { 'messages' : [
-        {"role": "system", "content": system_prompt},
-        {"role": "user", "content": sample['instruction']},
-        {"role": "assistant", "content": sample['output']}]
-                   },
-)
+# 방법 1: 리스트 컴프리헨션 사용
+formatted_data = [
+    {
+        'messages': [
+            {"role": "system", "content": system_prompt},
+            {"role": "user", "content": sample['instruction']},
+            {"role": "assistant", "content": sample['output']}
+        ]
+    }
+    for sample in data
+]
 
-train_dataset = train_dataset.map(remove_columns=columns_to_remove,batched=False)
-train_dataset = train_dataset["train"].train_test_split(test_size=0.1, seed=42)
+# Hugging Face Dataset으로 변환
+dataset = Dataset.from_list(formatted_data)
 
+# train/test 분할
+train_dataset = dataset.train_test_split(test_size=0.1, seed=42)
 train_dataset["train"].to_json("train_dataset.json", orient="records", force_ascii=False)
 train_dataset["test"].to_json("test_dataset.json", orient="records", force_ascii=False)
-
 
 LLAMA_3_CHAT_TEMPLATE = (
     "{% for message in messages %}"
@@ -176,5 +180,3 @@ if __name__ == "__main__":
   
     # launch training
     training_function(script_args, training_args)
-
-
