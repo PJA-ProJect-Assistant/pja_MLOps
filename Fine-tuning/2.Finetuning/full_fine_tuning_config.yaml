@@ -7,8 +7,8 @@ report_to: "wandb"
 learning_rate: 0.00005
 lr_scheduler_type: "linear"
 num_train_epochs: 5
-per_device_train_batch_size: 2
-per_device_eval_batch_size: 2
+per_device_train_batch_size: 1
+per_device_eval_batch_size: 1
 gradient_accumulation_steps: 4
 optim: "adamw_torch_fused"
 logging_steps: 10
@@ -19,8 +19,10 @@ warmup_ratio: 0.03
 bf16: true
 tf32: true
 gradient_checkpointing: true
-fsdp: "full_shard auto_wrap"
-fsdp_config:
-  backward_prefetch: "backward_pre"
-  forward_prefetch: "false"
-  use_orig_params: "false"
+<<<<<<< HEAD:Fine-tuning/2.Finetuning/full_fine_tuning_config.yaml
+<<<<<<< HEAD
+#fsdp: "full_shard auto_wrap"
+#fsdp_config:
+#  backward_prefetch: "backward_pre"
+#  forward_prefetch: "false"
+#  use_orig_params: "false"
