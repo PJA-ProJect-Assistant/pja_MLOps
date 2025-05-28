@@ -1,0 +1,15 @@
+{"time":"2025-05-28T06:04:56.523721831Z","level":"INFO","msg":"stream: starting","core version":"0.19.11","symlink path":"/root/pja_MLOps/Fine-tuning/2.Finetuning/wandb/run-20250528_060456-kmcx7mgo/logs/debug-core.log"}
+{"time":"2025-05-28T06:04:56.889986266Z","level":"INFO","msg":"created new stream","id":"kmcx7mgo"}
+{"time":"2025-05-28T06:04:56.890045007Z","level":"INFO","msg":"stream: started","id":"kmcx7mgo"}
+{"time":"2025-05-28T06:04:56.890071768Z","level":"INFO","msg":"handler: started","stream_id":"kmcx7mgo"}
+{"time":"2025-05-28T06:04:56.890097186Z","level":"INFO","msg":"writer: Do: started","stream_id":"kmcx7mgo"}
+{"time":"2025-05-28T06:04:56.890088579Z","level":"INFO","msg":"sender: started","stream_id":"kmcx7mgo"}
+{"time":"2025-05-28T06:04:57.206001067Z","level":"INFO","msg":"Starting system monitor"}
+{"time":"2025-05-28T06:04:58.593111912Z","level":"INFO","msg":"stream: closing","id":"kmcx7mgo"}
+{"time":"2025-05-28T06:04:58.59316378Z","level":"INFO","msg":"Stopping system monitor"}
+{"time":"2025-05-28T06:04:58.593231028Z","level":"INFO","msg":"Stopped system monitor"}
+{"time":"2025-05-28T06:04:59.664372689Z","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-05-28T06:05:00.000007156Z","level":"INFO","msg":"handler: closed","stream_id":"kmcx7mgo"}
+{"time":"2025-05-28T06:05:00.000039216Z","level":"INFO","msg":"sender: closed","stream_id":"kmcx7mgo"}
+{"time":"2025-05-28T06:05:00.000031031Z","level":"INFO","msg":"writer: Close: closed","stream_id":"kmcx7mgo"}
+{"time":"2025-05-28T06:05:00.000147121Z","level":"INFO","msg":"stream: closed","id":"kmcx7mgo"}

@@ -1,0 +1,15 @@
+{"time":"2025-05-28T06:08:17.224180703Z","level":"INFO","msg":"stream: starting","core version":"0.19.11","symlink path":"/root/pja_MLOps/Fine-tuning/2.Finetuning/wandb/run-20250528_060817-xoityreo/logs/debug-core.log"}
+{"time":"2025-05-28T06:08:17.582179912Z","level":"INFO","msg":"created new stream","id":"xoityreo"}
+{"time":"2025-05-28T06:08:17.582230258Z","level":"INFO","msg":"stream: started","id":"xoityreo"}
+{"time":"2025-05-28T06:08:17.582263501Z","level":"INFO","msg":"writer: Do: started","stream_id":"xoityreo"}
+{"time":"2025-05-28T06:08:17.582263751Z","level":"INFO","msg":"handler: started","stream_id":"xoityreo"}
+{"time":"2025-05-28T06:08:17.582283639Z","level":"INFO","msg":"sender: started","stream_id":"xoityreo"}
+{"time":"2025-05-28T06:08:17.816319321Z","level":"INFO","msg":"Starting system monitor"}
+{"time":"2025-05-28T06:10:43.970969046Z","level":"INFO","msg":"stream: closing","id":"xoityreo"}
+{"time":"2025-05-28T06:10:43.971012388Z","level":"INFO","msg":"Stopping system monitor"}
+{"time":"2025-05-28T06:10:43.971057373Z","level":"INFO","msg":"Stopped system monitor"}
+{"time":"2025-05-28T06:10:44.998519381Z","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-05-28T06:10:45.440250253Z","level":"INFO","msg":"handler: closed","stream_id":"xoityreo"}
+{"time":"2025-05-28T06:10:45.440297162Z","level":"INFO","msg":"sender: closed","stream_id":"xoityreo"}
+{"time":"2025-05-28T06:10:45.440289998Z","level":"INFO","msg":"writer: Close: closed","stream_id":"xoityreo"}
+{"time":"2025-05-28T06:10:45.440386681Z","level":"INFO","msg":"stream: closed","id":"xoityreo"}

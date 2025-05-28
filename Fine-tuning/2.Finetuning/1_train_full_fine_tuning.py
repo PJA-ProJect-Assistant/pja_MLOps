@@ -12,7 +12,7 @@ from transformers import AutoTokenizer, TrainingArguments
 from trl.commands.cli_utils import TrlParser
 from transformers import (AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig, set_seed,)
 from trl import setup_chat_format
-from peft import LoraConfig
+from peft import LoraConfig, get_peft_model, prepare_model_for_kbit_training
 from trl import (SFTTrainer)
 
 from sklearn.model_selection import train_test_split
@@ -116,20 +116,43 @@ class ScriptArguments:
         },
     )
     model_name: str = field(
-    default=None, metadata={"help": "SFT 학습에 사용할 모델 ID"}
+        default=None, metadata={"help": "SFT 학습에 사용할 모델 ID"}
     )
     max_seq_length: int = field(
         default=512, metadata={"help": "SFT Trainer에 사용할 최대 시퀀스 길이"}
     )
     question_key: str = field(
-    default=None, metadata={"help": "지시사항 데이터셋의 질문 키"}
+        default=None, metadata={"help": "지시사항 데이터셋의 질문 키"}
     )
     answer_key: str = field(
-    default=None, metadata={"help": "지시사항 데이터셋의 답변 키"}
+        default=None, metadata={"help": "지시사항 데이터셋의 답변 키"}
+    )
+    # QLoRA 설정 추가
+    use_qlora: bool = field(
+        default=True, metadata={"help": "QLoRA 사용 여부"}
+    )
+    lora_r: int = field(
+        default=64, metadata={"help": "LoRA rank"}
+    )
+    lora_alpha: int = field(
+        default=128, metadata={"help": "LoRA alpha"}
+    )
+    lora_dropout: float = field(
+        default=0.1, metadata={"help": "LoRA dropout"}
     )
 
 
 def training_function(script_args, training_args):    
+    # 환경 변수 설정 (메모리 최적화) - expandable_segments 비활성화
+    os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "max_split_size_mb:64,roundup_power2_divisions:16"
+    # 또는 완전히 비활성화
+    # os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "expandable_segments:False,max_split_size_mb:32"
+    
+    # GPU 메모리 클리어
+    torch.cuda.empty_cache()
+    
+    print(f"CUDA 메모리 상태: {torch.cuda.memory_allocated(0) / 1024**3:.2f} GB 사용 중")
+    
     # 데이터셋 불러오기 
     train_dataset = load_dataset(
         "json",
@@ -161,13 +184,53 @@ def training_function(script_args, training_args):
         for index in random.sample(range(len(train_dataset)), 2):
             print(train_dataset[index]["text"])
 
-    # Model 및 파라미터 설정하기 
-    model = AutoModelForCausalLM.from_pretrained(
-        script_args.model_name,
-        attn_implementation="sdpa", 
-        torch_dtype=torch.bfloat16,
-        use_cache=False if training_args.gradient_checkpointing else True,  
-    )
+    # QLoRA 설정
+    if script_args.use_qlora:
+        print("QLoRA 모드로 모델 로딩 중...")
+        
+        # 4bit 양자화 설정
+        bnb_config = BitsAndBytesConfig(
+            load_in_4bit=True,
+            bnb_4bit_quant_type="nf4",
+            bnb_4bit_compute_dtype=torch.bfloat16,
+            bnb_4bit_use_double_quant=True,
+        )
+        
+        # Model 및 파라미터 설정하기 (QLoRA 버전)
+        model = AutoModelForCausalLM.from_pretrained(
+            script_args.model_name,
+            quantization_config=bnb_config,
+            device_map="auto",
+            attn_implementation="sdpa", 
+            torch_dtype=torch.bfloat16,
+            use_cache=False if training_args.gradient_checkpointing else True,  
+        )
+        
+        # LoRA 설정
+        lora_config = LoraConfig(
+            r=script_args.lora_r,
+            lora_alpha=script_args.lora_alpha,
+            target_modules=["q_proj", "k_proj", "v_proj", "o_proj", "gate_proj", "up_proj", "down_proj"],
+            lora_dropout=script_args.lora_dropout,
+            bias="none",
+            task_type="CAUSAL_LM",
+        )
+        
+        # 모델을 kbit 훈련용으로 준비
+        model = prepare_model_for_kbit_training(model)
+        model = get_peft_model(model, lora_config)
+        
+        # 학습 가능한 파라미터 출력
+        model.print_trainable_parameters()
+        
+    else:
+        # 기존 설정 (Full Fine-tuning)
+        model = AutoModelForCausalLM.from_pretrained(
+            script_args.model_name,
+            attn_implementation="sdpa", 
+            torch_dtype=torch.bfloat16,
+            use_cache=False if training_args.gradient_checkpointing else True,  
+        )
     
     if training_args.gradient_checkpointing:
         model.gradient_checkpointing_enable()
@@ -181,7 +244,7 @@ def training_function(script_args, training_args):
         eval_dataset=test_dataset,
         max_seq_length=script_args.max_seq_length,
         tokenizer=tokenizer,
-        packing=True,
+        packing=False,  # QLoRA에서는 패킹 비활성화
         dataset_kwargs={
             "add_special_tokens": False,  
             "append_concat_token": False, 

@@ -1,0 +1,192 @@
+  0%|                                                                                                                                                                      | 0/6 [00:00<?, ?it/s]Traceback (most recent call last):
+  File "/root/pja_MLOps/Fine-tuning/2.Finetuning/1_train_full_fine_tuning.py", line 268, in <module>
+    training_function(script_args, training_args)
+  File "/root/pja_MLOps/Fine-tuning/2.Finetuning/1_train_full_fine_tuning.py", line 250, in training_function
+    trainer.train(resume_from_checkpoint=checkpoint)
+  File "/usr/local/lib/python3.10/dist-packages/trl/trainer/sft_trainer.py", line 361, in train
+    output = super().train(*args, **kwargs)
+  File "/usr/local/lib/python3.10/dist-packages/transformers/trainer.py", line 1938, in train
+    return inner_training_loop(
+  File "/usr/local/lib/python3.10/dist-packages/transformers/trainer.py", line 2279, in _inner_training_loop
+    tr_loss_step = self.training_step(model, inputs)
+  File "/usr/local/lib/python3.10/dist-packages/transformers/trainer.py", line 3318, in training_step
+    loss = self.compute_loss(model, inputs)
+  File "/usr/local/lib/python3.10/dist-packages/transformers/trainer.py", line 3363, in compute_loss
+    outputs = model(**inputs)
+  File "/usr/local/lib/python3.10/dist-packages/torch/nn/modules/module.py", line 1511, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/usr/local/lib/python3.10/dist-packages/torch/nn/modules/module.py", line 1520, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/usr/local/lib/python3.10/dist-packages/accelerate/utils/operations.py", line 825, in forward
+    return model_forward(*args, **kwargs)
+  File "/usr/local/lib/python3.10/dist-packages/accelerate/utils/operations.py", line 813, in __call__
+    return convert_to_fp32(self.model_forward(*args, **kwargs))
+  File "/usr/local/lib/python3.10/dist-packages/torch/amp/autocast_mode.py", line 16, in decorate_autocast
+    return func(*args, **kwargs)
+  File "/usr/local/lib/python3.10/dist-packages/peft/peft_model.py", line 1129, in forward
+    return self.base_model(
+  File "/usr/local/lib/python3.10/dist-packages/torch/nn/modules/module.py", line 1511, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/usr/local/lib/python3.10/dist-packages/torch/nn/modules/module.py", line 1520, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/usr/local/lib/python3.10/dist-packages/peft/tuners/tuners_utils.py", line 161, in forward
+    return self.model.forward(*args, **kwargs)
+  File "/usr/local/lib/python3.10/dist-packages/accelerate/hooks.py", line 166, in new_forward
+    output = module._old_forward(*args, **kwargs)
+  File "/usr/local/lib/python3.10/dist-packages/transformers/models/llama/modeling_llama.py", line 1189, in forward
+    outputs = self.model(
+  File "/usr/local/lib/python3.10/dist-packages/torch/nn/modules/module.py", line 1511, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/usr/local/lib/python3.10/dist-packages/torch/nn/modules/module.py", line 1520, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/usr/local/lib/python3.10/dist-packages/accelerate/hooks.py", line 166, in new_forward
+    output = module._old_forward(*args, **kwargs)
+  File "/usr/local/lib/python3.10/dist-packages/transformers/models/llama/modeling_llama.py", line 989, in forward
+    layer_outputs = self._gradient_checkpointing_func(
+  File "/usr/local/lib/python3.10/dist-packages/torch/_compile.py", line 24, in inner
+    return torch._dynamo.disable(fn, recursive)(*args, **kwargs)
+  File "/usr/local/lib/python3.10/dist-packages/torch/_dynamo/eval_frame.py", line 489, in _fn
+    return fn(*args, **kwargs)
+  File "/usr/local/lib/python3.10/dist-packages/torch/_dynamo/external_utils.py", line 17, in inner
+    return fn(*args, **kwargs)
+  File "/usr/local/lib/python3.10/dist-packages/torch/utils/checkpoint.py", line 482, in checkpoint
+    return CheckpointFunction.apply(function, preserve, *args)
+  File "/usr/local/lib/python3.10/dist-packages/torch/autograd/function.py", line 553, in apply
+    return super().apply(*args, **kwargs)  # type: ignore[misc]
+  File "/usr/local/lib/python3.10/dist-packages/torch/utils/checkpoint.py", line 261, in forward
+    outputs = run_function(*args)
+  File "/usr/local/lib/python3.10/dist-packages/torch/nn/modules/module.py", line 1511, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/usr/local/lib/python3.10/dist-packages/torch/nn/modules/module.py", line 1520, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/usr/local/lib/python3.10/dist-packages/accelerate/hooks.py", line 166, in new_forward
+    output = module._old_forward(*args, **kwargs)
+  File "/usr/local/lib/python3.10/dist-packages/transformers/models/llama/modeling_llama.py", line 750, in forward
+    hidden_states = self.mlp(hidden_states)
+  File "/usr/local/lib/python3.10/dist-packages/torch/nn/modules/module.py", line 1511, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/usr/local/lib/python3.10/dist-packages/torch/nn/modules/module.py", line 1520, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/usr/local/lib/python3.10/dist-packages/accelerate/hooks.py", line 166, in new_forward
+    output = module._old_forward(*args, **kwargs)
+  File "/usr/local/lib/python3.10/dist-packages/transformers/models/llama/modeling_llama.py", line 309, in forward
+    down_proj = self.down_proj(self.act_fn(self.gate_proj(x)) * self.up_proj(x))
+  File "/usr/local/lib/python3.10/dist-packages/torch/nn/modules/module.py", line 1511, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/usr/local/lib/python3.10/dist-packages/torch/nn/modules/module.py", line 1520, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/usr/local/lib/python3.10/dist-packages/peft/tuners/lora/bnb.py", line 452, in forward
+    result = self.base_layer(x, *args, **kwargs)
+  File "/usr/local/lib/python3.10/dist-packages/torch/nn/modules/module.py", line 1511, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/usr/local/lib/python3.10/dist-packages/torch/nn/modules/module.py", line 1520, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/usr/local/lib/python3.10/dist-packages/accelerate/hooks.py", line 166, in new_forward
+    output = module._old_forward(*args, **kwargs)
+  File "/usr/local/lib/python3.10/dist-packages/bitsandbytes/nn/modules.py", line 468, in forward
+    out = bnb.matmul_4bit(x, self.weight.t(), bias=bias, quant_state=self.weight.quant_state)
+  File "/usr/local/lib/python3.10/dist-packages/bitsandbytes/autograd/_functions.py", line 579, in matmul_4bit
+    return MatMul4Bit.apply(A, B, out, bias, quant_state)
+  File "/usr/local/lib/python3.10/dist-packages/torch/autograd/function.py", line 553, in apply
+    return super().apply(*args, **kwargs)  # type: ignore[misc]
+  File "/usr/local/lib/python3.10/dist-packages/bitsandbytes/autograd/_functions.py", line 509, in forward
+    output = torch.nn.functional.linear(A, F.dequantize_4bit(B, quant_state).to(A.dtype).t(), bias)
+  File "/usr/local/lib/python3.10/dist-packages/bitsandbytes/functional.py", line 1349, in dequantize_4bit
+    out = torch.empty(quant_state.shape, dtype=quant_state.dtype, device=A.device)
+RuntimeError: !block->expandable_segment_ INTERNAL ASSERT FAILED at "../c10/cuda/CUDACachingAllocator.cpp":2525, please report a bug to PyTorch.
+Traceback (most recent call last):
+  File "/root/pja_MLOps/Fine-tuning/2.Finetuning/1_train_full_fine_tuning.py", line 268, in <module>
+    training_function(script_args, training_args)
+  File "/root/pja_MLOps/Fine-tuning/2.Finetuning/1_train_full_fine_tuning.py", line 250, in training_function
+    trainer.train(resume_from_checkpoint=checkpoint)
+  File "/usr/local/lib/python3.10/dist-packages/trl/trainer/sft_trainer.py", line 361, in train
+    output = super().train(*args, **kwargs)
+  File "/usr/local/lib/python3.10/dist-packages/transformers/trainer.py", line 1938, in train
+    return inner_training_loop(
+  File "/usr/local/lib/python3.10/dist-packages/transformers/trainer.py", line 2279, in _inner_training_loop
+    tr_loss_step = self.training_step(model, inputs)
+  File "/usr/local/lib/python3.10/dist-packages/transformers/trainer.py", line 3318, in training_step
+    loss = self.compute_loss(model, inputs)
+  File "/usr/local/lib/python3.10/dist-packages/transformers/trainer.py", line 3363, in compute_loss
+    outputs = model(**inputs)
+  File "/usr/local/lib/python3.10/dist-packages/torch/nn/modules/module.py", line 1511, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/usr/local/lib/python3.10/dist-packages/torch/nn/modules/module.py", line 1520, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/usr/local/lib/python3.10/dist-packages/accelerate/utils/operations.py", line 825, in forward
+    return model_forward(*args, **kwargs)
+  File "/usr/local/lib/python3.10/dist-packages/accelerate/utils/operations.py", line 813, in __call__
+    return convert_to_fp32(self.model_forward(*args, **kwargs))
+  File "/usr/local/lib/python3.10/dist-packages/torch/amp/autocast_mode.py", line 16, in decorate_autocast
+    return func(*args, **kwargs)
+  File "/usr/local/lib/python3.10/dist-packages/peft/peft_model.py", line 1129, in forward
+    return self.base_model(
+  File "/usr/local/lib/python3.10/dist-packages/torch/nn/modules/module.py", line 1511, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/usr/local/lib/python3.10/dist-packages/torch/nn/modules/module.py", line 1520, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/usr/local/lib/python3.10/dist-packages/peft/tuners/tuners_utils.py", line 161, in forward
+    return self.model.forward(*args, **kwargs)
+  File "/usr/local/lib/python3.10/dist-packages/accelerate/hooks.py", line 166, in new_forward
+    output = module._old_forward(*args, **kwargs)
+  File "/usr/local/lib/python3.10/dist-packages/transformers/models/llama/modeling_llama.py", line 1189, in forward
+    outputs = self.model(
+  File "/usr/local/lib/python3.10/dist-packages/torch/nn/modules/module.py", line 1511, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/usr/local/lib/python3.10/dist-packages/torch/nn/modules/module.py", line 1520, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/usr/local/lib/python3.10/dist-packages/accelerate/hooks.py", line 166, in new_forward
+    output = module._old_forward(*args, **kwargs)
+  File "/usr/local/lib/python3.10/dist-packages/transformers/models/llama/modeling_llama.py", line 989, in forward
+    layer_outputs = self._gradient_checkpointing_func(
+  File "/usr/local/lib/python3.10/dist-packages/torch/_compile.py", line 24, in inner
+    return torch._dynamo.disable(fn, recursive)(*args, **kwargs)
+  File "/usr/local/lib/python3.10/dist-packages/torch/_dynamo/eval_frame.py", line 489, in _fn
+    return fn(*args, **kwargs)
+  File "/usr/local/lib/python3.10/dist-packages/torch/_dynamo/external_utils.py", line 17, in inner
+    return fn(*args, **kwargs)
+  File "/usr/local/lib/python3.10/dist-packages/torch/utils/checkpoint.py", line 482, in checkpoint
+    return CheckpointFunction.apply(function, preserve, *args)
+  File "/usr/local/lib/python3.10/dist-packages/torch/autograd/function.py", line 553, in apply
+    return super().apply(*args, **kwargs)  # type: ignore[misc]
+  File "/usr/local/lib/python3.10/dist-packages/torch/utils/checkpoint.py", line 261, in forward
+    outputs = run_function(*args)
+  File "/usr/local/lib/python3.10/dist-packages/torch/nn/modules/module.py", line 1511, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/usr/local/lib/python3.10/dist-packages/torch/nn/modules/module.py", line 1520, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/usr/local/lib/python3.10/dist-packages/accelerate/hooks.py", line 166, in new_forward
+    output = module._old_forward(*args, **kwargs)
+  File "/usr/local/lib/python3.10/dist-packages/transformers/models/llama/modeling_llama.py", line 750, in forward
+    hidden_states = self.mlp(hidden_states)
+  File "/usr/local/lib/python3.10/dist-packages/torch/nn/modules/module.py", line 1511, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/usr/local/lib/python3.10/dist-packages/torch/nn/modules/module.py", line 1520, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/usr/local/lib/python3.10/dist-packages/accelerate/hooks.py", line 166, in new_forward
+    output = module._old_forward(*args, **kwargs)
+  File "/usr/local/lib/python3.10/dist-packages/transformers/models/llama/modeling_llama.py", line 309, in forward
+    down_proj = self.down_proj(self.act_fn(self.gate_proj(x)) * self.up_proj(x))
+  File "/usr/local/lib/python3.10/dist-packages/torch/nn/modules/module.py", line 1511, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/usr/local/lib/python3.10/dist-packages/torch/nn/modules/module.py", line 1520, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/usr/local/lib/python3.10/dist-packages/peft/tuners/lora/bnb.py", line 452, in forward
+    result = self.base_layer(x, *args, **kwargs)
+  File "/usr/local/lib/python3.10/dist-packages/torch/nn/modules/module.py", line 1511, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/usr/local/lib/python3.10/dist-packages/torch/nn/modules/module.py", line 1520, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/usr/local/lib/python3.10/dist-packages/accelerate/hooks.py", line 166, in new_forward
+    output = module._old_forward(*args, **kwargs)
+  File "/usr/local/lib/python3.10/dist-packages/bitsandbytes/nn/modules.py", line 468, in forward
+    out = bnb.matmul_4bit(x, self.weight.t(), bias=bias, quant_state=self.weight.quant_state)
+  File "/usr/local/lib/python3.10/dist-packages/bitsandbytes/autograd/_functions.py", line 579, in matmul_4bit
+    return MatMul4Bit.apply(A, B, out, bias, quant_state)
+  File "/usr/local/lib/python3.10/dist-packages/torch/autograd/function.py", line 553, in apply
+    return super().apply(*args, **kwargs)  # type: ignore[misc]
+  File "/usr/local/lib/python3.10/dist-packages/bitsandbytes/autograd/_functions.py", line 509, in forward
+    output = torch.nn.functional.linear(A, F.dequantize_4bit(B, quant_state).to(A.dtype).t(), bias)
+  File "/usr/local/lib/python3.10/dist-packages/bitsandbytes/functional.py", line 1349, in dequantize_4bit
+    out = torch.empty(quant_state.shape, dtype=quant_state.dtype, device=A.device)
+RuntimeError: !block->expandable_segment_ INTERNAL ASSERT FAILED at "../c10/cuda/CUDACachingAllocator.cpp":2525, please report a bug to PyTorch.

@@ -1,0 +1,56 @@
+  0%|                                                                                                                                 | 0/50 [00:00<?, ?it/s]Traceback (most recent call last):
+  File "/root/pja_MLOps/Fine-tuning/2.Finetuning/./1_train_full_fine_tuning.py", line 212, in <module>
+    training_function(script_args, training_args)
+  File "/root/pja_MLOps/Fine-tuning/2.Finetuning/./1_train_full_fine_tuning.py", line 194, in training_function
+    trainer.train(resume_from_checkpoint=checkpoint)
+  File "/usr/local/lib/python3.10/dist-packages/trl/trainer/sft_trainer.py", line 361, in train
+    output = super().train(*args, **kwargs)
+  File "/usr/local/lib/python3.10/dist-packages/transformers/trainer.py", line 1938, in train
+    return inner_training_loop(
+  File "/usr/local/lib/python3.10/dist-packages/transformers/trainer.py", line 2279, in _inner_training_loop
+    tr_loss_step = self.training_step(model, inputs)
+  File "/usr/local/lib/python3.10/dist-packages/transformers/trainer.py", line 3318, in training_step
+    loss = self.compute_loss(model, inputs)
+  File "/usr/local/lib/python3.10/dist-packages/transformers/trainer.py", line 3363, in compute_loss
+    outputs = model(**inputs)
+  File "/usr/local/lib/python3.10/dist-packages/torch/nn/modules/module.py", line 1511, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/usr/local/lib/python3.10/dist-packages/torch/nn/modules/module.py", line 1520, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/usr/local/lib/python3.10/dist-packages/accelerate/utils/operations.py", line 825, in forward
+    return model_forward(*args, **kwargs)
+  File "/usr/local/lib/python3.10/dist-packages/accelerate/utils/operations.py", line 813, in __call__
+    return convert_to_fp32(self.model_forward(*args, **kwargs))
+  File "/usr/local/lib/python3.10/dist-packages/torch/amp/autocast_mode.py", line 16, in decorate_autocast
+    return func(*args, **kwargs)
+  File "/usr/local/lib/python3.10/dist-packages/transformers/models/llama/modeling_llama.py", line 1209, in forward
+    logits = logits.float()
+torch.cuda.OutOfMemoryError: CUDA out of memory. Tried to allocate 3.91 GiB. GPU 0 has a total capacity of 23.54 GiB of which 3.27 GiB is free. Process 731607 has 20.26 GiB memory in use. Of the allocated memory 19.17 GiB is allocated by PyTorch, and 654.12 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+Traceback (most recent call last):
+  File "/root/pja_MLOps/Fine-tuning/2.Finetuning/./1_train_full_fine_tuning.py", line 212, in <module>
+    training_function(script_args, training_args)
+  File "/root/pja_MLOps/Fine-tuning/2.Finetuning/./1_train_full_fine_tuning.py", line 194, in training_function
+    trainer.train(resume_from_checkpoint=checkpoint)
+  File "/usr/local/lib/python3.10/dist-packages/trl/trainer/sft_trainer.py", line 361, in train
+    output = super().train(*args, **kwargs)
+  File "/usr/local/lib/python3.10/dist-packages/transformers/trainer.py", line 1938, in train
+    return inner_training_loop(
+  File "/usr/local/lib/python3.10/dist-packages/transformers/trainer.py", line 2279, in _inner_training_loop
+    tr_loss_step = self.training_step(model, inputs)
+  File "/usr/local/lib/python3.10/dist-packages/transformers/trainer.py", line 3318, in training_step
+    loss = self.compute_loss(model, inputs)
+  File "/usr/local/lib/python3.10/dist-packages/transformers/trainer.py", line 3363, in compute_loss
+    outputs = model(**inputs)
+  File "/usr/local/lib/python3.10/dist-packages/torch/nn/modules/module.py", line 1511, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/usr/local/lib/python3.10/dist-packages/torch/nn/modules/module.py", line 1520, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/usr/local/lib/python3.10/dist-packages/accelerate/utils/operations.py", line 825, in forward
+    return model_forward(*args, **kwargs)
+  File "/usr/local/lib/python3.10/dist-packages/accelerate/utils/operations.py", line 813, in __call__
+    return convert_to_fp32(self.model_forward(*args, **kwargs))
+  File "/usr/local/lib/python3.10/dist-packages/torch/amp/autocast_mode.py", line 16, in decorate_autocast
+    return func(*args, **kwargs)
+  File "/usr/local/lib/python3.10/dist-packages/transformers/models/llama/modeling_llama.py", line 1209, in forward
+    logits = logits.float()
+torch.cuda.OutOfMemoryError: CUDA out of memory. Tried to allocate 3.91 GiB. GPU 0 has a total capacity of 23.54 GiB of which 3.27 GiB is free. Process 731607 has 20.26 GiB memory in use. Of the allocated memory 19.17 GiB is allocated by PyTorch, and 654.12 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)

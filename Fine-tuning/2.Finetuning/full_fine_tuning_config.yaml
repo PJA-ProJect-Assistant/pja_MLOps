@@ -1,36 +1,61 @@
-### H100 현실적인 설정 (메모리 안전)
+# 고성능 QLoRA 설정 (RTX 4090)
 model_name: "allganize/Llama-3-Alpha-Ko-8B-Instruct"
 dataset_path: "."
-max_seq_length: 2048  # 4096에서 2048로 줄임
-output_dir: "./llama-3.1-korean-8b-hf-20-epoch"
+max_seq_length: 512
+output_dir: "./llama-3-korean-8b-qlora-high-perf"
 report_to: "wandb"
-learning_rate: 0.0001
-lr_scheduler_type: "cosine"
-num_train_epochs: 10
-per_device_train_batch_size: 4  # 12에서 4로 대폭 줄임
-per_device_eval_batch_size: 4
-gradient_accumulation_steps: 8  # 2에서 8로 늘려서 effective batch size 유지
-optim: "adamw_torch_fused"
-logging_steps: 5
-save_strategy: "steps"
-save_steps: 100
-eval_strategy: "steps"
-eval_steps: 100
-weight_decay: 0.01
-max_grad_norm: 1.0
-warmup_ratio: 0.05
+run_name: "llama3-korean-qlora-optimized"
+
+# QLoRA 최적화 설정
+use_qlora: true
+lora_r: 64
+lora_alpha: 128
+lora_dropout: 0.05
+
+# 훈련 최적화
+learning_rate: 0.0003
+lr_scheduler_type: "cosine_with_restarts"
+num_train_epochs: 3
+per_device_train_batch_size: 1
+per_device_eval_batch_size: 1
+gradient_accumulation_steps: 4
+
+# 고급 최적화 기법
+optim: "paged_adamw_32bit"
+adam_beta1: 0.9
+adam_beta2: 0.95
+adam_epsilon: 0.00001  # Fixed: was 1e-5
+max_grad_norm: 0.3
+
+# 메모리 및 속도 최적화
 bf16: true
 tf32: true
-gradient_checkpointing: true  # 메모리 절약을 위해 다시 켜기
-dataloader_num_workers: 8
+gradient_checkpointing: true
+dataloader_pin_memory: false
+dataloader_num_workers: 4
 group_by_length: true
+
+# 학습률 스케줄링 최적화
+warmup_ratio: 0.1
+weight_decay: 0.01
+
+# 평가 및 저장 최적화
+logging_steps: 5
+eval_strategy: "steps"
+eval_steps: 100
+save_strategy: "steps"
+save_steps: 100
+save_total_limit: 5
 load_best_model_at_end: true
 metric_for_best_model: "eval_loss"
 greater_is_better: false
-# 단일 GPU에서는 FSDP 제거
-# fsdp: "full_shard auto_wrap"
-# fsdp_config:
-#   backward_prefetch: "backward_pre"
-#   forward_prefetch: "true"
-#   use_orig_params: "true"
-#   cpu_ram_efficient_loading: true
+
+# 데이터 최적화
+remove_unused_columns: true
+prediction_loss_only: false
+include_inputs_for_metrics: false
+
+# 안정성 설정
+seed: 42
+data_seed: 42
+fp16: false

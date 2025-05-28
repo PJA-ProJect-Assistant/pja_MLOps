@@ -1,0 +1,40 @@
+ 15%|███████████████████████▌                                                                                                                                     | 3/20 [01:25<08:01, 28.29s/it]Traceback (most recent call last):
+  File "/root/pja_MLOps/Fine-tuning/2.Finetuning/1_train_full_fine_tuning.py", line 275, in <module>
+    training_function(script_args, training_args)
+  File "/root/pja_MLOps/Fine-tuning/2.Finetuning/1_train_full_fine_tuning.py", line 257, in training_function
+    trainer.train(resume_from_checkpoint=checkpoint)
+  File "/usr/local/lib/python3.10/dist-packages/trl/trainer/sft_trainer.py", line 361, in train
+    output = super().train(*args, **kwargs)
+  File "/usr/local/lib/python3.10/dist-packages/transformers/trainer.py", line 1938, in train
+    return inner_training_loop(
+  File "/usr/local/lib/python3.10/dist-packages/transformers/trainer.py", line 2279, in _inner_training_loop
+    tr_loss_step = self.training_step(model, inputs)
+  File "/usr/local/lib/python3.10/dist-packages/transformers/trainer.py", line 3349, in training_step
+    self.accelerator.backward(loss, **kwargs)
+  File "/usr/local/lib/python3.10/dist-packages/accelerate/accelerator.py", line 2013, in backward
+    loss.backward(**kwargs)
+  File "/usr/local/lib/python3.10/dist-packages/torch/_tensor.py", line 522, in backward
+    torch.autograd.backward(
+  File "/usr/local/lib/python3.10/dist-packages/torch/autograd/__init__.py", line 266, in backward
+    Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+KeyboardInterrupt
+Traceback (most recent call last):
+  File "/root/pja_MLOps/Fine-tuning/2.Finetuning/1_train_full_fine_tuning.py", line 275, in <module>
+    training_function(script_args, training_args)
+  File "/root/pja_MLOps/Fine-tuning/2.Finetuning/1_train_full_fine_tuning.py", line 257, in training_function
+    trainer.train(resume_from_checkpoint=checkpoint)
+  File "/usr/local/lib/python3.10/dist-packages/trl/trainer/sft_trainer.py", line 361, in train
+    output = super().train(*args, **kwargs)
+  File "/usr/local/lib/python3.10/dist-packages/transformers/trainer.py", line 1938, in train
+    return inner_training_loop(
+  File "/usr/local/lib/python3.10/dist-packages/transformers/trainer.py", line 2279, in _inner_training_loop
+    tr_loss_step = self.training_step(model, inputs)
+  File "/usr/local/lib/python3.10/dist-packages/transformers/trainer.py", line 3349, in training_step
+    self.accelerator.backward(loss, **kwargs)
+  File "/usr/local/lib/python3.10/dist-packages/accelerate/accelerator.py", line 2013, in backward
+    loss.backward(**kwargs)
+  File "/usr/local/lib/python3.10/dist-packages/torch/_tensor.py", line 522, in backward
+    torch.autograd.backward(
+  File "/usr/local/lib/python3.10/dist-packages/torch/autograd/__init__.py", line 266, in backward
+    Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+KeyboardInterrupt
