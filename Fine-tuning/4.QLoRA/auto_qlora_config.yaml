@@ -1,0 +1,49 @@
+### Auto-generated QLoRA Config for Mid-Range Consumer (16GB)
+model_name: "allganize/Llama-3-Alpha-Ko-8B-Instruct"
+dataset_path: "."
+max_seq_length: 1024
+output_dir: "./llama-3.1-korean-8b-qlora-auto"
+report_to: "wandb"
+
+# 최적화된 학습 설정
+learning_rate: 0.0002
+lr_scheduler_type: "cosine"
+num_train_epochs: 3
+per_device_train_batch_size: 1
+per_device_eval_batch_size: 1
+gradient_accumulation_steps: 16
+optim: "paged_adamw_8bit"
+
+# 로깅 및 평가
+logging_steps: 5
+save_strategy: "steps"
+save_steps: 25
+eval_strategy: "steps"
+eval_steps: 25
+
+# 정규화
+weight_decay: 0.01
+max_grad_norm: 1.0
+warmup_ratio: 0.03
+
+# 메모리 최적화
+bf16: true
+tf32: true
+gradient_checkpointing: true
+dataloader_num_workers: 2
+group_by_length: true
+dataloader_pin_memory: false
+
+# 모델 저장
+load_best_model_at_end: false
+save_total_limit: 1
+
+# QLoRA 활성화
+use_qlora: yes
+lora_r: 32
+lora_alpha: 64
+
+# 기타
+remove_unused_columns: true
+dataloader_drop_last: true
+seed: 42
