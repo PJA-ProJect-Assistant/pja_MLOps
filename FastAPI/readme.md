@@ -1,10 +1,11 @@
 ** 폴더 구조 **
 <pre>
-1_REQUIREMENT_SEPCIFICATIONS/
+FastAPI/
  ├── main.py 
  ├── routers/ 
  │ ├── __init__.py  
- │ └── requirements.py 
+ │ ├── requirements.py 
+ │ └── handover_json.py
  ├── models/ 
  │ ├── __init__.py 
  │ ├── requests.py 
@@ -19,7 +20,7 @@
 ✅ 우분투 환경(Ubuntu22.04)에서 작업할 때
 uv가 깔려있는 환경이라면
 
-**PJA_MLOps/FastAPI로 경로 접속**
+PJA_MLOps/FastAPI로 경로 접속
 
 1) 가상환경 생성
 uv venv .venv
