@@ -1,5 +1,5 @@
 ** 폴더 구조 **
-
+<pre>
 1_REQUIREMENT_SEPCIFICATIONS/
  ├── main.py 
  ├── routers/ 
@@ -12,8 +12,9 @@
  ├── .env 
  ├── requirements.txt 
  └── README.md
+</pre>
 
- * 실행 방법
+* 실행 방법
 
 ✅ 우분투 환경(Ubuntu22.04)에서 작업할 때
 uv가 깔려있는 환경이라면
