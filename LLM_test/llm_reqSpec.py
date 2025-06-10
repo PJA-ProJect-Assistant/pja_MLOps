@@ -91,6 +91,26 @@ perf_spec = [
     {
         "requirementType": "PERFORMANCE",
         "content": "과제 제출, 퀴즈 응답, 공지사항 등록 등에서 발생하는 모든 데이터는 MySQL을 통해 즉시 저장되어야 하며, 동시에 여러 사용자가 접근할 경우에도 데이터 충돌이나 손실이 없어야 한다."
+    },
+    {
+        "requirementType": "PERFORMANCE",
+        "content": "사용자는 로그인 시 2초 이내에 응답을 받아야 하며, 페이지 로딩 시간은 3초 이내로 유지되어야 한다."
+    },
+    {
+        "requirementType": "PERFORMANCE",
+        "content": "스터디 그룹 검색 결과는 1초 이내에 사용자에게 표시되어야 한다."
+    },
+    {
+        "requirementType": "PERFORMANCE",
+        "content": "퀴즈 생성 및 참여 시, 사용자의 입력에 대한 시스템 응답은 1초 이내에 이루어져야 한다."
+    },
+    {
+        "requirementType": "PERFORMANCE",
+        "content": "공지사항 게시판의 데이터는 2초 이내에 로드되어야 하며, 사용자가 작성한 공지사항은 즉시 반영되어야 한다."
+    },
+    {
+        "requirementType": "PERFORMANCE",
+        "content": "과제 게시판에서 과제 제출 후 상태 업데이트는 1초 이내에 반영되어야 한다."
     }
 ]            
 
