@@ -1,0 +1,14 @@
+# requirements.txt
+numpy
+pandas
+matplotlib
+seaborn
+streamlit
+transformers
+langchain
+mlflow
+flask
+fastapi
+apache-airflow
+openapi-spec-validator
+beautifulsoup4
