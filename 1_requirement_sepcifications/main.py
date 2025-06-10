@@ -9,4 +9,4 @@ app = FastAPI(
 )
 
 # 라우터 등록
-app.include_router(requirements.router, prefix="/api/v1", tags=["requirements"])
+app.include_router(requirements.router, prefix="/api/v1", tags=["requirements"])    
