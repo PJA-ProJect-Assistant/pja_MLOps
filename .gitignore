@@ -1,11 +1,6 @@
 .env
-Fine-tuning/2.Finetuning/.ipynb_checkpoints
-Fine-tuning/2.Finetuning/llama-3.1-korean-8b-hf-stable
-Fine-tuning/2.Finetuning/wandb
-Fine-tuning/4.QLoRA/llama-3.1-korean-8b-qlora-auto
-Fine-tuning/4.QLoRA/wandb
-Fine-tuning/4.QLoRA/ipynb_checkpoints*.pt
 *.safetensors
 *.bin
 QLoRA/results/
 wandb/
+.venv

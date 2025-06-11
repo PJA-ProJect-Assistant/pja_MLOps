@@ -59,6 +59,8 @@ async def generate_project_json(request: jsonRequest):
   프로젝트 데이터: {request.project_overview}
   요구사항 데이터: {request.requirements}
 
+  **중요: 유효한 JSON만 생성하세요. 마지막 요소 뒤에 쉼표를 절대 붙이지 마세요.**
+  
   아래 JSON 형식으로 응답하세요:
 
   {{
@@ -74,35 +76,41 @@ async def generate_project_json(request: jsonRequest):
         "expected_benefits": ["효과1", "효과2"]
       }}
     }},
-    "erd_data": {{
-      "erd_table": [{{
-        "name": "테이블명",
-        "erd_column": [{{
-          "name": "컬럼명",
-          "data_type": "타입",
-          "is_primary_key": true/false,
-          "is_foreign_key": true/false,
-          "is_nullable": true/false
-        }}]
-      }}],
-      "erd_relationships": [{{
-        "from_erd_table_id": "시작테이블",
-        "to_erd_table_id": "끝테이블",
-        "type": "관계타입",
-        "foreign_key": "외래키명",
-        "constraint_name": "제약조건명"
+    "erd_tables": [{{
+      "name": "테이블명",
+      "erd_columns": [{{
+        "name": "컬럼명",
+        "data_type": "타입",
+        "is_primary_key": true/false,
+        "is_foreign_key": true/false,
+        "is_nullable": true/false
       }}]
-    }},
-    "apiSpecification": [{{
+    }}],
+    "erd_relationships": [{{
+      "from_table": "시작테이블",
+      "to_table": "끝테이블",
+      "relationship_type": "관계타입",
+      "foreign_key": "외래키명",
+      "constraint_name": "제약조건명"
+    }}],
+    "apiSpecifications": [{{
       "title": "API명",
       "tag": "태그",
       "path": "/경로",
-      "httpMethod": "post/get/put/delete",
-      "request": [{{"field": "필드명", "type": "타입", "example": "예시"}}],
+      "http_method": "post/get/put/delete",
+      "request": [{{
+        "field": "필드명",
+        "type": "타입",
+        "example": "예시"
+      }}],
       "response": [{{
-        "statusCode": "상태코드",
+        "status_code": "상태코드",
         "message": "메시지",
-        "data": [{{"field": "필드명", "type": "타입", "example": "예시"}}]
+        "data": [{{
+          "field": "필드명",
+          "type": "타입",
+          "example": "예시"
+        }}]
       }}]
     }}]
   }}
