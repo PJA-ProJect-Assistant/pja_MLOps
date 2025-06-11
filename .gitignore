@@ -9,3 +9,4 @@ Fine-tuning/4.QLoRA/ipynb_checkpoints*.pt
 *.bin
 QLoRA/results/
 wandb/
+agent-env/
