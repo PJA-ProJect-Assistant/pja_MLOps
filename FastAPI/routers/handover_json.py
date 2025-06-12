@@ -54,14 +54,12 @@ OPTIMIZED_SYSTEM_PROMPT = """
 
 @router.post("/json_text/generate", response_model=jsonResponse)
 async def generate_project_json(request: jsonRequest):   
-# 간소화된 프롬프트
+  # 간소화된 프롬프트
   enhanced_prompt = f"""
   프로젝트 데이터: {request.project_overview}
   요구사항 데이터: {request.requirements}
 
-  **중요: 유효한 JSON만 생성하세요. 마지막 요소 뒤에 쉼표를 절대 붙이지 마세요.**
-
-  아래 JSON 형식으로 응답하세요:
+  **절대 준수사항: 아래 JSON 형식을 정확히 따르세요. 구조 변경 금지!**
 
   {{
     "project_summary": {{
@@ -97,45 +95,51 @@ async def generate_project_json(request: jsonRequest):
       "title": "API명",
       "tag": "태그",
       "path": "/경로",
-      "http_method": "POST",
+      "http_method": "post/get/put/delete",
       "request": [{{
         "field": "필드명",
-        "type": "string",
-        "example": "예시값"
+        "type": "타입",
+        "example": "예시"
       }}],
-      "response": {{
-        "success": {{
-          "status_code": "200",
-          "message": "성공 메시지",
-          "data": {{
-            "field1": "값1",
-            "field2": "값2",
-            "field3": ["배열값1", "배열값2"]
-          }}
-        }},
-        "error": {{
-          "status_code": "400",
-          "message": "에러 메시지",
-          "data": null
-        }}
-      }}
+      "response": [{{
+        "status_code": "상태코드",
+        "message": "메시지",
+        "data": [{{
+          "field": "필드명",
+          "type": "타입",
+          "example": "예시"
+        }}]
+      }}]
     }}]
   }}
 
-  **필수 요구사항:**
-  1. 각 엔티티별 최소 5개 API (CRUD + 검색 + 추가기능)
-  2. 최소 15개 이상 총 API 명세 작성
-  3. 인증, 파일처리, 통계, 알림 등 실무 API 포함
-  4. 순수 JSON만 응답 (마크다운 블록 금지)
-  5. 완전한 request/response 스키마 작성
-  6. response.data는 단일 객체로 구성하고, 배열이 필요한 경우 객체 내부의 속성으로 배열 사용
+  **강제 준수 규칙:**
+  1. apiSpecifications 구조 절대 변경 금지
+  2. request: [{{field, type, example}}] 형태 필수
+  3. response: [{{status_code, message, data: [{{field, type, example}}]}}] 형태 필수
+  4. data 배열 안의 각 필드는 개별 객체로 분리
+  5. 각 엔티티별 최소 5개 API (CRUD + 검색 + 추가기능)
+  6. 최소 15개 이상 총 API 명세 작성
+  7. 인증, 파일처리, 통계, 알림 등 실무 API 포함
+  8. 순수 JSON만 응답 (마크다운 블록 절대 금지)
+  9. 마지막 요소 뒤 쉼표 절대 금지
 
-  **response 구조 예시:**
-  - 단일 데이터: {{"data": {{"id": 1, "name": "example"}}}}
-  - 리스트 데이터: {{"data": {{"items": [{{"id": 1}}, {{"id": 2}}], "total": 2}}}}
-  - 페이징 데이터: {{"data": {{"items": [], "page": 1, "limit": 10, "total": 100}}}}
+  **data 배열 구조 예시:**
+  "data": [
+    {{"field": "userId", "type": "integer", "example": 1}},
+    {{"field": "username", "type": "string", "example": "john_doe"}},
+    {{"field": "email", "type": "string", "example": "john@example.com"}},
+    {{"field": "createdAt", "type": "datetime", "example": "2024-01-15T10:30:00Z"}}
+  ]
 
-  API를 최대한 많이, 상세하게 작성하세요!
+  **백엔드 규격 엄수:**
+  - request와 response는 반드시 배열 형태
+  - data 안의 각 반환 필드는 {{field, type, example}} 객체로 개별 분리
+  - 여러 필드 반환시 data 배열에 각각 별도 객체로 추가
+  - http_method는 소문자로 작성
+  - status_code는 문자열 타입
+
+  위 형식을 정확히 지켜서 API를 최대한 많이, 상세하게 작성하세요!
   """
 
   try:
