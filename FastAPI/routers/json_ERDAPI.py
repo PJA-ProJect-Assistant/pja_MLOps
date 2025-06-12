@@ -1,4 +1,4 @@
-# routers/handover_json.py
+# json_ERDAPI.py
 from fastapi import APIRouter, HTTPException
 import openai
 import os
@@ -57,6 +57,7 @@ async def generate_project_json(request: jsonRequest):
   enhanced_prompt = f"""
   프로젝트 데이터: {request.project_overview}
   요구사항 데이터: {request.requirements}
+  프로젝트 요약 데이터 : {request.project_summury}
 
   **절대 준수사항: 아래 JSON 형식을 정확히 따르세요. 구조 변경 금지!**
 
