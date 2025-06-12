@@ -55,10 +55,10 @@ async def generate_requirements(request: RequirementsRequest):
     반드시 아래 JSON 형식으로만 응답하고, 다른 설명이나 주석은 절대 포함하지 마세요.
 
     [
-      {{"requirementType": "FUNCTIONAL1", "content": "구체적인 기능 요구사항 설명"}},
-      {{"requirementType": "FUNCTIONAL2", "content": "구체적인 기능 요구사항 설명"}},
-      {{"requirementType": "PERFORMANCE1", "content": "구체적인 성능 요구사항 설명 (수치 포함)"}},
-      {{"requirementType": "PERFORMANCE2", "content": "구체적인 성능 요구사항 설명 (수치 포함)"}}
+      {{"requirementType": "FUNCTIONAL", "content": "구체적인 기능 요구사항 설명"}},
+      {{"requirementType": "FUNCTIONAL", "content": "구체적인 기능 요구사항 설명"}},
+      {{"requirementType": "PERFORMANCE", "content": "구체적인 성능 요구사항 설명 (수치 포함)"}},
+      {{"requirementType": "PERFORMANCE", "content": "구체적인 성능 요구사항 설명 (수치 포함)"}}
     ]
 
     주의: JSON 배열로만 시작하고 끝나야 하며, 배열 외부에 어떤 텍스트도 포함하지 마세요.

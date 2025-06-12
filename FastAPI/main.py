@@ -9,5 +9,5 @@ app = FastAPI(
 )
 
 # 라우터 등록
-app.include_router(requirements.router, prefix="/api/v1", tags=["requirements"])    
-app.include_router(handover_json.router, prefix="/api/v2", tags=["json"]) 
+app.include_router(requirements.router, prefix="/api/pja", tags=["requirements"])    
+app.include_router(handover_json.router, prefix="/api/pja", tags=["json"]) 

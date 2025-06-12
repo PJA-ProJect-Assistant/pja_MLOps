@@ -52,7 +52,7 @@ OPTIMIZED_SYSTEM_PROMPT = """
 
 """
 
-@router.post("/requirements/generate", response_model=jsonResponse)
+@router.post("/json_text/generate", response_model=jsonResponse)
 async def generate_project_json(request: jsonRequest):   
 # 간소화된 프롬프트
   enhanced_prompt = f"""
@@ -60,7 +60,7 @@ async def generate_project_json(request: jsonRequest):
   요구사항 데이터: {request.requirements}
 
   **중요: 유효한 JSON만 생성하세요. 마지막 요소 뒤에 쉼표를 절대 붙이지 마세요.**
-  
+
   아래 JSON 형식으로 응답하세요:
 
   {{
@@ -81,9 +81,9 @@ async def generate_project_json(request: jsonRequest):
       "erd_columns": [{{
         "name": "컬럼명",
         "data_type": "타입",
-        "is_primary_key": true/false,
-        "is_foreign_key": true/false,
-        "is_nullable": true/false
+        "is_primary_key": true,
+        "is_foreign_key": false,
+        "is_nullable": true
       }}]
     }}],
     "erd_relationships": [{{
@@ -97,21 +97,28 @@ async def generate_project_json(request: jsonRequest):
       "title": "API명",
       "tag": "태그",
       "path": "/경로",
-      "http_method": "post/get/put/delete",
+      "http_method": "POST",
       "request": [{{
         "field": "필드명",
-        "type": "타입",
-        "example": "예시"
+        "type": "string",
+        "example": "예시값"
       }}],
-      "response": [{{
-        "status_code": "상태코드",
-        "message": "메시지",
-        "data": [{{
-          "field": "필드명",
-          "type": "타입",
-          "example": "예시"
-        }}]
-      }}]
+      "response": {{
+        "success": {{
+          "status_code": "200",
+          "message": "성공 메시지",
+          "data": {{
+            "field1": "값1",
+            "field2": "값2",
+            "field3": ["배열값1", "배열값2"]
+          }}
+        }},
+        "error": {{
+          "status_code": "400",
+          "message": "에러 메시지",
+          "data": null
+        }}
+      }}
     }}]
   }}
 
@@ -121,6 +128,12 @@ async def generate_project_json(request: jsonRequest):
   3. 인증, 파일처리, 통계, 알림 등 실무 API 포함
   4. 순수 JSON만 응답 (마크다운 블록 금지)
   5. 완전한 request/response 스키마 작성
+  6. response.data는 단일 객체로 구성하고, 배열이 필요한 경우 객체 내부의 속성으로 배열 사용
+
+  **response 구조 예시:**
+  - 단일 데이터: {{"data": {{"id": 1, "name": "example"}}}}
+  - 리스트 데이터: {{"data": {{"items": [{{"id": 1}}, {{"id": 2}}], "total": 2}}}}
+  - 페이징 데이터: {{"data": {{"items": [], "page": 1, "limit": 10, "total": 100}}}}
 
   API를 최대한 많이, 상세하게 작성하세요!
   """
