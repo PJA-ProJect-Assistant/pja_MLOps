@@ -9,6 +9,6 @@ app = FastAPI(
 )
 
 # 라우터 등록
-app.include_router(requirements.router, prefix="/api/pja", tags=["요구사항 명세서 생성"])    
-app.include_router(json_summury.router, prefix="/api/pja", tags=["프로젝트 요약 생성"])
-app.include_router(json_ERDAPI.router, prefix="/api/pja", tags=["ERD, API 명세서 생성"])
+app.include_router(requirements.router, prefix="/api/PJA", tags=["요구사항 명세서 생성"])    
+app.include_router(json_summury.router, prefix="/api/PJA", tags=["프로젝트 요약 생성"])
+app.include_router(json_ERDAPI.router, prefix="/api/PJA", tags=["ERD, API 명세서 생성"])

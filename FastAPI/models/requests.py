@@ -18,7 +18,7 @@ class RequirementsRequest(BaseModel):
 class SummuryRequest(BaseModel):
     project_overview: str = Field(..., description="사용자의 아이디어 작성 내용")
     requirements : str = Field(..., description="추가 요구사항 목록")
-    max_tokens: Optional[int] = Field(8000, ge=1, le=8000, description="생성할 최대 토큰 개수")
+    max_tokens: Optional[int] = Field(4000, ge=1, le=4000, description="생성할 최대 토큰 개수")
     temperature: float = Field(0.3, ge=0.0, le=2.0, description="생성 창의성 정도")
     model: str = Field("ft:gpt-4o-mini-2024-07-18:test::BebIPMSD", description="사용할 모델 이름")
 
@@ -29,5 +29,3 @@ class jsonRequest(BaseModel):
     max_tokens: Optional[int] = Field(8000, ge=1, le=8000, description="생성할 최대 토큰 개수")
     temperature: float = Field(0.3, ge=0.0, le=2.0, description="생성 창의성 정도")
     model: str = Field("ft:gpt-4o-mini-2024-07-18:test::BebIPMSD", description="사용할 모델 이름")
-
-
