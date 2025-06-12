@@ -51,7 +51,7 @@ OPTIMIZED_SYSTEM_PROMPT = """
 
 """
 
-@router.post("/json_text/generate", response_model=jsonResponse)
+@router.post("/json_ERDAPI/generate", response_model=jsonResponse)
 async def generate_project_json(request: jsonRequest):   
   # 간소화된 프롬프트
   enhanced_prompt = f"""
