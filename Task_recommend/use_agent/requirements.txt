@@ -1,0 +1,11 @@
+langchain
+langchain-community
+langchain-openai
+huggingface_hub
+jinja2
+orjson
+openai
+python-dotenv
+transformers
+duckduckgo-search
+regex
