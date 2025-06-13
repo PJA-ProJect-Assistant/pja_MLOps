@@ -49,7 +49,7 @@ async def generate_project_json(request: SummuryRequest):
   **절대 준수사항: 아래 JSON 형식을 정확히 따르세요. 구조 변경 금지!**
 
   {{
-    "project_summary": {{
+    "project_info": {{
       "title": "프로젝트명",
       "category": "카테고리",
       "target_users": ["대상사용자1", "대상사용자2"],

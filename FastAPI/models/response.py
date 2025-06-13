@@ -22,3 +22,10 @@ class jsonResponse(BaseModel):
     total_tokens: int = Field(..., description="총 사용된 토큰 수")
     prompt_tokens: int = Field(..., description="입력 프롬프트의 토큰 수")
     completion_tokens: int = Field(..., description="생성된 응답의 토큰 수")
+
+class RecommendationResponse(BaseModel):
+    recommendations: List[dict] = Field(..., description="추천된 카테고리 목록")
+    model: str = Field(..., description="사용된 모델 이름")
+    total_tokens: int = Field(..., description="총 사용된 토큰 수")
+    prompt_tokens: int = Field(..., description="입력 프롬프트의 토큰 수")
+    completion_tokens: int = Field(..., description="생성된 응답의 토큰 수")
