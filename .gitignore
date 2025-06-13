@@ -5,3 +5,4 @@ QLoRA/results/
 wandb/
 .venv
 agent-env/
+**/__pycache__/
