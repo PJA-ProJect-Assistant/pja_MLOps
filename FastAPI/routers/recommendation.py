@@ -1,4 +1,4 @@
-# routers/Recommendation.py
+# routers/recommendation.py
 from fastapi import APIRouter, HTTPException
 import openai
 import os
@@ -20,16 +20,32 @@ OPTIMIZED_SYSTEM_PROMPT = """
 당신은 프로젝트 진행 상황을 분석하고 다음 작업을 추천하는 전문 AI 어시스턴트입니다.
 
 ## 주요 역할:
-- 프로젝트의 현재 진행 상태를 분석
-- 우선순위가 높은 다음 작업 추천
-- 작업의 중요도와 예상 소요 시간 산정
+- 제공된 작업 공간과 카테고리 정보를 기반으로 다음 작업을 추천
+- 각 작업의 중요도 평가 및 일정 계획 수립
+- 프로젝트의 효율적인 진행을 위한 작업 우선순위 결정
 
 ## 응답 형식:
 추천 작업은 다음 JSON 형식으로 제공되어야 합니다:
-1. workspaceId: 작업 공간 ID
-2. categoryId: 카테고리 ID
-3. featureId: 기능 ID
-4. recommendedActions: 추천 작업 목록
+
+{
+  "workspaceId": 1,
+  "categoryId": 3,
+  "featureId": 10,
+  "recommendedActions": [
+    {
+      "name": "비밀번호 암호화 처리"
+      "importance": 3,
+      "startDate": LocalDateTime형식의 날짜,
+      "endDate": LocalDateTime형식의 날짜
+    },
+    {
+      "name": "에러 메시지 예외 처리"
+      "importance": 3,      
+      "startDate": LocalDateTime형식의 날짜,
+      "endDate": LocalDateTime형식의 날짜
+    }
+  ]
+}
 
 **중요: 응답은 반드시 순수한 JSON 형태로만 제공하세요.**
 """
@@ -37,38 +53,41 @@ OPTIMIZED_SYSTEM_PROMPT = """
 @router.post("/recommend/generate", response_model=RecommendationResponse)
 async def recommendation(request: RecommendationRequest):
     try:
-        # 더미 데이터 로드 (실제 구현 시에는 ML 모델로 대체)
-        current_dir = os.path.dirname(os.path.abspath(__file__))
-        dummy_path = os.path.join(current_dir, "..", "backend_to_mlops_dummy_data.json")
-        
-        with open(dummy_path, "r", encoding="utf-8") as f:
-            dummy_data = json.load(f)
-        
-        # 샘플 응답 데이터 구성
-        sample_response = {
-            "workspaceId": request.workspaceId,
-            "categoryId": 3,
-            "featureId": 10,
-            "recommendedActions": [
-                {
-                    "name": "비밀번호 암호화 처리",
-                    "importance": 3,
-                    "startDate": "2024-06-01T00:00:00",
-                    "endDate": "2024-06-02T00:00:00"
-                },
-                {
-                    "name": "에러 메시지 예외 처리",
-                    "importance": 2,
-                    "startDate": "2024-06-02T00:00:00",
-                    "endDate": "2024-06-03T00:00:00"
-                }
-            ]
-        }
+        # 프롬프트 구성
+        enhanced_prompt = f"""
+        팀 프로젝트 작업 리스트 : {request.project_list}
+        위 정보를 바탕으로 다음 작업을 추천해주세요.
 
-        return RecommendationResponse(
-            result="success",
-            recommendedActions=sample_response["recommendedActions"]
+        **강제 준수 규칙:**
+        1. 순수 JSON만 응답 (마크다운 블록 절대 금지)
+        2. 마지막 요소 뒤 쉼표 절대 금지        
+        """
+
+        # OpenAI API 호출
+        response = await client.chat.completions.create(
+            model=request.model,
+            messages=[
+                {"role": "system", "content": OPTIMIZED_SYSTEM_PROMPT},
+                {"role": "user", "content": enhanced_prompt}
+            ],
+            max_tokens=request.max_tokens,
+            temperature=request.temperature
         )
         
+        # JSON 파싱
+        content = response.choices[0].message.content
+        json_data = json.loads(content)
+        
+        # 응답 반환
+        return RecommendationResponse(
+            recommendations=json_data,
+            model=request.model,
+            total_tokens=response.usage.total_tokens,
+            prompt_tokens=response.usage.prompt_tokens,
+            completion_tokens=response.usage.completion_tokens
+        )
+        
+    except json.JSONDecodeError as e:
+        raise HTTPException(status_code=500, detail=f"JSON 파싱 오류: {str(e)}")
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"추천 생성 오류: {str(e)}")

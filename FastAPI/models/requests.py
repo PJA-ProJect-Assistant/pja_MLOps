@@ -31,8 +31,7 @@ class jsonRequest(BaseModel):
     model: str = Field("ft:gpt-4o-mini-2024-07-18:test::BebIPMSD", description="사용할 모델 이름")
 
 class RecommendationRequest(BaseModel):
-    workspaceID: str = Field(..., description="작업 공간 ID")
-    recommendedCategories: str = Field(..., description="추천 카테고리 목록")
+    project_list: str = Field(..., description="팀 프로젝트에 작성된 리스트")
     max_tokens: Optional[int] = Field(3000, ge=1, le=3000, description="생성할 최대 토큰 개수")
     temperature: float = Field(0.3, ge=0.0, le=2.0, description="생성 창의성 정도")
     model: str = Field("ft:gpt-4o-mini-2024-07-18:test::BebIPMSD", description="사용할 모델 이름")
