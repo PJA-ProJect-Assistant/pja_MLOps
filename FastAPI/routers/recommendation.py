@@ -80,7 +80,7 @@ async def recommendation(request: RecommendationRequest):
         
         # 응답 반환
         return RecommendationResponse(
-            recommendations=json_data,
+            recommendations=[json_data],
             model=request.model,
             total_tokens=response.usage.total_tokens,
             prompt_tokens=response.usage.prompt_tokens,
