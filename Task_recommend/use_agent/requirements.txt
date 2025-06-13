@@ -8,4 +8,4 @@ openai
 python-dotenv
 transformers
 duckduckgo-search
-regex
+# regex
