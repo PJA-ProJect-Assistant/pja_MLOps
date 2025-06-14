@@ -12,27 +12,19 @@ echo -e "${BLUE}"
 echo "╔══════════════════════════════════════════════╗"
 echo "║                  PJA_Project                 ║"
 echo "║          FastAPI + OpenAI Integration        ║"
-echo "║                 Version: 0.2                 ║"
+echo "║                 Version:                     ║"
 echo "╚══════════════════════════════════════════════╝"
 echo -e "${NC}"
 
-# OpenAI API 키 확인
+# OpenAI API 키 확인 (환경변수에서)
 if [ -z "$OPENAI_API_KEY" ]; then
-    echo -e "${YELLOW}🔑 OpenAI API 키가 설정되지 않았습니다.${NC}"
-    echo -e "${BLUE}API 키를 입력해주세요:${NC}"
-    read -s OPENAI_API_KEY
-    export OPENAI_API_KEY
-    echo ""
-    
-    if [ -z "$OPENAI_API_KEY" ]; then
-        echo -e "${RED}❌ API 키가 입력되지 않았습니다. 종료합니다.${NC}"
-        exit 1
-    fi
+    echo -e "${RED}❌ OPENAI_API_KEY 환경변수가 설정되지 않았습니다.${NC}"
+    exit 1
 fi
 
 # API 키 유효성 간단 체크 (길이 확인)
 if [ ${#OPENAI_API_KEY} -lt 20 ]; then
-    echo -e "${RED}❌ 유효하지 않은 API 키입니다. 다시 확인해주세요.${NC}"
+    echo -e "${RED}❌ 유효하지 않은 API 키입니다.${NC}"
     exit 1
 fi
 
@@ -53,9 +45,6 @@ echo "  • POST /api/PJA/recommend/generate (프로젝트 진행 추천)"
 echo ""
 echo -e "${YELLOW}서버를 중지하려면 Ctrl+C를 누르세요.${NC}"
 echo -e "${NC}"
-
-# 잠시 대기
-sleep 2
 
 # FastAPI 서버 실행
 exec uvicorn main:app --host 0.0.0.0 --port 8000
