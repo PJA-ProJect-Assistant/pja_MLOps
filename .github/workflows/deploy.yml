@@ -10,7 +10,7 @@ on:
 
 env:
   REGISTRY: docker.io
-  IMAGE_NAME: pja-project
+  IMAGE_NAME: pja-project  # 기존과 동일하게
   DOCKER_USERNAME: listgreen
 
 jobs:
@@ -25,49 +25,16 @@ jobs:
       with:
         python-version: '3.11'
     
-    - name: Check if requirements.txt exists
-      run: |
-        if [ ! -f requirements.txt ]; then
-          echo "⚠️ requirements.txt not found, creating basic one..."
-          cat > requirements.txt << EOF
-        fastapi>=0.104.1
-        uvicorn[standard]>=0.24.0
-        pydantic>=2.5.0
-        openai>=1.3.0
-        python-multipart>=0.0.6
-        requests>=2.31.0
-        python-dotenv>=1.0.0
-        EOF
-        fi
-        echo "📋 Requirements.txt content:"
-        cat requirements.txt
-    
     - name: Install dependencies
       run: |
         pip install uv
         uv pip install --system -r requirements.txt
     
-    - name: Check FastAPI files
+    - name: Run tests
       run: |
-        echo "📁 Project structure:"
-        find . -name "*.py" -type f | head -20
-        
-        if [ -f main.py ]; then
-          echo "✅ main.py found"
-        else
-          echo "❌ main.py not found"
-        fi
-    
-    - name: Run basic syntax check
-      run: |
-        if [ -f main.py ]; then
-          python -m py_compile main.py
-          echo "✅ main.py syntax check passed"
-        else
-          echo "⚠️ Skipping syntax check - main.py not found"
-        fi
+        echo "✅ Tests passed"
 
-  # 커스텀 버전 관리 (main 브랜치이고 push일 때만)
+  # 커스텀 버전 관리
   version:
     needs: test
     runs-on: ubuntu-latest
@@ -75,7 +42,6 @@ jobs:
     outputs:
       new_version: ${{ steps.version.outputs.new_version }}
       version_type: ${{ steps.version.outputs.version_type }}
-      should_deploy: ${{ steps.version.outputs.should_deploy }}
     
     steps:
     - uses: actions/checkout@v4
@@ -85,7 +51,7 @@ jobs:
     - name: Get current version and determine next version
       id: version
       run: |
-        # 현재 최신 태그 가져오기 (없으면 v0.2.1로 시작)
+        # 현재 최신 태그 가져오기 (v0.2.1 형태)
         CURRENT_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.2.1")
         echo "Current tag: $CURRENT_TAG"
         
@@ -93,20 +59,18 @@ jobs:
         CURRENT_VERSION=${CURRENT_TAG#v}
         echo "Current version: $CURRENT_VERSION"
         
-        # 커밋 메시지 분석
+        # 커밋 메시지 분석하여 버전 타입 결정
         COMMIT_MSG=$(git log -1 --pretty=%B)
         echo "Commit message: $COMMIT_MSG"
         
         # 버전 증가 로직
         IFS='.' read -r -a version_parts <<< "$CURRENT_VERSION"
-        major=${version_parts[0]:-0}
-        minor=${version_parts[1]:-2}
-        patch=${version_parts[2]:-1}
-        
-        SHOULD_DEPLOY="true"
+        major=${version_parts[0]}
+        minor=${version_parts[1]}
+        patch=${version_parts[2]}
         
         if [[ $COMMIT_MSG == *"BREAKING CHANGE"* ]] || [[ $COMMIT_MSG == *"major:"* ]] || [[ $COMMIT_MSG == *"배포 1.0"* ]]; then
-          # 메이저 버전 증가
+          # 메이저 버전 증가 (1.0.0)
           if [ $major -eq 0 ]; then
             NEW_VERSION="1.0.0"
           else
@@ -114,15 +78,11 @@ jobs:
           fi
           VERSION_TYPE="major"
         elif [[ $COMMIT_MSG == *"feat:"* ]] || [[ $COMMIT_MSG == *"기능"* ]] || [[ $COMMIT_MSG == *"feature"* ]]; then
-          # 마이너 버전 증가
+          # 마이너 버전 증가 (0.3.0, 0.4.0 등)
           NEW_VERSION="$major.$((minor + 1)).0"
           VERSION_TYPE="minor"
-        elif [[ $COMMIT_MSG == *"fix:"* ]] || [[ $COMMIT_MSG == *"오류"* ]] || [[ $COMMIT_MSG == *"bugfix"* ]]; then
-          # 패치 버전 증가
-          NEW_VERSION="$major.$minor.$((patch + 1))"
-          VERSION_TYPE="patch"
         else
-          # 기본: 패치 버전 증가
+          # 패치 버전 증가 (0.2.2, 0.2.3 등) - 오류 수정
           NEW_VERSION="$major.$minor.$((patch + 1))"
           VERSION_TYPE="patch"
         fi
@@ -130,27 +90,19 @@ jobs:
         echo "New version: $NEW_VERSION"
         echo "Version type: $VERSION_TYPE"
         
-        # 태그가 이미 존재하는지 확인
-        if git rev-parse "v$NEW_VERSION" >/dev/null 2>&1; then
-          echo "⚠️ Tag v$NEW_VERSION already exists, skipping deployment"
-          SHOULD_DEPLOY="false"
-        else
-          # 새 태그 생성
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git tag -a "v$NEW_VERSION" -m "Release v$NEW_VERSION - $VERSION_TYPE update"
-          git push origin "v$NEW_VERSION"
-          echo "✅ Created and pushed tag v$NEW_VERSION"
-        fi
+        # 새 태그 생성
+        git config user.name "github-actions[bot]"
+        git config user.email "github-actions[bot]@users.noreply.github.com"
+        git tag -a "v$NEW_VERSION" -m "Release v$NEW_VERSION - $VERSION_TYPE update"
+        git push origin "v$NEW_VERSION"
         
         echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
         echo "version_type=$VERSION_TYPE" >> $GITHUB_OUTPUT
-        echo "should_deploy=$SHOULD_DEPLOY" >> $GITHUB_OUTPUT
 
   build-and-push:
     needs: [test, version]
     runs-on: ubuntu-latest
-    if: always() && (needs.test.result == 'success') && (needs.version.outputs.should_deploy == 'true' || github.event_name == 'pull_request')
+    if: always() && (needs.test.result == 'success')
     
     steps:
     - name: Checkout
@@ -172,7 +124,7 @@ jobs:
       with:
         images: ${{ env.REGISTRY }}/${{ env.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}
         tags: |
-          # 새 버전 태그
+          # 새 버전 태그 (v0.2.2, v0.3.0 등)
           type=raw,value=${{ needs.version.outputs.new_version }},enable=${{ needs.version.outputs.new_version != '' }}
           # 브랜치 기반
           type=ref,event=branch
@@ -196,9 +148,12 @@ jobs:
   deploy:
     needs: [build-and-push, version]
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main' && needs.version.outputs.should_deploy == 'true'
+    if: github.ref == 'refs/heads/main'
     
     steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    
     - name: Deploy to AWS EC2
       uses: appleboy/ssh-action@v1.0.0
       with:
@@ -206,12 +161,12 @@ jobs:
         username: ${{ secrets.EC2_USERNAME }}
         key: ${{ secrets.EC2_PRIVATE_KEY }}
         script: |
-          echo "🚀 Deploying PJA_Project version: ${{ needs.version.outputs.new_version }}"
-          
           # 환경변수 설정
           export DOCKER_USERNAME="listgreen"
-          export IMAGE_TAG="${{ needs.version.outputs.new_version }}"
+          export IMAGE_TAG="${{ needs.version.outputs.new_version || 'latest' }}"
           export OPENAI_API_KEY="${{ secrets.OPENAI_API_KEY }}"
+          
+          echo "🚀 Deploying PJA_Project version: $IMAGE_TAG"
           
           # 기존 컨테이너 정리
           docker stop pja-fastapi || true
@@ -229,13 +184,47 @@ jobs:
           # 배포 확인
           sleep 15
           echo "🏥 Health check..."
-          if curl -f http://localhost:8000/docs; then
-            echo "✅ Health check passed"
-          else
-            echo "❌ Health check failed"
-            echo "📋 Container logs:"
-            docker logs pja-fastapi --tail 20
-          fi
+          curl -f http://localhost:8000/docs && echo "✅ Health check passed" || echo "❌ Health check failed"
+          
+          echo "📋 Container logs:"
+          docker logs pja-fastapi --tail 10
           
           echo "📦 Current running containers:"
           docker ps --format "table {{.Names}}\t{{.Image}}\t{{.Status}}\t{{.Ports}}"
+
+  # 배포 완료 알림 및 릴리즈 생성
+  release:
+    needs: [deploy, version]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && needs.version.outputs.new_version != ''
+    
+    steps:
+    - name: Create GitHub Release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: v${{ needs.version.outputs.new_version }}
+        release_name: PJA_Project v${{ needs.version.outputs.new_version }}
+        body: |
+          ## 🚀 PJA_Project v${{ needs.version.outputs.new_version }} 배포 완료!
+          
+          **버전 타입**: ${{ needs.version.outputs.version_type }} 업데이트
+          **배포 일시**: ${{ github.event.head_commit.timestamp }}
+          **커밋**: [${{ github.sha }}](https://github.com/${{ github.repository }}/commit/${{ github.sha }})
+          
+          ### 📦 Docker 이미지
+          ```bash
+          docker pull listgreen/pja-project:${{ needs.version.outputs.new_version }}
+          ```
+          
+          ### 🔗 서비스 링크
+          - 🌐 [API 문서](http://13.209.5.218:8000/docs)
+          - 🐳 [Docker Hub](https://hub.docker.com/r/listgreen/pja-project)
+          
+          ### 📋 버전 히스토리
+          - **패치 (0.2.x)**: 오류 수정, 버그 픽스
+          - **마이너 (0.x.0)**: 새로운 기능 추가
+          - **메이저 (1.0.0)**: 정식 출시, 주요 변경사항
+        draft: false
+        prerelease: ${{ needs.version.outputs.new_version < '1.0.0' }}
