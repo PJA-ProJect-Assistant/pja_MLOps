@@ -4,12 +4,14 @@ Question: 아래의 JSON 작업 흐름을 바탕으로 각 feature에 대해 이
   "workspaceId": "작업 중인 workspaceId",
   "recommendedCategories": [
     {
+      "categoryId": "작업 중인 categoryId",
       "name": "카테고리 이름",
       "startDate": "YYYY-MM-DDTHH:MM:SS",
       "endDate": "YYYY-MM-DDTHH:MM:SS",
       "importance": 정수,
       "features": [
         {
+          "featureId": "작업 중인 featureId",
           "name": "기능 이름",
           "startDate": "YYYY-MM-DDTHH:MM:SS",
           "endDate": "YYYY-MM-DDTHH:MM:SS",
@@ -43,7 +45,7 @@ Question: 아래의 JSON 작업 흐름을 바탕으로 각 feature에 대해 이
 
 Thought: recommendedCategories, features, actions를 분석하여 각 feature에 자연스럽게 이어질 다음 actions 3개씩을 구상합니다.
 Action: ParseWorkflow
-Action Input: {input}
+Action Input: {{input}}
 
 Observation: 전체 워크스페이스와 feature의 작업 흐름 및 현재 진행 상황을 파악했습니다.
 
