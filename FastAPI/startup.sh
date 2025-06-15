@@ -12,7 +12,6 @@ echo -e "${BLUE}"
 echo "╔══════════════════════════════════════════════╗"
 echo "║                  PJA_Project                 ║"
 echo "║          FastAPI + OpenAI Integration        ║"
-echo "║                 Version:                     ║"
 echo "╚══════════════════════════════════════════════╝"
 echo -e "${NC}"
 
