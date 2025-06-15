@@ -72,6 +72,9 @@ jobs:
     needs: test
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    # 권한 추가
+    permissions:
+      contents: write
     outputs:
       new_version: ${{ steps.version.outputs.new_version }}
       version_type: ${{ steps.version.outputs.version_type }}
@@ -81,6 +84,8 @@ jobs:
     - uses: actions/checkout@v4
       with:
         fetch-depth: 0
+        # GITHUB_TOKEN 사용
+        token: ${{ secrets.GITHUB_TOKEN }}
     
     - name: Get current version and determine next version
       id: version
@@ -135,9 +140,11 @@ jobs:
           echo "⚠️ Tag v$NEW_VERSION already exists, skipping deployment"
           SHOULD_DEPLOY="false"
         else
-          # 새 태그 생성
+          # Git 설정
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+          
+          # 새 태그 생성 및 푸시
           git tag -a "v$NEW_VERSION" -m "Release v$NEW_VERSION - $VERSION_TYPE update"
           git push origin "v$NEW_VERSION"
           echo "✅ Created and pushed tag v$NEW_VERSION"
