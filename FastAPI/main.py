@@ -1,5 +1,5 @@
 # main.py
-# FastAPI 애플리케이션을 생성하고 라우터를 등록하는 코드1
+# FastAPI 애플리케이션을 생성하고 라우터를 등록하는 코드12
 from fastapi import FastAPI
 from routers import json_summury, requirements, json_ERDAPI, recommendation
 
