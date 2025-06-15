@@ -1,6 +1,5 @@
 # main.py 파일 끝에 주석 한 줄 추가
 # 업데이트 테스트: 2024-06-15 11:56
-# FastAPI 프로젝트의 메인 파일
 from fastapi import FastAPI
 from routers import json_summury, requirements, json_ERDAPI, recommendation
 
@@ -14,4 +13,4 @@ app = FastAPI(
 app.include_router(requirements.router, prefix="/api/PJA", tags=["요구사항 명세서 생성"])    
 app.include_router(json_summury.router, prefix="/api/PJA", tags=["프로젝트 요약 생성"])
 app.include_router(json_ERDAPI.router, prefix="/api/PJA", tags=["ERD, API 명세서 생성"])
-app.include_router(recommendation.router, prefix="/api/PJA", tags=["프로젝트 진행 추천"])# 테스트용 주석 - Mon Jun 16 00:09:50 KST 2025
+app.include_router(recommendation.router, prefix="/api/PJA", tags=["프로젝트 진행 추천"])
