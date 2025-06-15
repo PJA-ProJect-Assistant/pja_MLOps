@@ -1,4 +1,5 @@
-# main.py
+# main.py 파일 끝에 주석 한 줄 추가
+# 업데이트 테스트: 2024-06-15
 from fastapi import FastAPI
 from routers import json_summury, requirements, json_ERDAPI, recommendation
 
