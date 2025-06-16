@@ -3,10 +3,10 @@ name: PJA Project CI/CD Pipeline
 
 on:
   push:
-    branches: [ main, develop, seong_work, min_work, eun_work ]  # seong_work 추가
+    branches: [ main, develop, seong_work ]  # seong_work 추가
     tags: [ 'v*' ]
   pull_request:
-    branches: [ main ]
+    branches: [ main, seong_work ]  # seong_work로 들어오는 PR도 테스트
 
 env:
   REGISTRY: docker.io
@@ -224,7 +224,7 @@ jobs:
     - name: Build and push Docker image
       uses: docker/build-push-action@v5
       with:
-        context: ./FastAPI  # 🔥 여기가 핵심 변경점!
+        context: ./FastAPI
         platforms: linux/amd64
         push: ${{ github.event_name != 'pull_request' }}
         tags: ${{ steps.meta.outputs.tags }}
@@ -237,7 +237,7 @@ jobs:
   deploy:
     needs: [build-and-push, version]
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main' && needs.version.outputs.should_deploy == 'true'
+    if: (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/seong_work') && needs.version.outputs.should_deploy == 'true'
     
     steps:
     - name: Deploy to AWS EC2
@@ -246,6 +246,9 @@ jobs:
         host: ${{ secrets.EC2_HOST }}
         username: ${{ secrets.EC2_USERNAME }}
         key: ${{ secrets.EC2_PRIVATE_KEY }}
+        port: 22
+        timeout: 60s
+        command_timeout: 15m
         script: |
           echo "🚀 Deploying PJA_Project version: ${{ needs.version.outputs.new_version }}"
           
@@ -254,12 +257,28 @@ jobs:
           export IMAGE_TAG="${{ needs.version.outputs.new_version }}"
           export OPENAI_API_KEY="${{ secrets.OPENAI_API_KEY }}"
           
+          # Docker 로그인 (선택사항)
+          echo "🔐 Logging into Docker Hub..."
+          echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin || echo "⚠️ Docker login failed, continuing..."
+          
           # 기존 컨테이너 정리
+          echo "🧹 Cleaning up existing containers..."
           docker stop pja-fastapi || true
           docker rm pja-fastapi || true
           
-          # 새 이미지 풀 및 실행
-          docker pull $DOCKER_USERNAME/pja-project:$IMAGE_TAG
+          # 기존 이미지 정리 (디스크 공간 확보)
+          docker image prune -f || true
+          
+          # 새 이미지 풀
+          echo "📥 Pulling new image: $DOCKER_USERNAME/pja-project:$IMAGE_TAG"
+          if ! docker pull $DOCKER_USERNAME/pja-project:$IMAGE_TAG; then
+            echo "❌ Failed to pull image, trying latest tag..."
+            docker pull $DOCKER_USERNAME/pja-project:latest
+            IMAGE_TAG="latest"
+          fi
+          
+          # 새 컨테이너 실행
+          echo "🚀 Starting new container..."
           docker run -d \
             --name pja-fastapi \
             -p 8000:8000 \
@@ -267,16 +286,40 @@ jobs:
             --restart unless-stopped \
             $DOCKER_USERNAME/pja-project:$IMAGE_TAG
           
-          # 배포 확인
-          sleep 15
-          echo "🏥 Health check..."
-          if curl -f http://localhost:8000/docs; then
-            echo "✅ Health check passed"
-          else
-            echo "❌ Health check failed"
+          # 컨테이너 시작 대기
+          echo "⏳ Waiting for container to start..."
+          sleep 20
+          
+          # 컨테이너 상태 확인
+          if ! docker ps | grep pja-fastapi > /dev/null; then
+            echo "❌ Container failed to start"
             echo "📋 Container logs:"
-            docker logs pja-fastapi --tail 20
+            docker logs pja-fastapi --tail 50
+            exit 1
           fi
           
+          # Health check
+          echo "🏥 Performing health check..."
+          for i in {1..6}; do
+            if curl -f -s http://localhost:8000/docs > /dev/null; then
+              echo "✅ Health check passed (attempt $i/6)"
+              break
+            elif [ $i -eq 6 ]; then
+              echo "❌ Health check failed after 6 attempts"
+              echo "📋 Container logs:"
+              docker logs pja-fastapi --tail 30
+              echo "🔍 Container status:"
+              docker ps -a | grep pja-fastapi
+              exit 1
+            else
+              echo "⏳ Health check attempt $i/6 failed, retrying in 10s..."
+              sleep 10
+            fi
+          done
+          
+          # 최종 상태 확인
           echo "📦 Current running containers:"
           docker ps --format "table {{.Names}}\t{{.Image}}\t{{.Status}}\t{{.Ports}}"
+          
+          echo "🎉 Deployment completed successfully!"
+          echo "🌐 Application URL: http://$(curl -s http://checkip.amazonaws.com):8000/docs"
