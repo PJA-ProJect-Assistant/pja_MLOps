@@ -3,3 +3,8 @@ name = "pja-mlops"
 version = "0.1.0"
 description = "ML Ops 도커 이미지"
 requires-python = ">=3.10"
+
+[tool.uv.workspace]
+members = [
+    "Topic_model",
+]
