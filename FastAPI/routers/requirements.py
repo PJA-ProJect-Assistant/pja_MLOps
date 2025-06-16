@@ -47,21 +47,23 @@ async def generate_requirements(request: RequirementsRequest):
     - 기능 요구사항(FUNCTIONAL)과 성능 요구사항(PERFORMANCE)을 적절히 조합
     - 각 요구사항은 구체적이고 측정 가능하며 테스트 가능해야 함
 
-    **최종 출력 요구사항:**
-    기존 요구사항 + 새로 생성된 요구사항을 모두 포함하여 통합된 전체 목록을 출력하세요.
-    요구사항들을 논리적 순서로 정렬하되, 기능 요구사항을 먼저, 성능 요구사항을 나중에 배치하세요.
+    **중요: 신규 요구사항만 생성하세요. 기존 요구사항은 포함하지 마세요.**
 
     **응답 형식 (JSON만):**
     반드시 아래 JSON 형식으로만 응답하고, 다른 설명이나 주석은 절대 포함하지 마세요.
 
     [
-      {{"requirementType": "FUNCTIONAL1", "content": "구체적인 기능 요구사항 설명"}},
-      {{"requirementType": "FUNCTIONAL2", "content": "구체적인 기능 요구사항 설명"}},
-      {{"requirementType": "PERFORMANCE1", "content": "구체적인 성능 요구사항 설명 (수치 포함)"}},
-      {{"requirementType": "PERFORMANCE2", "content": "구체적인 성능 요구사항 설명 (수치 포함)"}}
+    {{"requirementType": "FUNCTIONAL", "content": "구체적인 기능 요구사항 설명"}},
+    {{"requirementType": "FUNCTIONAL", "content": "구체적인 기능 요구사항 설명"}},
+    {{"requirementType": "PERFORMANCE", "content": "구체적인 성능 요구사항 설명 (수치 포함)"}},
+    {{"requirementType": "PERFORMANCE", "content": "구체적인 성능 요구사항 설명 (수치 포함)"}}
     ]
 
-    주의: JSON 배열로만 시작하고 끝나야 하며, 배열 외부에 어떤 텍스트도 포함하지 마세요.
+    주의: 
+    1. 새로 생성된 {request.additional_count}개의 요구사항만 출력
+    2. JSON 배열로만 시작하고 끝나야 하며, 배열 외부에 어떤 텍스트도 포함하지 마세요
+    3. 기존 요구사항과 중복되지 않는 완전히 새로운 요구사항만 작성
+    4. 기능 요구사항을 먼저, 성능 요구사항을 나중에 배치
     """
     
     try:

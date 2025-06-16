@@ -1,0 +1,13 @@
+langchain
+openai
+pandas
+onnxruntime
+pip
+requests
+dotenv
+ipykernel
+matplotlib
+langchain-community
+langchain_openai
+vectordb
+hnswlib
