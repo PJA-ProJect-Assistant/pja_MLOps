@@ -243,9 +243,9 @@ jobs:
     - name: Deploy to AWS EC2
       uses: appleboy/ssh-action@v1.0.0
       with:
-        host: ${{ secrets.EC2_HOST }}
-        username: ${{ secrets.EC2_USERNAME }}
-        key: ${{ secrets.EC2_PRIVATE_KEY }}
+        host: ${{ secrets.AWS_HOST }}
+        username: ${{ secrets.AWS_USERNAME }}
+        key: ${{ secrets.AWS_PRIVATE_KEY }}
         port: 22
         timeout: 60s
         command_timeout: 15m
