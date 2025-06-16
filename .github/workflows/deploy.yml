@@ -3,7 +3,7 @@ name: PJA Project CI/CD Pipeline
 
 on:
   push:
-    branches: [ main, develop, seong_work ]  # seong_work 추가
+    branches: [ main, develop, seong_work, min_work, eun_work ]  # seong_work 추가
     tags: [ 'v*' ]
   pull_request:
     branches: [ main ]

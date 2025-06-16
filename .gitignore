@@ -6,3 +6,4 @@ wandb/
 .venv
 agent-env/
 **/__pycache__/
+/.github/workflows/deploy.yml
