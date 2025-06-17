@@ -16,7 +16,21 @@ class SummuryResponse(BaseModel):
     prompt_tokens: int = Field(..., description="입력 프롬프트의 토큰 수")
     completion_tokens: int = Field(..., description="생성된 응답의 토큰 수")
 
-class jsonResponse(BaseModel):
+# class jsonResponse(BaseModel):
+#     json_data: Dict[str, Any] = Field(..., alias="json", description="json 형태 답변 내용")
+#     model: str = Field(..., description="사용된 모델 이름")
+#     total_tokens: int = Field(..., description="총 사용된 토큰 수")
+#     prompt_tokens: int = Field(..., description="입력 프롬프트의 토큰 수")
+#     completion_tokens: int = Field(..., description="생성된 응답의 토큰 수")
+
+class ERDResponse(BaseModel):
+    json_data: Dict[str, Any] = Field(..., alias="json", description="json 형태 답변 내용")
+    model: str = Field(..., description="사용된 모델 이름")
+    total_tokens: int = Field(..., description="총 사용된 토큰 수")
+    prompt_tokens: int = Field(..., description="입력 프롬프트의 토큰 수")
+    completion_tokens: int = Field(..., description="생성된 응답의 토큰 수")
+
+class APIResponse(BaseModel):
     json_data: Dict[str, Any] = Field(..., alias="json", description="json 형태 답변 내용")
     model: str = Field(..., description="사용된 모델 이름")
     total_tokens: int = Field(..., description="총 사용된 토큰 수")
