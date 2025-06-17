@@ -117,5 +117,4 @@ async def generate_requirements(request: RequirementsRequest):
     except json.JSONDecodeError as e:
         raise HTTPException(status_code=500, detail=f"JSON 파싱 오류: {str(e)}")
     except Exception as e:
->>>>>>> 50141485c9e5a62726d5dbc8d54d8f400603867c
         raise HTTPException(status_code=500, detail=f"요구사항 생성 오류: {str(e)}")
