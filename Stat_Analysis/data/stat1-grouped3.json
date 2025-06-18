@@ -1,0 +1,74 @@
+[
+  {
+    "userId": "1",
+    "details.state": "BEFORE",
+    "details.importance": 1,
+    "count": 3
+  },
+  {
+    "userId": "1",
+    "details.state": "BEFORE",
+    "details.importance": 2,
+    "count": 5
+  },
+  {
+    "userId": "1",
+    "details.state": "BEFORE",
+    "details.importance": 3,
+    "count": 7
+  },
+  {
+    "userId": "1",
+    "details.state": "BEFORE",
+    "details.importance": 4,
+    "count": 3
+  },
+  {
+    "userId": "1",
+    "details.state": "BEFORE",
+    "details.importance": 5,
+    "count": 5
+  },
+  {
+    "userId": "1",
+    "details.state": "DONE",
+    "details.importance": 1,
+    "count": 2
+  },
+  {
+    "userId": "1",
+    "details.state": "DONE",
+    "details.importance": 2,
+    "count": 8
+  },
+  {
+    "userId": "1",
+    "details.state": "DONE",
+    "details.importance": 3,
+    "count": 2
+  },
+  {
+    "userId": "1",
+    "details.state": "DONE",
+    "details.importance": 4,
+    "count": 3
+  },
+  {
+    "userId": "1",
+    "details.state": "DONE",
+    "details.importance": 5,
+    "count": 4
+  },
+  {
+    "userId": "1",
+    "details.state": "IN_PROGRESS",
+    "details.importance": 4,
+    "count": 1
+  },
+  {
+    "userId": "1",
+    "details.state": "IN_PROGRESS",
+    "details.importance": 5,
+    "count": 1
+  }
+]
