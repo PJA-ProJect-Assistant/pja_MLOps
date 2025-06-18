@@ -1,0 +1,32 @@
+[
+  {
+    "userId": "5",
+    "details.state": "BEFORE",
+    "details.importance": 4,
+    "count": 1
+  },
+  {
+    "userId": "5",
+    "details.state": "BEFORE",
+    "details.importance": 5,
+    "count": 2
+  },
+  {
+    "userId": "5",
+    "details.state": "DONE",
+    "details.importance": 3,
+    "count": 1
+  },
+  {
+    "userId": "5",
+    "details.state": "DONE",
+    "details.importance": 5,
+    "count": 3
+  },
+  {
+    "userId": "5",
+    "details.state": "IN_PROGRESS",
+    "details.importance": 4,
+    "count": 1
+  }
+]
