@@ -17,16 +17,7 @@ router = APIRouter()
 # OpenAI 클라이언트 초기화
 client = openai.AsyncOpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
-# 최적화된 시스템 프롬프트
-# 환경변수 로드
-load_dotenv()
-
-router = APIRouter()
-
-# OpenAI 클라이언트 초기화
-client = openai.AsyncOpenAI(api_key=os.getenv("OPENAI_API_KEY"))
-
-# 최적화된 시스템 프롬프트 (개선된 버전)
+# 최적화된 시스템 프롬프트 (각 배열당 1개 객체만)
 OPTIMIZED_SYSTEM_PROMPT = """
 당신은 프로젝트 API 명세서를 작성하는 전문가입니다.
 
@@ -35,7 +26,6 @@ OPTIMIZED_SYSTEM_PROMPT = """
 - JSON 중첩 배열 구조를 잘못 작성하지 마세요
 - 배열 내부에서 잘못된 중첩 구조를 만들지 마세요
 - 반드시 올바른 JSON 형식을 유지하세요
-
 **JSON 구조 규칙:**
 1. apiSpecifications는 단일 배열이어야 합니다
 2. 각 API는 배열의 개별 객체여야 합니다
@@ -43,10 +33,8 @@ OPTIMIZED_SYSTEM_PROMPT = """
 4. response 배열에는 객체 1개만 포함
 5. data 배열에는 객체 1개만 포함
 6. 배열 구분자는 쉼표(,)만 사용하세요
-
 **응답 형식:**
 반드시 아래 정확한 형식을 따르세요:
-
 {
   "apiSpecifications": [
     {
@@ -77,32 +65,28 @@ OPTIMIZED_SYSTEM_PROMPT = """
     }
   ]
 }
-
 **중요: 응답은 반드시 순수한 JSON 형태로만 제공하세요.**
 """
 
 
 @router.post("/json_API/generate", response_model=APIResponse)
-async def generate_project_json(request: APIRequest):   
-  # 간소화된 프롬프트
+async def generate_project_json(request: APIRequest):
+  # 간소화된 프롬프트 (단일 문자열 데이터)
   enhanced_prompt = f"""
   프로젝트 데이터: {request.project_overview}
   요구사항 데이터: {request.requirements}
   프로젝트 요약 데이터: {request.project_summury}
-
   **절대 준수 사항:**
   1. 백슬래시(\\) 문자 사용 금지
   2. 올바른 JSON 배열 구조 유지
-  3. 올바른 JSON 배열 구조 유지 (중첩 배열 금지)
+  3. 각 배열당 객체 1개씩만 포함
   4. apiSpecifications는 단일 배열로 구성
-
   **API 생성 요구사항:**
   - 최소 15개 이상의 API 명세 작성
   - 각 엔티티별 CRUD 작업 포함
   - 인증, 파일처리, 통계, 알림 등 실무 API 포함
   - http_method는 소문자로 작성
-  - status_code는 문자열 타입으로 작성
-
+  - request 배열에는 1개 객체만, response 배열에는 1개 객체만, data 배열에는 1개 객체만
   **JSON 구조 예시:**
   {{
     "apiSpecifications": [
@@ -116,11 +100,6 @@ async def generate_project_json(request: APIRequest):
             "field": "username",
             "type": "string",
             "example": "john_doe"
-          }},
-          {{
-            "field": "email",
-            "type": "string",
-            "example": "john@example.com"
           }}
         ],
         "response": [
@@ -132,11 +111,6 @@ async def generate_project_json(request: APIRequest):
                 "field": "userId",
                 "type": "integer",
                 "example": 1
-              }},
-              {{
-                "field": "username",
-                "type": "string",
-                "example": "john_doe"
               }}
             ]
           }}
@@ -152,11 +126,6 @@ async def generate_project_json(request: APIRequest):
             "field": "email",
             "type": "string",
             "example": "john@example.com"
-          }},
-          {{
-            "field": "password",
-            "type": "string",
-            "example": "password123"
           }}
         ],
         "response": [
@@ -168,11 +137,6 @@ async def generate_project_json(request: APIRequest):
                 "field": "token",
                 "type": "string",
                 "example": "jwt.token.here"
-              }},
-              {{
-                "field": "userId",
-                "type": "integer",
-                "example": 1
               }}
             ]
           }}
@@ -180,10 +144,12 @@ async def generate_project_json(request: APIRequest):
       }}
     ]
   }}
-
+  **중요한 제약사항:**
+  - request 배열: 반드시 1개 객체만 포함 (가장 중요한 필드 1개만)
+  - response 배열: 반드시 1개 객체만 포함
+  - data 배열: 반드시 1개 객체만 포함 (가장 중요한 응답 필드 1개만)
   위 형식을 정확히 지켜서 프로젝트에 적합한 API를 최대한 많이, 상세하게 작성하세요!
   """
-
 
   try:
       response = await client.chat.completions.create(
