@@ -119,11 +119,11 @@ async def generate_project_json(request: ERDRequest):
       json_data = clean_and_parse_response(content, response_type="dict")
 
       if json_data is None :
-          raise ValueError("요구사항 파싱에 실패했습니다.")
+          raise ValueError("생성된 결과물의 파싱에 실패했습니다.")
       
       # 구조 검증
       if not validate_json_structure(json_data):
-          raise ValueError("생성된 요구사항의 구조가 올바르지 않습니다")    
+          raise ValueError("생성된 결과물의 구조가 올바르지 않습니다")    
       
       # 토큰 사용량 정보
       usage = response.usage
