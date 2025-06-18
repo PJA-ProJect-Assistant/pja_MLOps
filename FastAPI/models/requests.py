@@ -55,3 +55,8 @@ class RecommendationRequest(BaseModel):
     max_tokens: Optional[int] = Field(3000, ge=1, le=3000, description="생성할 최대 토큰 개수")
     temperature: float = Field(0.3, ge=0.0, le=2.0, description="생성 창의성 정도")
     model: str = Field("gpt-4o-mini", description="사용할 모델 이름")
+
+# 대시보드 파이프라인
+class DashboardRequest(BaseModel) :
+    user_log : str = Field(..., description="전처리 데이터")
+    

@@ -17,7 +17,6 @@ user_dfs = {}
 for i in df['userId'].unique():
     user_dfs[f'df_user{i}'] = df[df['userId'] == i]
 
-
 ### stat 1 start
 group_list = {}
 
