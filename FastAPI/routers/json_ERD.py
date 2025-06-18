@@ -19,88 +19,54 @@ client = openai.AsyncOpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 # 최적화된 시스템 프롬프트
 OPTIMIZED_SYSTEM_PROMPT = """
-당신은 프로젝트 아이디어를 체계적으로 분석하고 구조화하여 구체적인 개발 계획을 제시하는 전문 AI 어시스턴트입니다.
-
-**만약 프로젝트 아이디어가 아닌 다른 질문을 입력 받으면 아래의 해당 방식이 간단한 방식으로로 답변해주세요.**
-
-**절대 금지 사항 - 백슬래시 사용 금지:**
-- 백슬래시(\\) 문자를 절대로 사용하지 마세요
-- JSON 이스케이프에서도 백슬래시 금지
-- 경로 표현시 슬래시(/)만 사용
-- 문자열 내부의 특수문자도 백슬래시 없이 처리
-- API 경로에서도 /api/users 형태로만 작성
-
-## 주요 역할과 능력:
-
-### 2. 데이터베이스 설계 전문가
-- 프로젝트 요구사항을 바탕으로 최적화된 ERD(Entity Relationship Diagram)를 설계합니다
-- 테이블 간의 관계, 외래키 제약조건, 데이터 타입을 정확히 정의합니다
-- 확장성과 성능을 고려한 데이터베이스 구조를 제안합니다
-
-## 응답 형식:
-모든 응답은 다음과 같은 구조화된 형태로 제공해야 합니다:
-
-1. **관계 데이터**: 데이터베이스 테이블 간의 관계와 외래키 제약조건 정의
-2. **ERD 데이터**: 각 테이블의 속성, 데이터 타입, 키 정보를 포함한 완전한 스키마
-3. **API 명세 데이터**: OpenAPI 3.0 표준을 준수한 완전한 API 문서
-
-항상 체계적이고 전문적인 관점에서 프로젝트를 분석하며, 개발팀이 바로 실행에 옮길 수 있는 구체적인 가이드를 제공하는 것이 목표입니다.
-
-**중요: 응답은 반드시 순수한 JSON 형태로만 제공하세요. 마크다운 코드 블록(```json)이나 기타 텍스트 포맷팅은 사용하지 마세요.**
-
+당신은 ERD 설계 전문가입니다. 프로젝트 요구사항을 분석하여 완전한 데이터베이스 스키마를 생성합니다.
+**핵심 원칙:**
+- 백슬래시(\\) 절대 사용 금지
+- erd_relationships의 모든 테이블과 외래키는 반드시 erd_tables에 존재해야 함
+- 외래키 컬럼은 is_foreign_key: true 설정 필수
+- 순수 JSON만 응답 (마크다운 블록 금지)
+**설계 순서:**
+1. 엔티티 식별 → 2. 속성/기본키 정의 → 3. 관계 분석/외래키 추가 → 4. 관계 정보 작성
+**중요: 모든 관계의 테이블명과 외래키가 테이블 정의와 정확히 일치해야 합니다.**
 """
+
 
 @router.post("/json_ERD/generate", response_model=ERDResponse)
 async def generate_project_json(request: ERDRequest):   
-  # 간소화된 프롬프트
+# 개선된 프롬프트
   enhanced_prompt = f"""
-  프로젝트 데이터: {request.project_overview}
-  요구사항 데이터: {request.requirements}
-  프로젝트 요약 데이터 : {request.project_summury}
-
-    **절대 금지 사항 - 백슬래시 사용 금지:**
-  - 백슬래시(\\) 문자를 절대로 사용하지 마세요
-  - JSON 이스케이프에서도 백슬래시 금지
-  - 경로 표현시 슬래시(/)만 사용
-  - 문자열 내부의 특수문자도 백슬래시 없이 처리
-  - API 경로에서도 /api/users 형태로만 작성
-
-  **절대 준수사항: 아래 JSON 형식을 정확히 따르세요. 구조 변경 금지!**
-
-  {{"erd_tables": [{{
+  프로젝트: {request.project_overview}
+  요구사항: {request.requirements}
+  요약: {request.project_summury}
+  **필수 JSON 형식:**
+  {{
+    "erd_tables": [{{
       "name": "테이블명",
       "erd_columns": [{{
         "name": "컬럼명",
         "data_type": "타입",
-        "is_primary_key": true,
-        "is_foreign_key": false,
-        "is_nullable": true
+        "is_primary_key": true/false,
+        "is_foreign_key": true/false,
+        "is_nullable": true/false
       }}]
     }}],
     "erd_relationships": [{{
       "from_table": "시작테이블",
       "to_table": "끝테이블",
-      "relationship_type": "관계타입",
+      "relationship_type": "one-to-many",
       "foreign_key": "외래키명",
       "constraint_name": "제약조건명"
-    }}]}}
-
-  **강제 준수 규칙:**
-  1. data 배열 안의 각 필드는 개별 객체로 분리
-  2. 각 엔티티별 최소 5개 API (CRUD + 검색 + 추가기능)
-  3. 인증, 파일처리, 통계, 알림 등 실무 포함
-  4. 순수 JSON만 응답 (마크다운 블록 절대 금지)
-  5. 마지막 요소 뒤 쉼표 절대 금지
-
-  **백엔드 규격 엄수:**
-  - request와 response는 반드시 배열 형태
-  - data 안의 각 반환 필드는 {{field, type, example}} 객체로 개별 분리
-  - 여러 필드 반환시 data 배열에 각각 별도 객체로 추가
-  - http_method는 소문자로 작성
-  - status_code는 문자열 타입
-
-  위 형식을 정확히 지켜서 ERD를 최대한 많이, 상세하게 작성하세요!
+    }}]
+  }}
+  **핵심 규칙:**
+  1. 관계의 모든 테이블명이 erd_tables에 존재해야 함
+  2. 관계의 모든 foreign_key가 해당 테이블 컬럼에 존재해야 함
+  3. 외래키는 is_foreign_key: true 설정
+  4. 최소 5개 테이블, 백슬래시 금지, 순수 JSON만
+  위 규칙을 지켜 완전한 ERD를 생성하세요!
   """
+
+
 
   try:
       response = await client.chat.completions.create(
