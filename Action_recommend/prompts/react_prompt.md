@@ -13,41 +13,42 @@
 응답은 아래와 같은 형식이어야 합니다:
 
 ```json
-{{
-  "workspaceId": "작업 중인 workspaceId",
+{
+  "workspaceId": "{{workspace_Id}}",
   "recommendedCategories": [
-    {{
-      "categoryId": "작업 중인 categoryId",
-      "name": "카테고리 이름",
+    {
+      "categoryId": "{{category_Id}}",
+      "name": "{{category_name}}",
       "startDate": "YYYY-MM-DDTHH:MM:SS",
       "endDate": "YYYY-MM-DDTHH:MM:SS",
       "importance": 5,
       "features": [
-        {{
-          "featureId": "작업 중인 featureId",
-          "name": "기능 이름",
+        {
+          "featureId": "{{feature_Id}}",
+          "name": "{{feature_name}}",
           "startDate": "YYYY-MM-DDTHH:MM:SS",
           "endDate": "YYYY-MM-DDTHH:MM:SS",
           "importance": 1,
           "actions": [
-            {{
-              "name": "추천 작업 이름",
+            {
+              "name": "{{recommend_action_name}}",
               "startDate": "YYYY-MM-DDTHH:MM:SS",
               "endDate": "YYYY-MM-DDTHH:MM:SS",
               "importance": 3
-            }},
-            ...
+            },
+            
           ]
-        }}
+        }
       ]
-    }}
+    }
   ]
-}}
+}
 ```
 
 분석할 JSON 데이터:
-{{input}}
+{{ws_data}}
 
+{#
 사용 가능한 도구들:
 {{tools}}
 
@@ -56,3 +57,4 @@
 
 이전 단계의 사고 및 실행 기록:
 {{agent_scratchpad}}
+#}
