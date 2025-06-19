@@ -30,7 +30,6 @@ OPTIMIZED_SYSTEM_PROMPT = """
 **중요: 모든 관계의 테이블명과 외래키가 테이블 정의와 정확히 일치해야 합니다.**
 """
 
-
 @router.post("/json_ERD/generate", response_model=ERDResponse)
 async def generate_project_json(request: ERDRequest):   
 # 개선된 프롬프트
@@ -65,9 +64,7 @@ async def generate_project_json(request: ERDRequest):
   4. 최소 5개 테이블, 백슬래시 금지, 순수 JSON만
   위 규칙을 지켜 완전한 ERD를 생성하세요!
   """
-
-
-
+  
   try:
       response = await client.chat.completions.create(
           model=request.model,

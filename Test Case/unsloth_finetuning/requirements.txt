@@ -1,5 +1,0 @@
-pandas 
-openai
-dotenv
-ipykernel
-requests
