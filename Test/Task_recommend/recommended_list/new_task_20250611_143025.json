@@ -1,0 +1,45 @@
+{
+    "workspaceId": 3,
+    "recommendedCategories": [
+        {
+            "name": "커뮤니티 기능",
+            "startDate": "2025-01-01T00:00:00",
+            "endDate": "2025-01-31T23:59:59",
+            "importance": 5,
+            "features": [
+                {
+                    "name": "실시간 채팅 기능",
+                    "startDate": "2025-01-11T00:00:00",
+                    "endDate": "2025-01-20T23:59:59",
+                    "importance": 5,
+                    "actions": [
+                        {
+                            "name": "WebSocket 서버 설정",
+                            "startDate": "2025-01-11T00:00:00",
+                            "endDate": "2025-01-15T23:59:59",
+                            "importance": 5
+                        },
+                        {
+                            "name": "메시지 전송 API 구현",
+                            "startDate": "2025-01-16T00:00:00",
+                            "endDate": "2025-01-18T23:59:59",
+                            "importance": 4
+                        },
+                        {
+                            "name": "메시지 수신 기능 구현",
+                            "startDate": "2025-01-19T00:00:00",
+                            "endDate": "2025-01-20T23:59:59",
+                            "importance": 4
+                        },
+                        {
+                            "name": "채팅방 생성 API 구현",
+                            "startDate": "2025-01-21T00:00:00",
+                            "endDate": "2025-01-25T23:59:59",
+                            "importance": 4
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

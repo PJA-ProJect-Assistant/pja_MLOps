@@ -1,6 +1,0 @@
-fastapi
-uvicorn
-transformers
-torch
-accelerate
-bitsandbytes  # 8bit 모델용
