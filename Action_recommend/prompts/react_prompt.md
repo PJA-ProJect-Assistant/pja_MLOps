@@ -21,20 +21,20 @@
       "name": "카테고리 이름",
       "startDate": "YYYY-MM-DDTHH:MM:SS",
       "endDate": "YYYY-MM-DDTHH:MM:SS",
-      "importance": 정수,
+      "importance": 5,
       "features": [
         {{
           "featureId": "작업 중인 featureId",
           "name": "기능 이름",
           "startDate": "YYYY-MM-DDTHH:MM:SS",
           "endDate": "YYYY-MM-DDTHH:MM:SS",
-          "importance": 정수,
+          "importance": 1,
           "actions": [
             {{
               "name": "추천 작업 이름",
               "startDate": "YYYY-MM-DDTHH:MM:SS",
               "endDate": "YYYY-MM-DDTHH:MM:SS",
-              "importance": 정수
+              "importance": 3
             }},
             ...
           ]
