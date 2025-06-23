@@ -7,3 +7,5 @@ python-dotenv
 pydantic
 pandas
 jinja2>=3.1.2
+scikit-learn
+konlpy

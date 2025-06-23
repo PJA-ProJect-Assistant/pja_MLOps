@@ -45,3 +45,6 @@ class DashboardResponse(BaseModel) :
 class TaskGenerateResponse(BaseModel):
     generated_tasks : Dict[str, Any] = Field(..., description="생성된 category, feature, actions 초안 json")
 
+# 유사도 검색
+class SearchshimilerResponse(BaseModel) :
+    similer_ID : Dict[str, Any] = Field(..., description="project_index")
