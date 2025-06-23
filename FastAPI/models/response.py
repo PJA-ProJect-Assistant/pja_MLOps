@@ -44,4 +44,3 @@ class DashboardResponse(BaseModel) :
 
 class TaskGenerateResponse(BaseModel):
     generated_tasks : Dict[str, Any] = Field(..., description="생성된 category, feature, actions 초안 json")
-
