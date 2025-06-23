@@ -50,4 +50,17 @@ class RecommendationRequest(BaseModel):
 # 대시보드 파이프라인
 class DashboardRequest(BaseModel) :
     user_log : str = Field(..., description="전처리 데이터")
-    
+
+# Category&Feature&Action 생성
+class TaskGenerateRequest(BaseModel):
+    project_summary : str = Field(..., description="프로젝트 개요 정보")
+    # project_info_id: int
+    # category: str
+    # core_features: List[str]
+    # created_at: datetime
+    # problem_solving: ProblemSolving
+    # target_users: List[str]
+    # technology_stack: List[str]
+    # title: str
+    # updated_at: datetime
+    # workspace_id: int
