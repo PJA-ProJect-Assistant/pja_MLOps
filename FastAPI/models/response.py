@@ -41,3 +41,7 @@ class RecommendationResponse(BaseModel):
 class DashboardResponse(BaseModel) :
     task_imbalance : Dict[str, Any] = Field(..., description="작업 불균형 json_data")
     processing_time : Dict[str, Any] = Field(..., description="평균작업 처리 시간 json_data")
+
+# 유사도 검색
+class SearchshimilerResponse(BaseModel) :
+    similer_ID : Dict[str, Any] = Field(..., description="project_index")
