@@ -1,6 +1,6 @@
 # models/requests.py (기존 코드에 추가)
-from pydantic import BaseModel, Field , validator
-from typing import List, Optional, Any , Dict
+from pydantic import BaseModel, Field
+from typing import List, Optional, Any
 
 
 class Message(BaseModel):
@@ -50,7 +50,4 @@ class RecommendationRequest(BaseModel):
 # 대시보드 파이프라인
 class DashboardRequest(BaseModel) :
     user_log : str = Field(..., description="전처리 데이터")
-
-# Category&Feature&Action 생성
-class TaskGenerateRequest(BaseModel):
-    project_summary: str = Field(..., description="프로젝트 개요 정보 (JSON 또는 Python 딕셔너리 형식)")
+    
