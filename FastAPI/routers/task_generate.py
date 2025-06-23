@@ -204,33 +204,3 @@ def task_generate(request: TaskGenerateRequest):
             status_code=500, 
             detail=f"서버 내부 오류가 발생했습니다: {str(e)}"
         )
-
-# 디버깅용 테스트 엔드포인트
-@router.post("/task_generate/test")
-def test_parsing(request: TaskGenerateRequest):
-    """
-    파싱 기능만 테스트하는 엔드포인트
-    """
-    try:
-        # JSON 파싱 시도
-        json_data = json.loads(request.project_summary)
-        return {
-            "status": "success",
-            "parsing_method": "JSON",
-            "data": json_data
-        }
-    except json.JSONDecodeError:
-        try:
-            # Python 딕셔너리 파싱 시도
-            json_data = ast.literal_eval(request.project_summary)
-            return {
-                "status": "success", 
-                "parsing_method": "Python Dictionary",
-                "data": json_data
-            }
-        except Exception as e:
-            return {
-                "status": "error",
-                "message": str(e),
-                "input_preview": request.project_summary[:200] + "..."
-            }
