@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # models/requests.py (기존 코드에 추가)
 from pydantic import BaseModel, Field , validator
 from typing import List, Optional, Any, Union, Dict
