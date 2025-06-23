@@ -90,14 +90,24 @@ def task_generate(request: TaskGenerateRequest):
         try:
             # JSON 형식 파싱 시도
             json_data = json.loads(request.project_summary)
+<<<<<<< HEAD
             print("JSON 형식으로 파싱 성공")
+=======
+            print("✓ JSON 형식으로 파싱 성공")
+>>>>>>> 9f7c56e719a4078920855dd14e81a127af198535
         except json.JSONDecodeError:
             try:
                 # Python 딕셔너리 형식 파싱 시도
                 json_data = ast.literal_eval(request.project_summary)
+<<<<<<< HEAD
                 print("Python 딕셔너리 형식으로 파싱 성공")
             except (ValueError, SyntaxError) as e:
                 print(f"파싱 실패: {str(e)}")
+=======
+                print("✓ Python 딕셔너리 형식으로 파싱 성공")
+            except (ValueError, SyntaxError) as e:
+                print(f"✗ 파싱 실패: {str(e)}")
+>>>>>>> 9f7c56e719a4078920855dd14e81a127af198535
                 raise HTTPException(
                     status_code=422, 
                     detail=f"유효하지 않은 JSON 또는 딕셔너리 형식입니다: {str(e)}"
@@ -106,7 +116,11 @@ def task_generate(request: TaskGenerateRequest):
         # 2. 데이터 구조 정규화
         if isinstance(json_data, dict): 
             json_data = [json_data]
+<<<<<<< HEAD
             print("단일 객체를 리스트로 변환")
+=======
+            print("✓ 단일 객체를 리스트로 변환")
+>>>>>>> 9f7c56e719a4078920855dd14e81a127af198535
 
         # 3. 프로젝트 정보 추출
         def extract_project_summary(input_json):
@@ -134,19 +148,32 @@ def task_generate(request: TaskGenerateRequest):
         project_summary = extract_project_summary(json_data)
         
         if not project_summary:
+<<<<<<< HEAD
             print("프로젝트 정보 추출 실패")
             raise HTTPException(status_code=404, detail="프로젝트 정보를 찾을 수 없습니다.")
         
         print("프로젝트 정보 추출 성공:")
+=======
+            print("✗ 프로젝트 정보 추출 실패")
+            raise HTTPException(status_code=404, detail="프로젝트 정보를 찾을 수 없습니다.")
+        
+        print("✓ 프로젝트 정보 추출 성공:")
+>>>>>>> 9f7c56e719a4078920855dd14e81a127af198535
         print(json.dumps(project_summary, ensure_ascii=False, indent=2))
 
         # 4. 프롬프트 템플릿 렌더링
         try:
             template = Template(RCMD_PROMPT)
             rendered = template.render(input=json.dumps(project_summary, ensure_ascii=False, indent=2))
+<<<<<<< HEAD
             print("템플릿 렌더링 성공")
         except Exception as e:
             print(f"템플릿 렌더링 실패: {str(e)}")
+=======
+            print("✓ 템플릿 렌더링 성공")
+        except Exception as e:
+            print(f"✗ 템플릿 렌더링 실패: {str(e)}")
+>>>>>>> 9f7c56e719a4078920855dd14e81a127af198535
             raise HTTPException(status_code=500, detail=f"템플릿 렌더링 오류: {str(e)}")
 
         # 5. OpenAI API 호출 (최신 방식)
@@ -169,19 +196,33 @@ def task_generate(request: TaskGenerateRequest):
             )
             
             generated = response.choices[0].message.content.strip()
+<<<<<<< HEAD
             print("OpenAI API 응답 생성 성공")
             print(f"응답 길이: {len(generated)} 문자")
             
         except Exception as e:
             print(f"OpenAI API 호출 실패: {str(e)}")
+=======
+            print("✓ OpenAI API 응답 생성 성공")
+            print(f"응답 길이: {len(generated)} 문자")
+            
+        except Exception as e:
+            print(f"✗ OpenAI API 호출 실패: {str(e)}")
+>>>>>>> 9f7c56e719a4078920855dd14e81a127af198535
             raise HTTPException(status_code=500, detail=f"OpenAI API 호출 오류: {str(e)}")
 
         # 6. 응답 JSON 파싱
         try:
             generated_json = json.loads(generated)
+<<<<<<< HEAD
             print("LLM 응답 JSON 파싱 성공")
         except json.JSONDecodeError as e:
             print(f"LLM 응답 JSON 파싱 실패")
+=======
+            print("✓ LLM 응답 JSON 파싱 성공")
+        except json.JSONDecodeError as e:
+            print(f"✗ LLM 응답 JSON 파싱 실패")
+>>>>>>> 9f7c56e719a4078920855dd14e81a127af198535
             print(f"원본 응답: {generated[:500]}...")
             raise HTTPException(
                 status_code=500, 
@@ -197,10 +238,47 @@ def task_generate(request: TaskGenerateRequest):
         raise
     except Exception as e:
         # 예상치 못한 오류
+<<<<<<< HEAD
         print(f"예상치 못한 오류 발생: {str(e)}")
+=======
+        print(f"✗ 예상치 못한 오류 발생: {str(e)}")
+>>>>>>> 9f7c56e719a4078920855dd14e81a127af198535
         import traceback
         traceback.print_exc()
         raise HTTPException(
             status_code=500, 
             detail=f"서버 내부 오류가 발생했습니다: {str(e)}"
         )
+<<<<<<< HEAD
+=======
+
+# 디버깅용 테스트 엔드포인트
+@router.post("/task_generate/test")
+def test_parsing(request: TaskGenerateRequest):
+    """
+    파싱 기능만 테스트하는 엔드포인트
+    """
+    try:
+        # JSON 파싱 시도
+        json_data = json.loads(request.project_summary)
+        return {
+            "status": "success",
+            "parsing_method": "JSON",
+            "data": json_data
+        }
+    except json.JSONDecodeError:
+        try:
+            # Python 딕셔너리 파싱 시도
+            json_data = ast.literal_eval(request.project_summary)
+            return {
+                "status": "success", 
+                "parsing_method": "Python Dictionary",
+                "data": json_data
+            }
+        except Exception as e:
+            return {
+                "status": "error",
+                "message": str(e),
+                "input_preview": request.project_summary[:200] + "..."
+            }
+>>>>>>> 9f7c56e719a4078920855dd14e81a127af198535
