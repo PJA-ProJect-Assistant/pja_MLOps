@@ -5,4 +5,6 @@ QLoRA/results/
 wandb/
 .venv
 agent-env/
-**/__pycache__/
+**/__pycache__
+/.github/workflows/deploy.yml
+FastAPI/__pycache__

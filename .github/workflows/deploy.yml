@@ -3,10 +3,10 @@ name: PJA Project CI/CD Pipeline
 
 on:
   push:
-    branches: [ main, develop, seong_work ]  # seong_work 추가
+    branches: [ main, develop, seong_work ]
     tags: [ 'v*' ]
   pull_request:
-    branches: [ main ]
+    branches: [ main, seong_work ]
 
 env:
   REGISTRY: docker.io
@@ -27,7 +27,6 @@ jobs:
     
     - name: Check if requirements.txt exists
       run: |
-        # FastAPI 디렉토리에서 requirements.txt 확인
         if [ ! -f FastAPI/requirements.txt ] && [ ! -f requirements.txt ]; then
           echo "⚠️ requirements.txt not found, creating basic one in FastAPI directory..."
           mkdir -p FastAPI
@@ -42,7 +41,6 @@ jobs:
         EOF
         fi
         
-        # requirements.txt 위치 확인 및 출력
         if [ -f FastAPI/requirements.txt ]; then
           echo "📋 FastAPI/requirements.txt content:"
           cat FastAPI/requirements.txt
@@ -83,30 +81,11 @@ jobs:
         else
           echo "⚠️ Skipping syntax check - main.py not found"
         fi
-    
-    - name: Test FastAPI application (optional)
-      run: |
-        if [ -f FastAPI/main.py ]; then
-          cd FastAPI
-          echo "🧪 Testing FastAPI application startup..."
-          timeout 10s python -c "
-          import sys
-          sys.path.append('.')
-          try:
-              from main import app
-              print('✅ FastAPI app imported successfully')
-          except Exception as e:
-              print(f'⚠️ FastAPI app import failed: {e}')
-              sys.exit(0)  # 실패해도 테스트는 통과시킴
-          " || echo "⚠️ FastAPI test timed out or failed (this is okay for now)"
-        fi
 
-  # 커스텀 버전 관리 (main 브랜치이고 push일 때만)
   version:
     needs: test
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-    # 권한 추가
     permissions:
       contents: write
     outputs:
@@ -118,50 +97,42 @@ jobs:
     - uses: actions/checkout@v4
       with:
         fetch-depth: 0
-        # GITHUB_TOKEN 사용
         token: ${{ secrets.GITHUB_TOKEN }}
     
     - name: Get current version and determine next version
       id: version
       run: |
-        # 현재 최신 태그 가져오기 (없으면 v0.2.1로 시작)
-        CURRENT_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.2.1")
+        CURRENT_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.3.16")
         echo "Current tag: $CURRENT_TAG"
         
-        # v 제거하고 버전만 추출
         CURRENT_VERSION=${CURRENT_TAG#v}
         echo "Current version: $CURRENT_VERSION"
         
-        # 커밋 메시지 분석
         COMMIT_MSG=$(git log -1 --pretty=%B)
         echo "Commit message: $COMMIT_MSG"
         
-        # 버전 증가 로직
         IFS='.' read -r -a version_parts <<< "$CURRENT_VERSION"
         major=${version_parts[0]:-0}
-        minor=${version_parts[1]:-2}
-        patch=${version_parts[2]:-1}
+        minor=${version_parts[1]:-3}
+        patch=${version_parts[2]:-16}
         
         SHOULD_DEPLOY="true"
         
-        if [[ $COMMIT_MSG == *"BREAKING CHANGE"* ]] || [[ $COMMIT_MSG == *"major:"* ]] || [[ $COMMIT_MSG == *"배포 1.0"* ]]; then
-          # 메이저 버전 증가
-          if [ $major -eq 0 ]; then
-            NEW_VERSION="1.0.0"
-          else
-            NEW_VERSION="$((major + 1)).0.0"
-          fi
+        # 현재 버전이 1.0.0 미만이면 1.0.0으로 시작
+        if [[ "$CURRENT_VERSION" < "1.0.0" ]]; then
+          NEW_VERSION="1.0.0"
+          VERSION_TYPE="major"
+          echo "🚀 Upgrading to version 1.0.0 from $CURRENT_VERSION"
+        elif [[ $COMMIT_MSG == *"BREAKING CHANGE"* ]] || [[ $COMMIT_MSG == *"major:"* ]] || [[ $COMMIT_MSG == *"배포 1.0"* ]]; then
+          NEW_VERSION="$((major + 1)).0.0"
           VERSION_TYPE="major"
         elif [[ $COMMIT_MSG == *"feat:"* ]] || [[ $COMMIT_MSG == *"기능"* ]] || [[ $COMMIT_MSG == *"feature"* ]]; then
-          # 마이너 버전 증가
           NEW_VERSION="$major.$((minor + 1)).0"
           VERSION_TYPE="minor"
         elif [[ $COMMIT_MSG == *"fix:"* ]] || [[ $COMMIT_MSG == *"오류"* ]] || [[ $COMMIT_MSG == *"bugfix"* ]]; then
-          # 패치 버전 증가
           NEW_VERSION="$major.$minor.$((patch + 1))"
           VERSION_TYPE="patch"
         else
-          # 기본: 패치 버전 증가
           NEW_VERSION="$major.$minor.$((patch + 1))"
           VERSION_TYPE="patch"
         fi
@@ -169,16 +140,13 @@ jobs:
         echo "New version: $NEW_VERSION"
         echo "Version type: $VERSION_TYPE"
         
-        # 태그가 이미 존재하는지 확인
         if git rev-parse "v$NEW_VERSION" >/dev/null 2>&1; then
           echo "⚠️ Tag v$NEW_VERSION already exists, skipping deployment"
           SHOULD_DEPLOY="false"
         else
-          # Git 설정
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           
-          # 새 태그 생성 및 푸시
           git tag -a "v$NEW_VERSION" -m "Release v$NEW_VERSION - $VERSION_TYPE update"
           git push origin "v$NEW_VERSION"
           echo "✅ Created and pushed tag v$NEW_VERSION"
@@ -213,18 +181,15 @@ jobs:
       with:
         images: ${{ env.REGISTRY }}/${{ env.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}
         tags: |
-          # 새 버전 태그
           type=raw,value=${{ needs.version.outputs.new_version }},enable=${{ needs.version.outputs.new_version != '' }}
-          # 브랜치 기반
           type=ref,event=branch
           type=ref,event=pr
-          # latest (main 브랜치일 때만)
           type=raw,value=latest,enable={{is_default_branch}}
     
     - name: Build and push Docker image
       uses: docker/build-push-action@v5
       with:
-        context: .
+        context: ./FastAPI
         platforms: linux/amd64
         push: ${{ github.event_name != 'pull_request' }}
         tags: ${{ steps.meta.outputs.tags }}
@@ -237,29 +202,77 @@ jobs:
   deploy:
     needs: [build-and-push, version]
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main' && needs.version.outputs.should_deploy == 'true'
+    if: (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/seong_work') && needs.version.outputs.should_deploy == 'true'
     
     steps:
     - name: Deploy to AWS EC2
-      uses: appleboy/ssh-action@v1.0.0
+      uses: appleboy/ssh-action@v1.0.3
       with:
-        host: ${{ secrets.EC2_HOST }}
-        username: ${{ secrets.EC2_USERNAME }}
-        key: ${{ secrets.EC2_PRIVATE_KEY }}
+        host: ${{ secrets.AWS_HOST }}
+        username: ${{ secrets.AWS_USERNAME }}
+        key: ${{ secrets.AWS_PRIVATE_KEY }}
+        port: 22
+        timeout: 180s
+        command_timeout: 30m
+        debug: true
         script: |
           echo "🚀 Deploying PJA_Project version: ${{ needs.version.outputs.new_version }}"
+          
+          # Docker 설치 확인 및 설치
+          if ! command -v docker &> /dev/null; then
+            echo "📦 Installing Docker..."
+            if command -v dnf &> /dev/null; then
+              sudo dnf update -y
+              sudo dnf install -y docker
+            elif command -v yum &> /dev/null; then
+              sudo yum update -y
+              sudo yum install -y docker
+            fi
+          fi
+          
+          # Docker 서비스 시작
+          echo "🔍 Starting Docker service..."
+          sudo systemctl start docker
+          sudo systemctl enable docker
+          
+          # Docker 권한 설정 (중요!)
+          echo "🔧 Setting Docker permissions..."
+          sudo usermod -aG docker $USER
+          sudo chmod 666 /var/run/docker.sock
+          sudo systemctl restart docker
+          sleep 10
           
           # 환경변수 설정
           export DOCKER_USERNAME="listgreen"
           export IMAGE_TAG="${{ needs.version.outputs.new_version }}"
           export OPENAI_API_KEY="${{ secrets.OPENAI_API_KEY }}"
           
-          # 기존 컨테이너 정리
-          docker stop pja-fastapi || true
-          docker rm pja-fastapi || true
+          # Docker 로그인
+          echo "🔐 Logging into Docker Hub..."
+          echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
           
-          # 새 이미지 풀 및 실행
-          docker pull $DOCKER_USERNAME/pja-project:$IMAGE_TAG
+          # 기존 컨테이너 정리
+          echo "🧹 Cleaning up existing containers..."
+          docker stop pja-fastapi 2>/dev/null || echo "No container to stop"
+          docker rm pja-fastapi 2>/dev/null || echo "No container to remove"
+          
+          # 기존 이미지 정리
+          echo "🗑️ Cleaning up unused images..."
+          docker image prune -f || echo "Image cleanup failed"
+          
+          # 새 이미지 풀
+          echo "📥 Pulling new image: $DOCKER_USERNAME/pja-project:$IMAGE_TAG"
+          if ! docker pull $DOCKER_USERNAME/pja-project:$IMAGE_TAG; then
+            echo "❌ Failed to pull versioned image, trying latest tag..."
+            if ! docker pull $DOCKER_USERNAME/pja-project:latest; then
+              echo "❌ Failed to pull latest image as well"
+              exit 1
+            fi
+            IMAGE_TAG="latest"
+          fi
+          
+          # 새 컨테이너 실행
+          echo "🚀 Starting new container..."
           docker run -d \
             --name pja-fastapi \
             -p 8000:8000 \
@@ -267,16 +280,32 @@ jobs:
             --restart unless-stopped \
             $DOCKER_USERNAME/pja-project:$IMAGE_TAG
           
-          # 배포 확인
-          sleep 15
-          echo "🏥 Health check..."
-          if curl -f http://localhost:8000/docs; then
-            echo "✅ Health check passed"
-          else
-            echo "❌ Health check failed"
-            echo "📋 Container logs:"
-            docker logs pja-fastapi --tail 20
+          # 컨테이너 시작 대기
+          echo "⏳ Waiting for container to start..."
+          sleep 30
+          
+          # 컨테이너 상태 확인
+          if ! docker ps | grep pja-fastapi > /dev/null; then
+            echo "❌ Container failed to start"
+            docker logs pja-fastapi --tail 50
+            exit 1
           fi
           
-          echo "📦 Current running containers:"
-          docker ps --format "table {{.Names}}\t{{.Image}}\t{{.Status}}\t{{.Ports}}"
+          # Health check
+          echo "🏥 Performing health check..."
+          for i in {1..15}; do
+            if curl -f -s --max-time 15 http://localhost:8000/docs > /dev/null; then
+              echo "✅ Health check passed (attempt $i/15)"
+              break
+            elif [ $i -eq 15 ]; then
+              echo "❌ Health check failed after 15 attempts"
+              docker logs pja-fastapi --tail 30
+              exit 1
+            else
+              echo "⏳ Health check attempt $i/15 failed, retrying in 20s..."
+              sleep 20
+            fi
+          done
+          
+          echo "🎉 Deployment completed successfully!"
+          echo "🌐 Application URL: http://$(curl -s http://checkip.amazonaws.com):8000/docs"
