@@ -43,12 +43,8 @@ class DashboardResponse(BaseModel) :
     processing_time : Dict[str, Any] = Field(..., description="평균작업 처리 시간 json_data")
 
 class TaskGenerateResponse(BaseModel):
-<<<<<<< HEAD
-    generated_tasks : Dict[str, Any] = Field(..., description="생성된 category, feature, actions 초안 json")
-=======
     generated_tasks : Dict[str, Any] = Field(..., description="생성된 category, feature, actions 초안 json")
 
 # 유사도 검색
 class SearchshimilerResponse(BaseModel) :
     similer_ID : Dict[str, Any] = Field(..., description="project_index")
->>>>>>> 8f30b9539ae4266b4232a188a0ddb2922a35aaac
