@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 from models.requests import RecommendationRequest
 from models.response import RecommendationResponse
 import json
+from datetime import datetime
 
 # 환경변수 로드
 load_dotenv()
@@ -14,6 +15,8 @@ router = APIRouter()
 
 # OpenAI 클라이언트 초기화
 client = openai.AsyncOpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+
+NOW = datetime.now().isoformat()
 
 # 최적화된 시스템 프롬프트
 OPTIMIZED_SYSTEM_PROMPT = """
@@ -36,6 +39,7 @@ OPTIMIZED_SYSTEM_PROMPT = """
 - 각 액션에는 다음 항목을 포함해야 함: name, startDate, endDate, importance
 - 출력은 JSON 구조만 포함되어야 하며, 설명, 안내 문구, 예외적 출력은 절대 포함하지 말 것
 - startDate와 endDate는 반드시 현실적인 시간 흐름을 반영해야 하며, 아래 조건을 엄격히 만족해야 합니다:
+  - startDate는 반드시 현재 시각({NOW}) 이후여야 합니다.
   - startDate는 현재 시각보다 과거일 수 없습니다. (현재 시각 이후여야 합니다.)
   - endDate는 반드시 startDate 이후의 시점이어야 합니다.
 

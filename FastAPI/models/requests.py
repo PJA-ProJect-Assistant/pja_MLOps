@@ -1,6 +1,7 @@
 # models/requests.py (기존 코드에 추가)
-from pydantic import BaseModel, Field
-from typing import List, Optional, Any, Dict
+from pydantic import BaseModel, Field , validator
+from typing import List, Optional, Any, Union, Dict
+
 
 class Message(BaseModel):
     role: str = Field(..., description="메시지 작성자의 역할 (system, user, assistant)")
@@ -52,4 +53,9 @@ class DashboardRequest(BaseModel) :
 
 # Category&Feature&Action 생성
 class TaskGenerateRequest(BaseModel):
-    project_summary : str = Field(..., description="프로젝트 개요 정보")
+    project_summary: str = Field(..., description="프로젝트 개요 정보 (JSON 또는 Python 딕셔너리 형식)")
+
+# 유사도 검색
+class SearchshimilerRequest(BaseModel) :
+    project_info : str = Field(..., description="유저의 project_info")
+    top_k : int = 10
