@@ -35,6 +35,9 @@ OPTIMIZED_SYSTEM_PROMPT = """
 - 모든 추천 액션은 해당 feature의 actions 배열에 추가 가능한 형태여야 하며, feature의 name도 함께 명시할 것
 - 각 액션에는 다음 항목을 포함해야 함: name, startDate, endDate, importance
 - 출력은 JSON 구조만 포함되어야 하며, 설명, 안내 문구, 예외적 출력은 절대 포함하지 말 것
+- startDate와 endDate는 반드시 현실적인 시간 흐름을 반영해야 하며, 아래 조건을 엄격히 만족해야 합니다:
+  - startDate는 현재 시각보다 과거일 수 없습니다. (현재 시각 이후여야 합니다.)
+  - endDate는 반드시 startDate 이후의 시점이어야 합니다.
 
 ## 요구사항
 
