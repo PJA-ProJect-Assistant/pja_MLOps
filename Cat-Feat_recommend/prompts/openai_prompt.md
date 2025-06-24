@@ -44,7 +44,7 @@
   "workspace_id": "워크스페이스 ID",
   "recommendedCategories": [
     {
-      "name": "cagegory 이름",
+      "name": "category 이름",
       "features": [
         {
           "name": "feature 이름",
