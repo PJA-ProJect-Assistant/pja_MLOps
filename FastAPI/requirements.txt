@@ -6,4 +6,10 @@ openai
 python-dotenv
 pydantic
 pandas
+<<<<<<< HEAD
 jinja2
+=======
+jinja2>=3.1.2
+scikit-learn<1.8.0
+konlpy
+>>>>>>> 8f30b9539ae4266b4232a188a0ddb2922a35aaac

@@ -1,4 +1,3 @@
-# .github/workflows/deploy.yml
 name: PJA Project CI/CD Pipeline
 
 on:
@@ -38,6 +37,12 @@ jobs:
         python-multipart>=0.0.6
         requests>=2.31.0
         python-dotenv>=1.0.0
+        scikit-learn<1.8.0
+        konlpy
+        jinja2>=3.1.2
+        langchain>=0.1.0
+        langchain-community>=0.0.13
+        pandas>=2.0.0
         EOF
         fi
         
@@ -212,8 +217,8 @@ jobs:
         username: ${{ secrets.AWS_USERNAME }}
         key: ${{ secrets.AWS_PRIVATE_KEY }}
         port: 22
-        timeout: 180s
-        command_timeout: 30m
+        timeout: 300s
+        command_timeout: 40m
         debug: true
         script: |
           echo "🚀 Deploying PJA_Project version: ${{ needs.version.outputs.new_version }}"
@@ -235,7 +240,7 @@ jobs:
           sudo systemctl start docker
           sudo systemctl enable docker
           
-          # Docker 권한 설정 (중요!)
+          # Docker 권한 설정
           echo "🔧 Setting Docker permissions..."
           sudo usermod -aG docker $USER
           sudo chmod 666 /var/run/docker.sock
@@ -277,12 +282,20 @@ jobs:
             --name pja-fastapi \
             -p 8000:8000 \
             -e OPENAI_API_KEY="$OPENAI_API_KEY" \
+            -e PYTHONPATH=/app \
+            -e PYTHONUNBUFFERED=1 \
             --restart unless-stopped \
             $DOCKER_USERNAME/pja-project:$IMAGE_TAG
           
-          # 컨테이너 시작 대기
+          # 컨테이너 시작 대기 및 로그 확인
           echo "⏳ Waiting for container to start..."
           sleep 30
+          
+          echo "📋 Container status:"
+          docker ps -a | grep pja-fastapi
+          
+          echo "📋 Container logs:"
+          docker logs pja-fastapi --tail 30
           
           # 컨테이너 상태 확인
           if ! docker ps | grep pja-fastapi > /dev/null; then
@@ -291,18 +304,26 @@ jobs:
             exit 1
           fi
           
-          # Health check
+          # Health check - 여러 엔드포인트 시도
           echo "🏥 Performing health check..."
-          for i in {1..15}; do
-            if curl -f -s --max-time 15 http://localhost:8000/docs > /dev/null; then
-              echo "✅ Health check passed (attempt $i/15)"
+          for i in {1..12}; do
+            if curl -f -s --max-time 10 http://localhost:8000/health > /dev/null; then
+              echo "✅ Health check passed on /health (attempt $i/12)"
               break
-            elif [ $i -eq 15 ]; then
-              echo "❌ Health check failed after 15 attempts"
-              docker logs pja-fastapi --tail 30
+            elif curl -f -s --max-time 10 http://localhost:8000/ > /dev/null; then
+              echo "✅ Health check passed on root (attempt $i/12)"
+              break
+            elif curl -f -s --max-time 10 http://localhost:8000/docs > /dev/null; then
+              echo "✅ Health check passed on /docs (attempt $i/12)"
+              break
+            elif [ $i -eq 12 ]; then
+              echo "❌ Health check failed after 12 attempts"
+              echo "📋 Final container logs:"
+              docker logs pja-fastapi --tail 50
               exit 1
             else
-              echo "⏳ Health check attempt $i/15 failed, retrying in 20s..."
+              echo "⏳ Health check attempt $i/12 failed, retrying in 20s..."
+              docker logs pja-fastapi --tail 5
               sleep 20
             fi
           done
