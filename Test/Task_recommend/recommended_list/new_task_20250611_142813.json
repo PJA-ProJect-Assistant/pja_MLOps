@@ -1,0 +1,45 @@
+{
+    "workspaceId": "99",
+    "recommendedCategories": [
+        {
+            "name": "데이터 수집 및 분석",
+            "startDate": "2025-01-01T00:00:00",
+            "endDate": "2025-01-31T23:59:59",
+            "importance": 5,
+            "features": [
+                {
+                    "name": "데이터 분석 알고리즘 개발",
+                    "startDate": "2025-01-11T00:00:00",
+                    "endDate": "2025-01-20T23:59:59",
+                    "importance": 5,
+                    "actions": [
+                        {
+                            "name": "AI 모델 학습",
+                            "startDate": "2025-01-11T00:00:00",
+                            "endDate": "2025-01-15T23:59:59",
+                            "importance": 5
+                        },
+                        {
+                            "name": "데이터 전처리 스크립트 작성",
+                            "startDate": "2025-01-16T00:00:00",
+                            "endDate": "2025-01-18T23:59:59",
+                            "importance": 4
+                        },
+                        {
+                            "name": "결과 시각화 도구 개발",
+                            "startDate": "2025-01-19T00:00:00",
+                            "endDate": "2025-01-20T23:59:59",
+                            "importance": 4
+                        },
+                        {
+                            "name": "모델 성능 평가 및 튜닝",
+                            "startDate": "2025-01-21T00:00:00",
+                            "endDate": "2025-01-25T23:59:59",
+                            "importance": 5
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

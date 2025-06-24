@@ -6,6 +6,8 @@ from dotenv import load_dotenv
 from models.requests import RequirementsRequest
 from models.response import RequirementsResponse
 import json
+from utils.json_parsing import clean_and_parse_response, validate_json_structure
+
 
 # 환경변수 로드
 load_dotenv()
@@ -19,6 +21,12 @@ client = openai.AsyncOpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 OPTIMIZED_SYSTEM_PROMPT = """
 당신은 소프트웨어 프로젝트의 요구사항 분석 전문가입니다.
 주어진 프로젝트 개요를 바탕으로 현실적이고 구체적인 기능 요구사항과 성능 요구사항을 생성하는 것이 목표입니다.
+
+**절대 금지 사항:**
+- 백슬래시(\\) 문자를 어떤 경우에도 사용하지 마세요
+- 이스케이프 문자나 특수 문자 처리에 백슬래시 사용 금지
+- JSON 내부 문자열에서도 백슬래시 절대 사용 금지
+- 경로, URL, 파일명에서도 슬래시(/)만 사용하고 백슬래시 금지
 
 생성 규칙:
 1. 기능 요구사항(FUNCTIONAL): 사용자 관점에서 시스템이 제공해야 하는 구체적인 기능
@@ -41,6 +49,11 @@ async def generate_requirements(request: RequirementsRequest):
 
     위 기존 요구사항들을 분석하여 추가로 {request.additional_count}개의 새로운 요구사항을 생성해주세요.
 
+    **백슬래시 절대 금지:**
+    - 모든 응답에서 백슬래시(\\) 문자 사용 금지
+    - JSON 문자열에서도 백슬래시 이스케이프 금지
+    - 경로나 URL에서는 슬래시(/)만 사용
+
     **생성 조건:**
     - 기존 요구사항들과 일관성을 유지하되, 중복되지 않는 새로운 관점의 요구사항
     - 프로젝트의 도메인과 맥락에 적합한 현실적이고 구현 가능한 요구사항
@@ -51,6 +64,7 @@ async def generate_requirements(request: RequirementsRequest):
 
     **응답 형식 (JSON만):**
     반드시 아래 JSON 형식으로만 응답하고, 다른 설명이나 주석은 절대 포함하지 마세요.
+    백슬래시(\\) 문자는 절대 사용하지 마세요.
 
     [
     {{"requirementType": "FUNCTIONAL", "content": "구체적인 기능 요구사항 설명"}},
@@ -79,8 +93,16 @@ async def generate_requirements(request: RequirementsRequest):
         
         # JSON 파싱
         content = response.choices[0].message.content
-        requirements_data = json.loads(content)
+
+        requirements_data = clean_and_parse_response(content, response_type="list")
+
+        if requirements_data is None :
+            raise ValueError("요구사항 파싱에 실패했습니다.")
         
+        # 구조 검증
+        if not validate_json_structure(requirements_data):
+            raise ValueError("생성된 요구사항의 구조가 올바르지 않습니다")    
+
         # 토큰 사용량 정보
         usage = response.usage
         

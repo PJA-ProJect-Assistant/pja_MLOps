@@ -3,6 +3,9 @@ name = "pja-mlops"
 version = "0.1.0"
 description = "ML Ops 도커 이미지"
 requires-python = ">=3.10"
+dependencies = [
+    "jinja2>=3.1.6",
+]
 
 [tool.uv.workspace]
 members = [

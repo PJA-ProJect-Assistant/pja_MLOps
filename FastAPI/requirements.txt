@@ -6,3 +6,4 @@ openai
 python-dotenv
 pydantic
 pandas
+jinja2

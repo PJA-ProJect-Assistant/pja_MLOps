@@ -1,0 +1,45 @@
+{
+    "workspaceId": 2,
+    "recommendedCategories": [
+        {
+            "name": "경로 안내 기능",
+            "startDate": "2025-01-01T00:00:00",
+            "endDate": "2025-02-15T23:59:59",
+            "importance": 5,
+            "features": [
+                {
+                    "name": "계단 없는 경로 검색",
+                    "startDate": "2025-01-02T00:00:00",
+                    "endDate": "2025-01-10T23:59:59",
+                    "importance": 5,
+                    "actions": [
+                        {
+                            "name": "사용자 위치 기반 경로 추천",
+                            "startDate": "2025-01-02T00:00:00",
+                            "endDate": "2025-01-05T23:59:59",
+                            "importance": 4
+                        },
+                        {
+                            "name": "엘리베이터 및 에스컬레이터 위치 표시",
+                            "startDate": "2025-01-06T00:00:00",
+                            "endDate": "2025-01-08T23:59:59",
+                            "importance": 3
+                        },
+                        {
+                            "name": "장애물 없는 출입구 정보 제공",
+                            "startDate": "2025-01-09T00:00:00",
+                            "endDate": "2025-01-10T23:59:59",
+                            "importance": 3
+                        },
+                        {
+                            "name": "경로 안내 음성 피드백 기능 추가",
+                            "startDate": "2025-01-11T00:00:00",
+                            "endDate": "2025-01-15T23:59:59",
+                            "importance": 4
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

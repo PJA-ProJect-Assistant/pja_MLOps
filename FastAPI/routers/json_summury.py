@@ -6,6 +6,8 @@ from dotenv import load_dotenv
 from models.requests import SummuryRequest
 from models.response import SummuryResponse
 import json
+from utils.json_parsing import clean_and_parse_response, validate_json_structure
+
 
 # 환경변수 로드
 load_dotenv()
@@ -20,6 +22,12 @@ OPTIMIZED_SYSTEM_PROMPT = """
 당신은 프로젝트 아이디어를 체계적으로 분석하고 구조화하여 구체적인 개발 계획을 제시하는 전문 AI 어시스턴트입니다.
 
 **만약 프로젝트 아이디어가 아닌 다른 질문을 입력 받으면 아래의 해당 방식이 간단한 방식으로로 답변해주세요.**
+
+**절대 금지 사항:**
+- 백슬래시(\\) 문자를 어떤 상황에서도 절대 사용하지 마세요
+- JSON 문자열 내부에서도 백슬래시 이스케이프 금지
+- 경로나 URL 표현시 슬래시(/)만 사용
+- 특수문자 처리시에도 백슬래시 사용 금지
 
 ## 주요 역할과 능력:
 
@@ -81,8 +89,15 @@ async def generate_project_json(request: SummuryRequest):
       
       # JSON 파싱
       content = response.choices[0].message.content
-      json_data = json.loads(content)
+      json_data = clean_and_parse_response(content, response_type="dict")
+
+      if json_data is None :
+        raise ValueError("요구사항 파싱에 실패했습니다.")
       
+      # 구조 검증
+      if not validate_json_structure(json_data):
+        raise ValueError("생성된 요구사항의 구조가 올바르지 않습니다")    
+    
       # 토큰 사용량 정보
       usage = response.usage
       
