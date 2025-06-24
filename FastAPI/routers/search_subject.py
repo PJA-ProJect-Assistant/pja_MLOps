@@ -9,7 +9,7 @@ from models.requests import SearchshimilerRequest
 from models.response import SearchshimilerResponse
 import json
 import ast
-
+import requests
 
 router = APIRouter()
 
@@ -20,10 +20,17 @@ router = APIRouter()
 # 임시 데이터로 작성
 # project_info DB 연결필요
 
+
+
 def read_DB() :
-    with open("DB/project_info_DB.json", "r", encoding="utf-8") as f: 
-        user_project_info = ast.literal_eval(json.load(f))
-    
+    # url 접속
+    DB_url = 'http://13.125.204.95:8080/api/workspaces/project-info'
+    response = requests.get(url = DB_url)
+    data = response.json()['data']
+
+    # 방법 1: JSON string을 .json 확장자로 저장 (기본)
+    user_project_info = ast.literal_eval(data)
+
     workspaceID_lst = []
     solutionIdea_lst = []
     stack_lst = []
