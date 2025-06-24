@@ -24,16 +24,16 @@ def read_DB() :
     with open("DB/project_info_DB.json", "r", encoding="utf-8") as f: 
         user_project_info = ast.literal_eval(json.load(f))
     
-    projectID_lst = []
+    workspaceID_lst = []
     solutionIdea_lst = []
     stack_lst = []
 
     for i in range(len(user_project_info)) :
-        projectID_lst.append(user_project_info[i]['projectInfoId'])
+        workspaceID_lst.append(user_project_info[i]['workspaceId'])
         solutionIdea_lst.append(user_project_info[i]['problemSolving']['solutionIdea'])
         stack_lst.append(user_project_info[i]['technologyStack'])
 
-    send_dataset = pd.DataFrame(index = projectID_lst, data = {
+    send_dataset = pd.DataFrame(index = workspaceID_lst, data = {
         'subject': solutionIdea_lst,
         'stack': stack_lst
     })
