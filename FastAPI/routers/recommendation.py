@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 from models.requests import RecommendationRequest
 from models.response import RecommendationResponse
 import json
-from datetime import datetime
+from datetime import datetime, timedelta
 
 # 환경변수 로드
 load_dotenv()
@@ -67,7 +67,7 @@ OPTIMIZED_SYSTEM_PROMPT = """
 }}
 
 **중요: 응답은 반드시 순수한 JSON 형태로만 제공하세요.**
-"""
+""".format(NOW=NOW)
 
 @router.post("/recommend/generate", response_model=RecommendationResponse)
 async def recommendation(request: RecommendationRequest):
