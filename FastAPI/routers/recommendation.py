@@ -16,6 +16,7 @@ router = APIRouter()
 # OpenAI 클라이언트 초기화
 client = openai.AsyncOpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
+# 프롬프트에 현재 날짜/시각 전달(startDate 기준날짜 설정 목적)
 NOW = datetime.now().isoformat()
 
 # 최적화된 시스템 프롬프트
