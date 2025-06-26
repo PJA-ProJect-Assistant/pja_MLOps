@@ -18,12 +18,32 @@ def pipeline_data(request: DashboardRequest):
     data = json.loads(LOG_DATA_PATH)
     df = pd.json_normalize(data)
 
-    # stat 1/2 공통 작업
-    # userId 기준으로 df 분리
-    user_dfs = {}
+    # # stat 1/2 공통 작업
+    # # userId 기준으로 df 분리
+    # user_dfs = {}
 
-    for i in df['userId'].unique():
-        user_dfs[f'df_user{i}'] = df[df['userId'] == i]
+    # for i in df['userId'].unique():
+    #     user_dfs[f'df_user{i}'] = df[df['userId'] == i]
+
+    # participants 기반으로 user-task 복제
+    df = df.explode('details.participants')
+    df['participant_userId'] = df['details.participants'].apply(lambda x: x.get('userId') if isinstance(x, dict) else None)
+
+    # 필요한 필드만 정리
+    df = df[[
+        'participant_userId',
+        'details.state',
+        'details.importance',
+        'details.startDate',
+        'details.endDate'
+    ]]
+
+    df = df.dropna(subset=['participant_userId'])
+
+    # userId별로 분리
+    user_dfs = {}
+    for uid in df['participant_userId'].unique():
+        user_dfs[f'df_{uid}'] = df[df['participant_userId'] == uid].copy()
 
     # dashboard 1
     ### stat 1 start
@@ -31,7 +51,7 @@ def pipeline_data(request: DashboardRequest):
 
     # state, importance 기준 grouping -> count 목적
     for i, (name, user_df) in enumerate(user_dfs.items(), start=1):
-        group_list[f'grouped{i}'] = (user_df.groupby(['userId', 'details.state', 'details.importance']).size().reset_index(name='count'))
+        group_list[f'grouped{i}'] = (user_df.groupby(['participant_userId', 'details.state', 'details.importance']).size().reset_index(name='count'))
 
     # dict type(json)으로 변환
     for name, gr in group_list.items():
@@ -43,7 +63,7 @@ def pipeline_data(request: DashboardRequest):
     # 필요한 컬럼만 추출
     for name, df in user_dfs.items():
         filtered = df[df['details.state'] == 'DONE'][
-            ['userId', 'details.state', 'details.importance', 'details.startDate', 'details.endDate']
+            ['participant_userId', 'details.state', 'details.importance', 'details.startDate', 'details.endDate']
         ]
         filtered_users[name] = filtered
 
@@ -57,10 +77,10 @@ def pipeline_data(request: DashboardRequest):
         df['duration_hours'] = (df['details.endDate'] - df['details.startDate']).dt.total_seconds() / 3600
 
         # 컬럼 drop
-        df = df[['userId', 'details.importance', 'duration_hours']]
+        df = df[['participant_userId', 'details.importance', 'duration_hours']]
 
         # 평균 계산
-        df = df.groupby(['userId', 'details.importance'])['duration_hours'].mean().reset_index(name='mean_hours')
+        df = df.groupby(['participant_userId', 'details.importance'])['duration_hours'].mean().reset_index(name='mean_hours')
 
         # 딕셔너리 업데이트
         filtered_users[name] = df
