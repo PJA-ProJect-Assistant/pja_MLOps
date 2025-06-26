@@ -9,27 +9,36 @@ with open(LOG_DATA_PATH, "r", encoding="utf-8") as f:
     
 df = pd.json_normalize(data)
 
-# stat 1/2 공통 작업 - userId 기준으로 df 분리
-user_dfs = {}
+# # stat 1/2 공통 작업 - participants 기반으로 user-task 복제
+df = df.explode('details.participants')
+df['participant_userId'] = df['details.participants'].apply(lambda x: x.get('userId') if isinstance(x, dict) else None)
 
-for id in df['userId'].unique():
-    user_dfs[f'df_{id}'] = df[df['userId'] == id]
+# 필요한 필드만 정리
+df = df[[
+    'participant_userId',
+    'details.state',
+    'details.importance',
+    'details.startDate',
+    'details.endDate'
+]]
+
+df = df.dropna(subset=['participant_userId'])
+
+# userId별로 분리
+user_dfs = {}
+for uid in df['participant_userId'].unique():
+    user_dfs[f'df_{uid}'] = df[df['participant_userId'] == uid].copy()
 
 ### stat 1 start
 group_list = {}
 
 # state, importance 기준 grouping -> count 목적
 for i, (name, user_df) in enumerate(user_dfs.items(), start=1):
-    group_list[f'grouped{i}'] = (user_df.groupby(['userId', 'details.state', 'details.importance']).size().reset_index(name='count'))
+    group_list[f'grouped{i}'] = (user_df.groupby(['participant_userId', 'details.state', 'details.importance']).size().reset_index(name='count'))
 
 # dict type(json)으로 변환
 for name, gr in group_list.items():
     json_temp = gr.to_dict(orient='records')
-
-    # # 파일 저장
-    # with open(f"Stat_Analysis\\data\\stat1-{name}.json", "w", encoding="utf-8") as f:
-    #     json.dump(json_temp, f, ensure_ascii=False, indent=2)
-
 
 ### stat 2 start
 filtered_users = {}
@@ -37,7 +46,7 @@ filtered_users = {}
 # 필요한 컬럼만 추출
 for name, df in user_dfs.items():
     filtered = df[df['details.state'] == 'DONE'][
-        ['userId', 'details.state', 'details.importance', 'details.startDate', 'details.endDate']
+        ['participant_userId', 'details.state', 'details.importance', 'details.startDate', 'details.endDate']
     ]
     filtered_users[name] = filtered
 
@@ -49,14 +58,14 @@ for name, df in filtered_users.items():
 
     # 소요 시간 계산 (시간 단위)
     df['duration_hours'] = (df['details.endDate'] - df['details.startDate']).dt.total_seconds() / 3600
-    df = df.dropna(subset=['duration_hours'])  # NaN 제거
-    df = df[df['duration_hours'] >= 0]         # 음수 제거
+    df = df.dropna(subset=['duration_hours'])
+    df = df[df['duration_hours'] >= 0]
 
     # 컬럼 drop
-    df = df[['userId', 'details.importance', 'duration_hours']]
+    df = df[['participant_userId', 'details.importance', 'duration_hours']]
 
     # 평균 계산
-    df = df.groupby(['userId', 'details.importance'])['duration_hours'].mean().reset_index(name='mean_hours')
+    df = df.groupby(['participant_userId', 'details.importance'])['duration_hours'].mean().reset_index(name='mean_hours')
 
     # 딕셔너리 업데이트
     filtered_users[name] = df

@@ -18,13 +18,7 @@ def pipeline_data(request: DashboardRequest):
     data = json.loads(LOG_DATA_PATH)
     df = pd.json_normalize(data)
 
-    # # stat 1/2 공통 작업
-    # # userId 기준으로 df 분리
-    # user_dfs = {}
-
-    # for i in df['userId'].unique():
-    #     user_dfs[f'df_user{i}'] = df[df['userId'] == i]
-
+    # stat 1/2 공통 작업
     # participants 기반으로 user-task 복제
     df = df.explode('details.participants')
     df['participant_userId'] = df['details.participants'].apply(lambda x: x.get('userId') if isinstance(x, dict) else None)
@@ -35,7 +29,7 @@ def pipeline_data(request: DashboardRequest):
         'details.state',
         'details.importance',
         'details.startDate',
-        'details.endDate'
+        'timestamp'
     ]]
 
     df = df.dropna(subset=['participant_userId'])
@@ -45,7 +39,6 @@ def pipeline_data(request: DashboardRequest):
     for uid in df['participant_userId'].unique():
         user_dfs[f'df_{uid}'] = df[df['participant_userId'] == uid].copy()
 
-    # dashboard 1
     ### stat 1 start
     group_list = {}
 
@@ -53,7 +46,7 @@ def pipeline_data(request: DashboardRequest):
     for i, (name, user_df) in enumerate(user_dfs.items(), start=1):
         group_list[f'grouped{i}'] = (user_df.groupby(['participant_userId', 'details.state', 'details.importance']).size().reset_index(name='count'))
 
-    # stat1 result: dict type(json)으로 변환\
+    # stat1 result: dict type(json)으로 변환
     stat1_result = {}
 
     for name, gr in group_list.items():
@@ -65,7 +58,7 @@ def pipeline_data(request: DashboardRequest):
     # 필요한 컬럼만 추출
     for name, df in user_dfs.items():
         filtered = df[df['details.state'] == 'DONE'][
-            ['participant_userId', 'details.state', 'details.importance', 'details.startDate', 'details.endDate']
+            ['participant_userId', 'details.state', 'details.importance', 'details.startDate', 'timestamp']
         ]
         filtered_users[name] = filtered
 
@@ -73,10 +66,12 @@ def pipeline_data(request: DashboardRequest):
     for name, df in filtered_users.items():
         # 날짜형 변환
         df['details.startDate'] = pd.to_datetime(df['details.startDate'], utc=True)
-        df['details.endDate'] = pd.to_datetime(df['details.endDate'], utc=True)
+        df['timestamp'] = pd.to_datetime(df['timestamp'], utc=True)
 
         # 소요 시간 계산 (시간 단위)
-        df['duration_hours'] = (df['details.endDate'] - df['details.startDate']).dt.total_seconds() / 3600
+        df['duration_hours'] = (df['timestamp'] - df['details.startDate']).dt.total_seconds() / 3600
+        df = df.dropna(subset=['duration_hours'])
+        df = df[df['duration_hours'] >= 0]
 
         # 컬럼 drop
         df = df[['participant_userId', 'details.importance', 'duration_hours']]
