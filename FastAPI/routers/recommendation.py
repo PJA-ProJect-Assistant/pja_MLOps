@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 from models.requests import RecommendationRequest
 from models.response import RecommendationResponse
 import json
-from datetime import datetime, timedelta
+from datetime import datetime
 
 # 환경변수 로드
 load_dotenv()
