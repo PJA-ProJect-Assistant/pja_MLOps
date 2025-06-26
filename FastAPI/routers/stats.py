@@ -53,9 +53,11 @@ def pipeline_data(request: DashboardRequest):
     for i, (name, user_df) in enumerate(user_dfs.items(), start=1):
         group_list[f'grouped{i}'] = (user_df.groupby(['participant_userId', 'details.state', 'details.importance']).size().reset_index(name='count'))
 
-    # dict type(json)으로 변환
+    # stat1 result: dict type(json)으로 변환\
+    stat1_result = {}
+
     for name, gr in group_list.items():
-        json_temp_1 = gr.to_dict(orient='records')
+        stat1_result[name] = gr.to_dict(orient='records')
 
     ### stat 2 start
     filtered_users = {}
@@ -85,11 +87,13 @@ def pipeline_data(request: DashboardRequest):
         # 딕셔너리 업데이트
         filtered_users[name] = df
 
-    # dict type(json)으로 변환
+    # stat2 result: dict type(json)으로 변환
+    stat2_result = {}
+
     for name, fdf in filtered_users.items():
-        json_temp_2 = fdf.to_dict(orient='records')
+        stat2_result[name] = fdf.to_dict(orient='records')
         
     return DashboardResponse(
-        task_imbalance = {"data": f"{json_temp_1}"},
-        processing_time = {"data": f"{json_temp_2}"}
+        task_imbalance = {"data": stat1_result},
+        processing_time = {"data": stat2_result}
     )
