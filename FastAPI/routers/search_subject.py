@@ -74,25 +74,25 @@ class ProjectRecommender :
         self.sample_df = sample_df
         self.vectorizer = vectorizer
 
-    def filter_stack_recomend_subjects(self, input_text ,target_stack, top_k = 10) :
-        
-        # 공통되는 요소가 하나라도 있는 행
-        has_stack = self.sample_df[self.sample_df['stack'].apply(lambda x: bool(set(x) & set(target_stack)))]
-
-        # 원본 인덱스 저장
-        original_indices = has_stack.index.tolist()
+    def filter_stack_recomend_subjects(self, input_text, target_stack, recommendation_threshold, top_k = 10) :
+        # stack 관련 단어 데이터 소문자화 
+        target_stack = [item.lower() for item in target_stack]
+        self.sample_df['stack'] = self.sample_df['stack'].astype(str).str.lower().apply(ast.literal_eval)
 
         # 벡터화 실행
-        tfidf_matrix = vectorizer.fit_transform(has_stack['processed_subject'])
+        tfidf_matrix = vectorizer.fit_transform(self.sample_df['processed_subject'])
 
         # 사용자의 특정 개요의 유사도 기반 추천
         processed_input = preprocess_text(input_text)
         input_vector = vectorizer.transform([processed_input])
         similarities = cosine_similarity(input_vector, tfidf_matrix).flatten()
-        similar_indices = similarities.argsort()[::-1][:top_k]
+        self.sample_df['sim_score'] = similarities
 
-        # 원본 DataFrame의 인덱스로 변환
-        original_similar_indices = [original_indices[i] for i in similar_indices]
+        # 같은 스택 있는지에 대한 필터
+        has_stack = self.sample_df[self.sample_df['stack'].apply(lambda x: bool(set(x) & set(target_stack)))]
+        has_stack_sort = has_stack.sort_values(by = 'sim_score', ascending= False)
+        has_stack_filter = has_stack_sort[has_stack_sort['sim_score'] > recommendation_threshold].head(top_k)
+        original_similar_indices = has_stack_filter.index.tolist()
 
         return original_similar_indices
 
@@ -114,8 +114,9 @@ async def generate_search_project(request: SearchshimilerRequest):
         input_text = ast.literal_eval(request.project_info)['problemSolving']['solutionIdea']
         target_stack = ast.literal_eval(request.project_info)['technologyStack']
         top_k = request.top_k
+        score = request.recommendation_threshold
 
-        recommend_id = recommender.filter_stack_recomend_subjects(input_text, target_stack, top_k)
+        recommend_id = recommender.filter_stack_recomend_subjects(input_text, target_stack, score, top_k)
 
         return SearchshimilerResponse(
             similer_ID = {"project_ID" : recommend_id})

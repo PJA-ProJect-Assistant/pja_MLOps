@@ -59,3 +59,4 @@ class TaskGenerateRequest(BaseModel):
 class SearchshimilerRequest(BaseModel) :
     project_info : str = Field(..., description="유저의 project_info")
     top_k : int = 10
+    recommendation_threshold : int = 0.2
