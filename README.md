@@ -1,6 +1,6 @@
 # 🚀 PJA MLOps Project
 
-![Language](https://img.shields.io/badge/Python-98.6%25-blue) ![API](https://img.shields.io/badge/FastAPI-1.4%25-green) ![Version](https://img.shields.io/badge/Version-1.0.0-orange) ![Contributors](https://img.shields.io/badge/Contributors-3-brightgreen)
+![Language](https://img.shields.io/badge/Stack-Python%20%7C%20FastAPI-blue) ![Contributors](https://img.shields.io/badge/Contributors-3-brightgreen)
 
 > **프로젝트 어시스턴트(Project Assistant)를 위한 AI 기반 MLOps 플랫폼**  
 > OpenAI API를 활용한 지능형 요구사항 분석 및 프로젝트 관리 시스템
@@ -23,13 +23,13 @@
 
 ## 📖 프로젝트 개요
 
-PJA MLOps Project는 AI 기반의 프로젝트 관리 및 요구사항 분석 플랫폼입니다. OpenAI API를 활용하여 프로젝트 요구사항을 자동으로 분석하고, 카테고리와 기능을 추천하며, 실행 가능한 액션 아이템을 생성합니다.
+PJA MLOps Project는 AI 기반의 프로젝트 관리 및 요구사항 분석 플랫폼입니다.
+OpenAI API를 활용하여 프로젝트 요구사항을 자동으로 분석하고, 카테고리와 기능을 추천하며, 실행 가능한 액션 아이템을 생성합니다.
 
 ### 🎯 주요 목표
 
 - **지능형 요구사항 분석**: AI를 통한 자동 요구사항 분석 및 분류
 - **프로젝트 관리 자동화**: 카테고리, 기능, 액션 추천을 통한 프로젝트 계획 수립
-- **확장 가능한 아키텍처**: MLOps 베스트 프랙티스 적용
 - **실시간 API 서비스**: FastAPI 기반의 고성능 웹 서비스
 
 ## 🏗️ 아키텍처
@@ -53,47 +53,33 @@ pja_MLOps/
 ├── 📁 .github/                    # GitHub Actions 워크플로우
 │   └── workflows/
 │       └── deploy.yml             # CI/CD 파이프라인
-├── 📁 Action_recommend/           # 액션 추천 시스템
-│   ├── prompts/                   # AI 프롬프트 템플릿
-│   ├── recommended_list/          # 추천 결과 저장
-│   ├── seong_agent/              # 에이전트 구현
-│   ├── use_agent/                # 에이전트 활용 예제
-│   └── use_openai/               # OpenAI API 활용
-├── 📁 Cat-Feat_recommend/        # 카테고리/기능 추천 시스템
-│   ├── data/                     # 학습 및 참조 데이터
-│   ├── prompts/                  # 프롬프트 관리
-│   └── *.ipynb                   # 주피터 노트북 파일들
-├── 📁 FastAPI/                   # 웹 API 서비스
-│   ├── models/                   # 데이터 모델
-│   │   ├── requests.py           # 요청 모델
-│   │   └── response.py           # 응답 모델
-│   ├── routers/                  # API 라우터
-│   │   ├── requirements.py       # 요구사항 분석 API
-│   │   ├── recommendation.py     # 추천 시스템 API
-│   │   ├── json_API.py          # JSON 처리 API
-│   │   └── stats.py             # 통계 API
-│   ├── utils/                    # 유틸리티 함수
-│   │   ├── json_parsing.py       # JSON 파싱 유틸
-│   │   └── slack_alarm.py        # 슬랙 알림
-│   ├── DB/                       # 데이터베이스 관련
-│   ├── main.py                   # FastAPI 메인 애플리케이션
-│   ├── Dockerfile                # Docker 이미지 빌드
-│   ├── requirements.txt          # Python 의존성
-│   └── startup.sh                # 서버 시작 스크립트
-├── 📁 Test/                      # 테스트 및 실험
-│   ├── Fine-tuning/              # 모델 파인튜닝
-│   ├── LLM_test/                 # LLM 테스트
-│   └── QLoRA_test/               # QLoRA 실험
-├── 📋 requirements.txt           # 전역 의존성
-├── 📋 pyproject.toml            # 프로젝트 설정
-├── 📋 uv.lock                   # 의존성 잠금 파일
-└── 📋 README.md                 # 프로젝트 문서
+├── 📁 FastAPI/                    # 웹 API 서비스
+│   ├── models/                    # 데이터 모델
+│   │   ├── requests.py            # 요청 모델
+│   │   └── response.py            # 응답 모델
+│   ├── routers/                   # API 라우터
+│   │   ├── requirements.py        # 요구사항 분석 API
+│   │   ├── recommendation.py      # 추천 시스템 API
+│   │   ├── json_API.py            # JSON 처리 API
+│   │   └── stats.py               # 통계 API
+│   ├── utils/                     # 유틸리티 함수
+│   │   ├── json_parsing.py        # JSON 파싱 유틸
+│   │   └── slack_alarm.py         # 슬랙 알림
+│   ├── DB/                        # 데이터베이스 관련
+│   ├── main.py                    # FastAPI 메인 애플리케이션
+│   ├── Dockerfile                 # Docker 이미지 빌드
+│   ├── requirements.txt           # Python 의존성
+│   └── startup.sh                 # 서버 시작 스크립트
+├── 📁 Test                        # 테스트 및 실험
+├── 📋 requirements.txt            # 전역 의존성
+├── 📋 pyproject.toml              # 프로젝트 설정
+├── 📋 uv.lock                     # 의존성 잠금 파일
+└── 📋 README.md                   # 프로젝트 문서
 ```
 
 ## ⚡ 주요 기능
 
 ### 🤖 AI 기반 요구사항 분석
-- **자동 요구사항 분류**: 기능적/비기능적 요구사항 자동 분류
 - **우선순위 결정**: AI 기반 요구사항 우선순위 자동 설정
 - **요구사항 검증**: 일관성 및 완전성 자동 검사
 
@@ -105,11 +91,9 @@ pja_MLOps/
 ### 🔄 실시간 API 서비스
 - **RESTful API**: 표준화된 API 인터페이스
 - **실시간 처리**: 비동기 처리를 통한 빠른 응답
-- **자동 문서화**: Swagger/OpenAPI 자동 문서 생성
 
 ### 📈 모니터링 및 로깅
 - **헬스체크**: 서비스 상태 실시간 모니터링
-- **로그 수집**: 구조화된 로그 시스템
 - **성능 메트릭**: API 성능 및 사용량 추적
 
 ## 🛠️ 기술 스택
@@ -122,7 +106,6 @@ pja_MLOps/
 
 ### AI/ML
 - **OpenAI API**: GPT 모델 활용
-- **Langchain**: LLM 체인 관리
 - **scikit-learn**: 머신러닝 알고리즘
 - **KoNLPy**: 한국어 자연어 처리
 
@@ -194,7 +177,7 @@ uvicorn main:app --reload
 
 #### 요구사항 분석
 ```http
-POST /requirements
+POST /requirements/generate
 Content-Type: application/json
 
 {
@@ -205,7 +188,7 @@ Content-Type: application/json
 
 #### 추천 시스템
 ```http
-POST /recommendation
+POST /recommendation/generate
 Content-Type: application/json
 
 {
@@ -261,23 +244,11 @@ docker-compose up -d
 ```
 
 ## 🧪 테스트
-
-### 단위 테스트 실행
-```bash
-cd Test
-python -m pytest
-```
-
-### API 테스트
-```bash
-# 기본 헬스체크
-curl http://localhost:8000/health
-
-# 요구사항 분석 테스트
-curl -X POST "http://localhost:8000/requirements" \
-  -H "Content-Type: application/json" \
-  -d '{"project_overview": "테스트 프로젝트", "existing_requirements": "기본 요구사항"}'
-```
+pja_MLOps/
+└── 📁 Test/                      # 테스트 및 실험
+    ├── Fine-tuning/              # 모델 파인튜닝
+    ├── LLM_test/                 # LLM 테스트
+    └── QLoRA_test/               # QLoRA 실험
 
 ## 📊 모니터링
 
@@ -292,30 +263,10 @@ curl -X POST "http://localhost:8000/requirements" \
 - 에러 발생 시 자동 알림
 - 배포 상태 알림
 
-## 🤝 기여 가이드
-
-### 📝 커밋 메시지 규칙
-```
-feat: 새로운 기능 추가
-fix: 버그 수정
-docs: 문서 수정
-style: 코드 포맷팅
-refactor: 코드 리팩토링
-test: 테스트 추가/수정
-chore: 빌드 프로세스 또는 보조 도구 수정
-```
-
-### 🔀 풀 리퀘스트 프로세스
-1. Fork 프로젝트
-2. Feature 브랜치 생성 (`git checkout -b feature/amazing-feature`)
-3. 변경사항 커밋 (`git commit -m 'feat: Add amazing feature'`)
-4. 브랜치에 Push (`git push origin feature/amazing-feature`)
-5. Pull Request 생성
-
 ### 👥 기여자
-- **JMinkyu** - 프로젝트 리드
-- **listgreen** - 백엔드 개발
-- **onxtorlo** - DevOps 및 인프라
+- **JMinkyu**   - 프로젝트 리드
+- **listgreen** - 백엔드 개발 DevOps 및 인프라
+- **onxtorlo**  - 모델 개발
 
 ## 📞 문의 및 지원
 
