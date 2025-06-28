@@ -18,8 +18,18 @@ def pipeline_data(request: DashboardRequest):
     data = json.loads(LOG_DATA_PATH)
     df = pd.json_normalize(data)
 
+    # actionId 단위의 최신 이벤트만
+    latest_actions = (
+        df
+        .sort_values("timestamp", ascending=False)
+        .drop_duplicates(
+            subset=["workspaceId", "details.actionId"],
+            keep="first"
+        )
+    )
+
     # stat 1/2 공통 작업 - participants 펼치기
-    exploded = df.explode('details.participants')
+    exploded = latest_actions.explode('details.participants')
     exploded['participants_userId'] = exploded['details.participants'].apply(lambda x: x.get('userId') if isinstance(x, dict) else None)
 
     # 필요한 필드 정리
@@ -40,36 +50,10 @@ def pipeline_data(request: DashboardRequest):
 
     filtered = filtered.dropna(subset=['participants_userId'])
 
-    # 최신 이벤트만 남기기
-    filtered = (
-        filtered
-        .sort_values("timestamp", ascending=False)
-        .drop_duplicates(
-            subset=[
-                "workspaceId", 
-                "details.actionId", 
-                "details.name", 
-                "participants_userId"
-            ],
-            keep="first"
-        )
-    )
+    # action DELETE 이벤트가 발생한 actions Id
+    deleted_ids = latest_actions[latest_actions["event"] == "DELETE_PROJECT_PROGRESS_ACTION"]["details.actionId"].unique()
 
-    # DELETE 이벤트 처리 - 가장 마지막이 DELETE면 카운트에서 제외
-    latest_events = (
-        df
-        .sort_values("timestamp", ascending=False)
-        .drop_duplicates(
-            subset=[
-                "workspaceId", 
-                "details.actionId", 
-                "details.name"
-            ],
-            keep="first"
-        )
-    )
-    deleted_ids = latest_events[latest_events["event"] == "DELETE_PROJECT_PROGRESS_ACTION"]["details.actionId"].unique()
-
+    # DELETE 이벤트 발생했던 actionId 제거
     filtered = filtered[~filtered["details.actionId"].isin(deleted_ids)]
 
     # Dtype 정리
@@ -135,19 +119,7 @@ def pipeline_data(request: DashboardRequest):
 
         done_df = done_df.dropna(subset=['participants_userId'])
 
-        # 삭제된 actionId 확인 (먼저 처리)
-        latest_action_events = (
-            df
-            .sort_values('timestamp', ascending=False)
-            .drop_duplicates(
-                subset=[
-                    'workspaceId',
-                    'details.actionId'
-                ],
-                keep="first"
-            )
-        )
-        deleted_action_ids = latest_action_events[latest_action_events['event'] == 'DELETE_PROJECT_PROGRESS_ACTION']['details.actionId'].unique()
+        deleted_action_ids = latest_actions[latest_actions['event'] == 'DELETE_PROJECT_PROGRESS_ACTION']['details.actionId'].unique()
 
         # 삭제된 actionId 제거
         done_df = done_df[~done_df['details.actionId'].isin(deleted_action_ids)]
