@@ -1,0 +1,1235 @@
+user_input,total_requirements,project_info,ERD_data,파인튜닝_모델_출력,GPT4o_출력
+"[{'projectName': '스터디 그룹 성과 분석 도구', 'projectTarget': '학습자 및 교육자', 'mainFunction': ['스터디 그룹 성과 시각화', '개별 학습 진도 추적 및 피드백 제공', '스터디 그룹 내 학습 자료 공유 및 평가'], 'techStack': ['Python', 'Django', 'PostgreSQL'], 'projectDescription': 'GQ 서비스는 학습 중심의 스터디 그룹 운영을 지원하는 웹 플랫폼으로, 단순한 그룹 관리에서 나아가 그룹 내 학습 내용을 복습할 수 있는 기능을 제공하여 학습 효과를 극대화하는 것을 목표로 한다. 사용자들은 회원가입과 로그인을 통해 서비스를 이용할 수 있으며, 아이디 및 비밀번호 찾기 기능으로 편의성을 높였다. 사용자는 새로운 스터디 그룹을 생성하거나 기존 그룹을 검색해 가입할 수 있으며, 그룹 내에서는 퀴즈를 생성하고 참여하여 학습한 내용을 효과적으로 반복 학습할 수 있다. 또한 공지사항 게시판을 통해 그룹 내 전달사항을 공유할 수 있고, 과제 게시판은 체크리스트 형태로 구성되어 과제 수행 여부를 명확히 기록할 수 있다. 이러한 기능들은 사용자 간의 소통을 강화하고 학습 동기를 부여하는 데 기여한다. 서비스는 Java Servlet과 JSP 기반으로 구현되었으며, HTML, CSS, JavaScript를 통해 사용자 친화적인 인터페이스를 제공한다. 데이터베이스는 MySQL을 사용하여 안정적인 데이터 저장과 처리를 가능하게 하며, 전반적인 시스템은 학습 관리에 최적화된 구조로 설계되었다.'}]","[{'requirementType': 'FUNCTIONAL', 'content': '사용자는 회원가입 시 이메일 인증을 통해 계정 생성의 안전성을 높일 수 있어야 한다.'}, {'requirementType': 'FUNCTIONAL', 'content': '사용자는 스터디 그룹 내에서 퀴즈를 생성하고, 다른 사용자들이 참여할 수 있도록 초대할 수 있어야 한다.'}, {'requirementType': 'FUNCTIONAL', 'content': '사용자는 공지사항 게시판에 글을 작성하고, 수정하거나 삭제할 수 있는 권한을 가져야 한다.'}, {'requirementType': 'PERFORMANCE', 'content': '시스템은 평균 응답시간이 2초 이내로 유지되어야 하며, 95%의 요청이 이 시간을 초과하지 않아야 한다.'}, {'requirementType': 'PERFORMANCE', 'content': '동시 사용자 수가 100명일 때 시스템의 처리량은 초당 200건 이상의 요청을 처리할 수 있어야 한다.'}, {'requirementType': 'PERFORMANCE', 'content': '시스템의 가용성은 99.9% 이상을 유지해야 하며, 월 단위로 서버 다운타임은 43.2분을 초과해서는 안 된다.'}, {'requirementType': 'FUNCTIONAL', 'content': '사용자는 개별 학습 진도를 시각적으로 확인할 수 있는 대시보드를 제공받아야 한다.'}, {'requirementType': 'FUNCTIONAL', 'content': '사용자는 스터디 그룹 내에서 학습 자료를 업로드하고, 다른 사용자들이 해당 자료를 다운로드할 수 있어야 한다.'}, {'requirementType': 'PERFORMANCE', 'content': '시스템은 최대 500명의 동시 사용자 접속 시에도 평균 응답시간이 3초 이내로 유지되어야 한다.'}, {'requirementType': 'PERFORMANCE', 'content': '시스템의 데이터베이스 쿼리 응답시간은 100ms 이하로 유지되어야 하며, 90%의 쿼리가 이 시간을 초과하지 않아야 한다.'}, {'requirementType': 'PERFORMANCE', 'content': '시스템은 월간 사용자 수가 10,000명을 초과할 경우, 처리량을 300건 이상으로 확장할 수 있어야 한다.'}]","{'project_info': {'title': '스터디 그룹 성과 분석 도구', 'category': '웹앱', 'target_users': ['학습자', '교육자', '스터디 그룹 관리자'], 'core_features': ['스터디 그룹 성과 시각화', '개별 학습 진도 추적 및 피드백 제공', '스터디 그룹 내 학습 자료 공유 및 평가', '퀴즈 생성 및 참여 기능', '공지사항 및 과제 관리 기능'], 'technology_stack': ['React.js', 'Node.js', 'PostgreSQL', 'AWS', 'Redis'], 'problem_solving': {'current_problem': '기존의 스터디 그룹 관리 도구는 학습 성과를 시각적으로 분석하거나 개별 학습 진도를 효과적으로 추적하는 기능이 부족하여 학습자와 교육자 모두의 학습 효과를 저해하고 있다.', 'solution_idea': '본 프로젝트는 데이터 시각화 라이브러리를 활용하여 스터디 그룹의 성과를 직관적으로 분석할 수 있는 대시보드를 제공한다. 사용자는 개별 학습 진도를 시각적으로 확인하고, 퀴즈를 통해 학습 내용을 복습할 수 있으며, 그룹 내 학습 자료를 쉽게 공유하고 평가할 수 있다. 또한, 이메일 인증을 통한 안전한 계정 생성을 지원하여 사용자 신뢰성을 높인다. 이러한 기능들은 사용자 간의 소통을 강화하고 학습 동기를 부여하여, 학습 효과를 극대화하는 데 기여한다.', 'expected_benefits': ['학습자의 학습 성과를 시각적으로 분석하여 학습 동기 부여', '교육자가 학습 진도를 쉽게 추적하고 피드백 제공', '스터디 그룹 내 소통과 협업을 통한 학습 효과 증대']}}}","{'erd_tables': [{'name': 'users', 'erd_columns': [{'name': 'user_id', 'data_type': 'SERIAL', 'is_primary_key': True, 'is_foreign_key': False, 'is_nullable': False}, {'name': 'email', 'data_type': 'VARCHAR(255)', 'is_primary_key': False, 'is_foreign_key': False, 'is_nullable': False}, {'name': 'password', 'data_type': 'VARCHAR(255)', 'is_primary_key': False, 'is_foreign_key': False, 'is_nullable': False}, {'name': 'created_at', 'data_type': 'TIMESTAMP', 'is_primary_key': False, 'is_foreign_key': False, 'is_nullable': False}]}, {'name': 'study_groups', 'erd_columns': [{'name': 'group_id', 'data_type': 'SERIAL', 'is_primary_key': True, 'is_foreign_key': False, 'is_nullable': False}, {'name': 'group_name', 'data_type': 'VARCHAR(255)', 'is_primary_key': False, 'is_foreign_key': False, 'is_nullable': False}, {'name': 'created_at', 'data_type': 'TIMESTAMP', 'is_primary_key': False, 'is_foreign_key': False, 'is_nullable': False}]}, {'name': 'quizzes', 'erd_columns': [{'name': 'quiz_id', 'data_type': 'SERIAL', 'is_primary_key': True, 'is_foreign_key': False, 'is_nullable': False}, {'name': 'group_id', 'data_type': 'INTEGER', 'is_primary_key': False, 'is_foreign_key': True, 'is_nullable': False}, {'name': 'quiz_title', 'data_type': 'VARCHAR(255)', 'is_primary_key': False, 'is_foreign_key': False, 'is_nullable': False}, {'name': 'created_at', 'data_type': 'TIMESTAMP', 'is_primary_key': False, 'is_foreign_key': False, 'is_nullable': False}]}, {'name': 'announcements', 'erd_columns': [{'name': 'announcement_id', 'data_type': 'SERIAL', 'is_primary_key': True, 'is_foreign_key': False, 'is_nullable': False}, {'name': 'group_id', 'data_type': 'INTEGER', 'is_primary_key': False, 'is_foreign_key': True, 'is_nullable': False}, {'name': 'content', 'data_type': 'TEXT', 'is_primary_key': False, 'is_foreign_key': False, 'is_nullable': False}, {'name': 'created_at', 'data_type': 'TIMESTAMP', 'is_primary_key': False, 'is_foreign_key': False, 'is_nullable': False}]}, {'name': 'study_materials', 'erd_columns': [{'name': 'material_id', 'data_type': 'SERIAL', 'is_primary_key': True, 'is_foreign_key': False, 'is_nullable': False}, {'name': 'group_id', 'data_type': 'INTEGER', 'is_primary_key': False, 'is_foreign_key': True, 'is_nullable': False}, {'name': 'file_path', 'data_type': 'VARCHAR(255)', 'is_primary_key': False, 'is_foreign_key': False, 'is_nullable': False}, {'name': 'uploaded_at', 'data_type': 'TIMESTAMP', 'is_primary_key': False, 'is_foreign_key': False, 'is_nullable': False}]}], 'erd_relationships': [{'from_table': 'users', 'to_table': 'study_groups', 'relationship_type': 'one-to-many', 'foreign_key': 'user_id', 'constraint_name': 'fk_user_group'}, {'from_table': 'study_groups', 'to_table': 'quizzes', 'relationship_type': 'one-to-many', 'foreign_key': 'group_id', 'constraint_name': 'fk_group_quiz'}, {'from_table': 'study_groups', 'to_table': 'announcements', 'relationship_type': 'one-to-many', 'foreign_key': 'group_id', 'constraint_name': 'fk_group_announcement'}, {'from_table': 'study_groups', 'to_table': 'study_materials', 'relationship_type': 'one-to-many', 'foreign_key': 'group_id', 'constraint_name': 'fk_group_material'}]}","아래는 ""스터디 그룹 성과 분석 도구"" 프로젝트에 대한 ERD(Entity Relationship Diagram) 정보를 JSON 형태로 제공한 것입니다. 이 ERD는 사용자, 스터디 그룹, 퀴즈, 과제, 공지사항 등과 관련된 테이블 구조와 관계를 포함하고 있습니다.
+
+```json
+{
+  ""erd_tables"": [
+    {
+      ""name"": ""Users"",
+      ""columns"": [
+        {""name"": ""user_id"", ""data_type"": ""SERIAL"", ""is_primary_key"": true, ""is_foreign_key"": false, ""is_nullable"": false},
+        {""name"": ""username"", ""data_type"": ""VARCHAR(50)"", ""is_primary_key"": false, ""is_foreign_key"": false, ""is_nullable"": false},
+        {""name"": ""email"", ""data_type"": ""VARCHAR(100)"", ""is_primary_key"": false, ""is_foreign_key"": false, ""is_nullable"": false},
+        {""name"": ""password"", ""data_type"": ""VARCHAR(255)"", ""is_primary_key"": false, ""is_foreign_key"": false, ""is_nullable"": false}
+      ]
+    },
+    {
+      ""name"": ""StudyGroups"",
+      ""columns"": [
+        {""name"": ""group_id"", ""data_type"": ""SERIAL"", ""is_primary_key"": true, ""is_foreign_key"": false, ""is_nullable"": false},
+        {""name"": ""group_name"", ""data_type"": ""VARCHAR(100)"", ""is_primary_key"": false, ""is_foreign_key"": false, ""is_nullable"": false},
+        {""name"": ""description"", ""data_type"": ""TEXT"", ""is_primary_key"": false, ""is_foreign_key"": false, ""is_nullable"": true}
+      ]
+    },
+    {
+      ""name"": ""Quizzes"",
+      ""columns"": [
+        {""name"": ""quiz_id"", ""data_type"": ""SERIAL"", ""is_primary_key"": true, ""is_foreign_key"": false, ""is_nullable"": false},
+        {""name"": ""group_id"", ""data_type"": ""INTEGER"", ""is_primary_key"": false, ""is_foreign_key"": true, ""is_nullable"": false},
+        {""name"": ""quiz_title"", ""data_type"": ""VARCHAR(100)"", ""is_primary_key"": false, ""is_foreign_key"": false, ""is_nullable"": false},
+        {""name"": ""created_at"", ""data_type"": ""TIMESTAMP"", ""is_primary_key"": false, ""is_foreign_key"": false, ""is_nullable"": false}
+      ]
+    },
+    {
+      ""name"": ""Assignments"",
+      ""columns"": [
+        {""name"": ""assignment_id"", ""data_type"": ""SERIAL"", ""is_primary_key"": true, ""is_foreign_key"": false, ""is_nullable"": false},
+        {""name"": ""group_id"", ""data_type"": ""INTEGER"", ""is_primary_key"": false, ""is_foreign_key"": true, ""is_nullable"": false},
+        {""name"": ""assignment_title"", ""data_type"": ""VARCHAR(100)"", ""is_primary_key"": false, ""is_foreign_key"": false, ""is_nullable"": false},
+        {""name"": ""is_completed"", ""data_type"": ""BOOLEAN"", ""is_primary_key"": false, ""is_foreign_key"": false, ""is_nullable"": false}
+      ]
+    },
+    {
+      ""name"": ""Announcements"",
+      ""columns"": [
+        {""name"": ""announcement_id"", ""data_type"": ""SERIAL"", ""is_primary_key"": true, ""is_foreign_key"": false, ""is_nullable"": false},
+        {""name"": ""group_id"", ""data_type"": ""INTEGER"", ""is_primary_key"": false, ""is_foreign_key"": true, ""is_nullable"": false},
+        {""name"": ""content"", ""data_type"": ""TEXT"", ""is_primary_key"": false, ""is_foreign_key"": false, ""is_nullable"": false},
+        {""name"": ""posted_at"", ""data_type"": ""TIMESTAMP"", ""is_primary_key"": false, ""is_foreign_key"": false, ""is_nullable"": false}
+      ]
+    },
+    {
+      ""name"": ""UserGroups"",
+      ""columns"": [
+        {""name"": ""user_group_id"", ""data_type"": ""SERIAL"", ""is_primary_key"": true, ""is_foreign_key"": false, ""is_nullable"": false},
+        {""name"": ""user_id"", ""data_type"": ""INTEGER"", ""is_primary_key"": false, ""is_foreign_key"": true, ""is_nullable"": false},
+        {""name"": ""group_id"", ""data_type"": ""INTEGER"", ""is_primary_key"": false, ""is_foreign_key"": true, ""is_nullable"": false}
+      ]
+    }
+  ],
+  ""erd_relationships"": [
+    {
+      ""from_table"": ""Users"",
+      ""to_table"": ""UserGroups"",
+      ""relationship_type"": ""one-to-many"",
+      ""foreign_key"": ""user_id"",
+      ""constraint_name"": ""fk_user_usergroup""
+    },
+    {
+      ""from_table"": ""StudyGroups"",
+      ""to_table"": ""UserGroups"",
+      ""relationship_type"": ""one-to-many"",
+      ""foreign_key"": ""group_id"",
+      ""constraint_name"": ""fk_group_usergroup""
+    },
+    {
+      ""from_table"": ""StudyGroups"",
+      ""to_table"": ""Quizzes"",
+      ""relationship_type"": ""one-to-many"",
+      ""foreign_key"": ""group_id"",
+      ""constraint_name"": ""fk_group_quiz""
+    },
+    {
+      ""from_table"": ""StudyGroups"",
+      ""to_table"": ""Assignments"",
+      ""relationship_type"": ""one-to-many"",
+      ""foreign_key"": ""group_id"",
+      ""constraint_name"": ""fk_group_assignment""
+    },
+    {
+      ""from_table"": ""StudyGroups"",
+      ""to_table"": ""Announcements"",
+      ""relationship_type"": ""one-to-many"",
+      ""foreign_key"": ""group_id"",
+      ""constraint_name"": ""fk_group_announcement""
+    }
+  ]
+}
+```
+
+### 설명:
+- **Users**: 사용자 정보를 저장하는 테이블입니다.
+- **StudyGroups**: 스터디 그룹 정보를 저장하는 테이블입니다.
+- **Quizzes**: 각 스터디 그룹에 속한 퀴즈 정보를 저장하는 테이블입니다.
+- **Assignments**: 각 스터디 그룹에 속한 과제 정보를 저장하는 테이블입니다.
+- **Announcements**: 각 스터디 그룹에 속한 공지사항 정보를 저장하는 테이블입니다.
+- **UserGroups**: 사용자가 어떤 스터디 그룹에 속해 있는지를 나타내는 관계 테이블입니다.
+
+각 테이블 간의 관계는 외래 키를 통해 정의되며, 이는 데이터의 무결성을 유지하는 데 중요한 역할을 합니다.","아래는 ""스터디 그룹 성과 분석 도구"" 프로젝트를 위한 ERD 데이터입니다. 이 데이터는 프로젝트 설명과 요구사항을 바탕으로 설계되었습니다. 각 테이블은 프로젝트의 핵심 기능을 지원하기 위해 설계되었으며, 테이블 간의 관계도 정의되어 있습니다.
+
+```json
+{
+  ""entities"": [
+    {
+      ""name"": ""User"",
+      ""columns"": [
+        {""name"": ""user_id"", ""type"": ""SERIAL"", ""primary_key"": true},
+        {""name"": ""email"", ""type"": ""VARCHAR(255)"", ""unique"": true, ""not_null"": true},
+        {""name"": ""password"", ""type"": ""VARCHAR(255)"", ""not_null"": true},
+        {""name"": ""name"", ""type"": ""VARCHAR(100)"", ""not_null"": true},
+        {""name"": ""role"", ""type"": ""VARCHAR(50)"", ""not_null"": true, ""comment"": ""Possible values: learner, educator, admin""}
+      ]
+    },
+    {
+      ""name"": ""StudyGroup"",
+      ""columns"": [
+        {""name"": ""group_id"", ""type"": ""SERIAL"", ""primary_key"": true},
+        {""name"": ""name"", ""type"": ""VARCHAR(255)"", ""not_null"": true},
+        {""name"": ""description"", ""type"": ""TEXT""},
+        {""name"": ""created_at"", ""type"": ""TIMESTAMP"", ""default"": ""CURRENT_TIMESTAMP""}
+      ]
+    },
+    {
+      ""name"": ""UserGroup"",
+      ""columns"": [
+        {""name"": ""user_id"", ""type"": ""INTEGER"", ""not_null"": true, ""foreign_key"": {""references"": ""User"", ""column"": ""user_id""}},
+        {""name"": ""group_id"", ""type"": ""INTEGER"", ""not_null"": true, ""foreign_key"": {""references"": ""StudyGroup"", ""column"": ""group_id""}},
+        {""name"": ""joined_at"", ""type"": ""TIMESTAMP"", ""default"": ""CURRENT_TIMESTAMP""},
+        {""name"": ""role"", ""type"": ""VARCHAR(50)"", ""not_null"": true, ""comment"": ""Possible values: member, leader""},
+        {""primary_key"": [""user_id"", ""group_id""]}
+      ]
+    },
+    {
+      ""name"": ""Quiz"",
+      ""columns"": [
+        {""name"": ""quiz_id"", ""type"": ""SERIAL"", ""primary_key"": true},
+        {""name"": ""group_id"", ""type"": ""INTEGER"", ""not_null"": true, ""foreign_key"": {""references"": ""StudyGroup"", ""column"": ""group_id""}},
+        {""name"": ""title"", ""type"": ""VARCHAR(255)"", ""not_null"": true},
+        {""name"": ""created_at"", ""type"": ""TIMESTAMP"", ""default"": ""CURRENT_TIMESTAMP""}
+      ]
+    },
+    {
+      ""name"": ""QuizQuestion"",
+      ""columns"": [
+        {""name"": ""question_id"", ""type"": ""SERIAL"", ""primary_key"": true},
+        {""name"": ""quiz_id"", ""type"": ""INTEGER"", ""not_null"": true, ""foreign_key"": {""references"": ""Quiz"", ""column"": ""quiz_id""}},
+        {""name"": ""question_text"", ""type"": ""TEXT"", ""not_null"": true},
+        {""name"": ""correct_answer"", ""type"": ""TEXT"", ""not_null"": true}
+      ]
+    },
+    {
+      ""name"": ""QuizResponse"",
+      ""columns"": [
+        {""name"": ""response_id"", ""type"": ""SERIAL"", ""primary_key"": true},
+        {""name"": ""user_id"", ""type"": ""INTEGER"", ""not_null"": true, ""foreign_key"": {""references"": ""User"", ""column"": ""user_id""}},
+        {""name"": ""quiz_id"", ""type"": ""INTEGER"", ""not_null"": true, ""foreign_key"": {""references"": ""Quiz"", ""column"": ""quiz_id""}},
+        {""name"": ""score"", ""type"": ""INTEGER"", ""not_null"": true},
+        {""name"": ""submitted_at"", ""type"": ""TIMESTAMP"", ""default"": ""CURRENT_TIMESTAMP""}
+      ]
+    },
+    {
+      ""name"": ""Announcement"",
+      ""columns"": [
+        {""name"": ""announcement_id"", ""type"": ""SERIAL"", ""primary_key"": true},
+        {""name"": ""group_id"", ""type"": ""INTEGER"", ""not_null"": true, ""foreign_key"": {""references"": ""StudyGroup"", ""column"": ""group_id""}},
+        {""name"": ""title"", ""type"": ""VARCHAR(255)"", ""not_null"": true},
+        {""name"": ""content"", ""type"": ""TEXT"", ""not_null"": true},
+        {""name"": ""posted_at"", ""type"": ""TIMESTAMP"", ""default"": ""CURRENT_TIMESTAMP""}
+      ]
+    },
+    {
+      ""name"": ""Assignment"",
+      ""columns"": [
+        {""name"": ""assignment_id"", ""type"": ""SERIAL"", ""primary_key"": true},
+        {""name"": ""group_id"", ""type"": ""INTEGER"", ""not_null"": true, ""foreign_key"": {""references"": ""StudyGroup"", ""column"": ""group_id""}},
+        {""name"": ""title"", ""type"": ""VARCHAR(255)"", ""not_null"": true},
+        {""name"": ""description"", ""type"": ""TEXT""},
+        {""name"": ""due_date"", ""type"": ""TIMESTAMP"", ""not_null"": true}
+      ]
+    },
+    {
+      ""name"": ""AssignmentSubmission"",
+      ""columns"": [
+        {""name"": ""submission_id"", ""type"": ""SERIAL"", ""primary_key"": true},
+        {""name"": ""assignment_id"", ""type"": ""INTEGER"", ""not_null"": true, ""foreign_key"": {""references"": ""Assignment"", ""column"": ""assignment_id""}},
+        {""name"": ""user_id"", ""type"": ""INTEGER"", ""not_null"": true, ""foreign_key"": {""references"": ""User"", ""column"": ""user_id""}},
+        {""name"": ""submitted_at"", ""type"": ""TIMESTAMP"", ""default"": ""CURRENT_TIMESTAMP""},
+        {""name"": ""status"", ""type"": ""VARCHAR(50)"", ""not_null"": true, ""comment"": ""Possible values: submitted, graded""}
+      ]
+    }
+  ],
+  ""relationships"": [
+    {""from"": ""UserGroup"", ""to"": ""User"", ""type"": ""many-to-one"", ""foreign_key"": ""user_id""},
+    {""from"": ""UserGroup"", ""to"": ""StudyGroup"", ""type"": ""many-to-one"", ""foreign_key"": ""group_id""},
+    {""from"": ""Quiz"", ""to"": ""StudyGroup"", ""type"": ""many-to-one"", ""foreign_key"": ""group_id""},
+    {""from"": ""QuizQuestion"", ""to"": ""Quiz"", ""type"": ""many-to-one"", ""foreign_key"": ""quiz_id""},
+    {""from"": ""QuizResponse"", ""to"": ""User"", ""type"": ""many-to-one"", ""foreign_key"": ""user_id""},
+    {""from"": ""QuizResponse"", ""to"": ""Quiz"", ""type"": ""many-to-one"", ""foreign_key"": ""quiz_id""},
+    {""from"": ""Announcement"", ""to"": ""StudyGroup"", ""type"": ""many-to-one"", ""foreign_key"": ""group_id""},
+    {""from"": ""Assignment"", ""to"": ""StudyGroup"", ""type"": ""many-to-one"", ""foreign_key"": ""group_id""},
+    {""from"": ""AssignmentSubmission"", ""to"": ""Assignment"", ""type"": ""many-to-one"", ""foreign_key"": ""assignment_id""},
+    {""from"": ""AssignmentSubmission"", ""to"": ""User"", ""type"": ""many-to-one"", ""foreign_key"": ""user_id""}
+  ]
+}
+```
+
+이 ERD는 사용자가 스터디 그룹에 참여하고, 퀴즈를 생성 및 응시하며, 공지사항과 과제를 관리할 수 있는 구조를 제공합니다. 각 테이블은 프로젝트의 주요 기능을 지원하며, 관계는 데이터의 일관성을 유지하도록 설계되었습니다."
+"[{'projectName': '기억의 다리', 'projectTarget': '치매 환자와 그 가족', 'mainFunction': ['추억 사진 공유 및 댓글 기능', '과거 기억 회상을 위한 알림 서비스', '가족 간의 소통을 위한 메모 및 이야기 공유 기능'], 'techStack': ['React', 'Node.js', 'MongoDB'], 'projectDescription': '‘기억박물관’은 치매 환자와 그 가족을 위한 따뜻한 기억 회복 웹사이트입니다. 사용자는 일상 사진을 업로드하고, 챗봇과의 자연스러운 대화를 통해 사진 속 인물, 장소, 상황에 대한 정보를 되새깁니다. 이렇게 수집된 정보는 자동으로 사용자만의 디지털 다이어리로 정리되며, 환자가 매일 한 번씩 과거의 소중한 기억을 다시 볼 수 있도록 돕는 회상 기능도 포함되어 있습니다. 가족 구성원은 다이어리에 코멘트를 남기거나 설명을 추가할 수 있어, 함께 기억을 공유하고 감정을 나누는 소통의 장이 됩니다. 인지 자극과 정서적 유대감을 동시에 고려한 이 플랫폼은 치매 환자의 삶의 질을 높이고 가족 간의 관계를 더욱 돈독히 만들어주는 기억의 동반자입니다.'}]","[{'requirementType': 'FUNCTIONAL', 'content': '사용자는 최대 10장의 사진을 한 번에 업로드 할 수 있어야 하며, 각 사진에 대해 제목과 설명을 추가할 수 있어야 한다.'}, {'requirementType': 'FUNCTIONAL', 'content': '챗봇은 사용자가 업로드한 사진에 대한 질문에 대해 95% 이상의 정확도로 관련 정보를 제공해야 한다.'}, {'requirementType': 'FUNCTIONAL', 'content': '가족 구성원은 각자의 계정을 통해 사용자 다이어리에 댓글을 남기고, 메모를 추가할 수 있어야 하며, 이러한 활동에 대한 알림을 받을 수 있어야 한다.'}, {'requirementType': 'PERFORMANCE', 'content': '시스템은 사진 업로드 요청에 대해 3초 이내에 응답해야 하며, 동시에 최대 100명의 사용자가 사진을 업로드할 수 있어야 한다.'}, {'requirementType': 'PERFORMANCE', 'content': '사용자가 챗봇과 대화하는 동안 평균 응답 시간은 2초 이내여야 하며, 처리량은 초당 최소 50명의 사용자 요청을 처리할 수 있어야 한다.'}, {'requirementType': 'PERFORMANCE', 'content': '시스템의 가용성은 연간 99.5% 이상이어야 하며, 사용자는 언제든지 지난 30일간의 다이어리에 접근할 수 있어야 한다.'}, {'requirementType': 'FUNCTIONAL', 'content': '사용자는 사진에 태그를 추가하여 특정 인물이나 장소를 식별할 수 있어야 하며, 태그된 사진은 검색 기능을 통해 쉽게 찾을 수 있어야 한다.'}, {'requirementType': 'FUNCTIONAL', 'content': '사용자는 챗봇과의 대화 중에 음성 인식 기능을 통해 질문을 할 수 있어야 하며, 이 기능은 90% 이상의 정확도로 작동해야 한다.'}, {'requirementType': 'PERFORMANCE', 'content': '시스템은 사용자 요청에 대한 응답을 평균 1초 이내에 처리할 수 있어야 하며, 동시에 최대 200명의 사용자가 시스템을 이용할 수 있어야 한다.'}, {'requirementType': 'PERFORMANCE', 'content': '시스템은 데이터베이스 쿼리에 대해 평균 500ms 이내에 응답해야 하며, 최대 1000개의 동시 쿼리를 처리할 수 있어야 한다.'}, {'requirementType': 'FUNCTIONAL', 'content': '사용자는 다이어리의 특정 날짜에 대한 기억을 검색할 수 있는 기능을 제공받아야 하며, 이 기능은 직관적인 UI로 구현되어야 한다.'}]","{'project_info': {'title': '기억의 다리', 'category': '웹앱', 'target_users': ['치매 환자', '치매 환자의 가족', '간병인', '치매 관련 전문가'], 'core_features': ['추억 사진 공유 및 댓글 기능', '과거 기억 회상을 위한 알림 서비스', '가족 간의 소통을 위한 메모 및 이야기 공유 기능', '사진 태그 및 검색 기능', '챗봇과의 음성 인식 대화 기능'], 'technology_stack': ['React', 'Node.js', 'MongoDB', 'WebSocket', 'TensorFlow.js (챗봇 및 음성 인식)'], 'problem_solving': {'current_problem': '치매 환자들은 기억을 잃어가며, 가족 간의 소통이 단절되고 정서적 고립감을 느끼는 경우가 많습니다. 기존의 치매 관리 솔루션은 이러한 정서적 유대감을 강화하는 데 한계가 있습니다.', 'solution_idea': '‘기억의 다리’는 치매 환자와 가족이 함께 추억을 공유하고 소통할 수 있는 플랫폼입니다. 사용자는 사진을 업로드하고, 챗봇과의 대화를 통해 그 사진에 대한 기억을 되살릴 수 있으며, 이 과정에서 수집된 정보는 개인화된 디지털 다이어리로 정리됩니다. 챗봇은 자연어 처리와 음성 인식 기술을 활용하여 사용자와의 상호작용을 원활하게 하며, 가족 구성원은 댓글과 메모를 통해 소통할 수 있습니다. 이 플랫폼은 치매 환자의 기억 회복을 돕고 가족 간의 정서적 유대감을 강화하는 데 중점을 두고 있습니다.', 'expected_benefits': ['치매 환자의 기억 회복 및 정서적 안정', '가족 간의 소통 증진 및 관계 강화', '치매 관리에 대한 새로운 접근법 제공']}}}","{'erd_tables': [{'name': 'Users', 'erd_columns': [{'name': 'user_id', 'data_type': 'ObjectId', 'is_primary_key': True, 'is_foreign_key': False, 'is_nullable': False}, {'name': 'username', 'data_type': 'String', 'is_primary_key': False, 'is_foreign_key': False, 'is_nullable': False}, {'name': 'password', 'data_type': 'String', 'is_primary_key': False, 'is_foreign_key': False, 'is_nullable': False}, {'name': 'email', 'data_type': 'String', 'is_primary_key': False, 'is_foreign_key': False, 'is_nullable': False}, {'name': 'role', 'data_type': 'String', 'is_primary_key': False, 'is_foreign_key': False, 'is_nullable': False}]}, {'name': 'Photos', 'erd_columns': [{'name': 'photo_id', 'data_type': 'ObjectId', 'is_primary_key': True, 'is_foreign_key': False, 'is_nullable': False}, {'name': 'user_id', 'data_type': 'ObjectId', 'is_primary_key': False, 'is_foreign_key': True, 'is_nullable': False}, {'name': 'title', 'data_type': 'String', 'is_primary_key': False, 'is_foreign_key': False, 'is_nullable': False}, {'name': 'description', 'data_type': 'String', 'is_primary_key': False, 'is_foreign_key': False, 'is_nullable': True}, {'name': 'tags', 'data_type': 'Array', 'is_primary_key': False, 'is_foreign_key': False, 'is_nullable': True}]}, {'name': 'Comments', 'erd_columns': [{'name': 'comment_id', 'data_type': 'ObjectId', 'is_primary_key': True, 'is_foreign_key': False, 'is_nullable': False}, {'name': 'photo_id', 'data_type': 'ObjectId', 'is_primary_key': False, 'is_foreign_key': True, 'is_nullable': False}, {'name': 'user_id', 'data_type': 'ObjectId', 'is_primary_key': False, 'is_foreign_key': True, 'is_nullable': False}, {'name': 'content', 'data_type': 'String', 'is_primary_key': False, 'is_foreign_key': False, 'is_nullable': False}]}, {'name': 'Diaries', 'erd_columns': [{'name': 'diary_id', 'data_type': 'ObjectId', 'is_primary_key': True, 'is_foreign_key': False, 'is_nullable': False}, {'name': 'user_id', 'data_type': 'ObjectId', 'is_primary_key': False, 'is_foreign_key': True, 'is_nullable': False}, {'name': 'date', 'data_type': 'Date', 'is_primary_key': False, 'is_foreign_key': False, 'is_nullable': False}, {'name': 'memories', 'data_type': 'Array', 'is_primary_key': False, 'is_foreign_key': False, 'is_nullable': True}]}, {'name': 'Notifications', 'erd_columns': [{'name': 'notification_id', 'data_type': 'ObjectId', 'is_primary_key': True, 'is_foreign_key': False, 'is_nullable': False}, {'name': 'user_id', 'data_type': 'ObjectId', 'is_primary_key': False, 'is_foreign_key': True, 'is_nullable': False}, {'name': 'message', 'data_type': 'String', 'is_primary_key': False, 'is_foreign_key': False, 'is_nullable': False}, {'name': 'is_read', 'data_type': 'Boolean', 'is_primary_key': False, 'is_foreign_key': False, 'is_nullable': False}]}], 'erd_relationships': [{'from_table': 'Users', 'to_table': 'Photos', 'relationship_type': 'one-to-many', 'foreign_key': 'user_id', 'constraint_name': 'FK_Users_Photos'}, {'from_table': 'Photos', 'to_table': 'Comments', 'relationship_type': 'one-to-many', 'foreign_key': 'photo_id', 'constraint_name': 'FK_Photos_Comments'}, {'from_table': 'Users', 'to_table': 'Comments', 'relationship_type': 'one-to-many', 'foreign_key': 'user_id', 'constraint_name': 'FK_Users_Comments'}, {'from_table': 'Users', 'to_table': 'Diaries', 'relationship_type': 'one-to-many', 'foreign_key': 'user_id', 'constraint_name': 'FK_Users_Diaries'}, {'from_table': 'Users', 'to_table': 'Notifications', 'relationship_type': 'one-to-many', 'foreign_key': 'user_id', 'constraint_name': 'FK_Users_Notifications'}]}","아래는 ""기억의 다리"" 프로젝트를 위한 ERD(Entity Relationship Diagram) 데이터입니다. 이 ERD는 사용자의 요구사항을 기반으로 테이블 구조, 컬럼 정보, 그리고 관계를 포함하고 있습니다.
+
+```json
+{
+  ""erd_tables"": [
+    {
+      ""name"": ""Users"",
+      ""columns"": [
+        {""name"": ""user_id"", ""data_type"": ""ObjectId"", ""is_primary_key"": true, ""is_foreign_key"": false, ""is_nullable"": false},
+        {""name"": ""username"", ""data_type"": ""String"", ""is_primary_key"": false, ""is_foreign_key"": false, ""is_nullable"": false},
+        {""name"": ""email"", ""data_type"": ""String"", ""is_primary_key"": false, ""is_foreign_key"": false, ""is_nullable"": false},
+        {""name"": ""role"", ""data_type"": ""String"", ""is_primary_key"": false, ""is_foreign_key"": false, ""is_nullable"": false}
+      ]
+    },
+    {
+      ""name"": ""Photos"",
+      ""columns"": [
+        {""name"": ""photo_id"", ""data_type"": ""ObjectId"", ""is_primary_key"": true, ""is_foreign_key"": false, ""is_nullable"": false},
+        {""name"": ""user_id"", ""data_type"": ""ObjectId"", ""is_primary_key"": false, ""is_foreign_key"": true, ""is_nullable"": false},
+        {""name"": ""photo_url"", ""data_type"": ""String"", ""is_primary_key"": false, ""is_foreign_key"": false, ""is_nullable"": false},
+        {""name"": ""description"", ""data_type"": ""String"", ""is_primary_key"": false, ""is_foreign_key"": false, ""is_nullable"": true},
+        {""name"": ""created_at"", ""data_type"": ""Date"", ""is_primary_key"": false, ""is_foreign_key"": false, ""is_nullable"": false}
+      ]
+    },
+    {
+      ""name"": ""Comments"",
+      ""columns"": [
+        {""name"": ""comment_id"", ""data_type"": ""ObjectId"", ""is_primary_key"": true, ""is_foreign_key"": false, ""is_nullable"": false},
+        {""name"": ""photo_id"", ""data_type"": ""ObjectId"", ""is_primary_key"": false, ""is_foreign_key"": true, ""is_nullable"": false},
+        {""name"": ""user_id"", ""data_type"": ""ObjectId"", ""is_primary_key"": false, ""is_foreign_key"": true, ""is_nullable"": false},
+        {""name"": ""content"", ""data_type"": ""String"", ""is_primary_key"": false, ""is_foreign_key"": false, ""is_nullable"": false},
+        {""name"": ""created_at"", ""data_type"": ""Date"", ""is_primary_key"": false, ""is_foreign_key"": false, ""is_nullable"": false}
+      ]
+    },
+    {
+      ""name"": ""Memories"",
+      ""columns"": [
+        {""name"": ""memory_id"", ""data_type"": ""ObjectId"", ""is_primary_key"": true, ""is_foreign_key"": false, ""is_nullable"": false},
+        {""name"": ""user_id"", ""data_type"": ""ObjectId"", ""is_primary_key"": false, ""is_foreign_key"": true, ""is_nullable"": false},
+        {""name"": ""memory_content"", ""data_type"": ""String"", ""is_primary_key"": false, ""is_foreign_key"": false, ""is_nullable"": false},
+        {""name"": ""created_at"", ""data_type"": ""Date"", ""is_primary_key"": false, ""is_foreign_key"": false, ""is_nullable"": false}
+      ]
+    },
+    {
+      ""name"": ""Notifications"",
+      ""columns"": [
+        {""name"": ""notification_id"", ""data_type"": ""ObjectId"", ""is_primary_key"": true, ""is_foreign_key"": false, ""is_nullable"": false},
+        {""name"": ""user_id"", ""data_type"": ""ObjectId"", ""is_primary_key"": false, ""is_foreign_key"": true, ""is_nullable"": false},
+        {""name"": ""notification_content"", ""data_type"": ""String"", ""is_primary_key"": false, ""is_foreign_key"": false, ""is_nullable"": false},
+        {""name"": ""scheduled_time"", ""data_type"": ""Date"", ""is_primary_key"": false, ""is_foreign_key"": false, ""is_nullable"": false}
+      ]
+    }
+  ],
+  ""erd_relationships"": [
+    {
+      ""from_table"": ""Users"",
+      ""to_table"": ""Photos"",
+      ""relationship_type"": ""one-to-many"",
+      ""foreign_key"": ""user_id"",
+      ""constraint_name"": ""FK_Users_Photos""
+    },
+    {
+      ""from_table"": ""Photos"",
+      ""to_table"": ""Comments"",
+      ""relationship_type"": ""one-to-many"",
+      ""foreign_key"": ""photo_id"",
+      ""constraint_name"": ""FK_Photos_Comments""
+    },
+    {
+      ""from_table"": ""Users"",
+      ""to_table"": ""Comments"",
+      ""relationship_type"": ""one-to-many"",
+      ""foreign_key"": ""user_id"",
+      ""constraint_name"": ""FK_Users_Comments""
+    },
+    {
+      ""from_table"": ""Users"",
+      ""to_table"": ""Memories"",
+      ""relationship_type"": ""one-to-many"",
+      ""foreign_key"": ""user_id"",
+      ""constraint_name"": ""FK_Users_Memories""
+    },
+    {
+      ""from_table"": ""Users"",
+      ""to_table"": ""Notifications"",
+      ""relationship_type"": ""one-to-many"",
+      ""foreign_key"": ""user_id"",
+      ""constraint_name"": ""FK_Users_Notifications""
+    }
+  ]
+}
+```
+
+### 설명
+- **Users**: 사용자 정보를 저장하는 테이블입니다. 각 사용자는 여러 사진, 댓글, 메모, 알림을 가질 수 있습니다.
+- **Photos**: 사용자가 업로드한 사진 정보를 저장하는 테이블입니다. 각 사진은 여러 댓글을 가질 수 있습니다.
+- **Comments**: 사진에 대한 댓글 정보를 저장하는 테이블입니다. 각 댓글은 특정 사진과 사용자에 연결됩니다.
+- **Memories**: 사용자가 작성한 메모리 정보를 저장하는 테이블입니다. 각 메모리는 특정 사용자에 연결됩니다.
+- **Notifications**: 사용자가 받을 알림 정보를 저장하는 테이블입니다. 각 알림은 특정 사용자에 연결됩니다.
+
+이 ERD는 ""기억의 다리"" 프로젝트의 핵심 기능을 지원하는 데이터 구조를 제공합니다.","```json
+{
+  ""entities"": [
+    {
+      ""name"": ""Users"",
+      ""columns"": [
+        {
+          ""name"": ""user_id"",
+          ""type"": ""ObjectId"",
+          ""primary_key"": true
+        },
+        {
+          ""name"": ""name"",
+          ""type"": ""String"",
+          ""nullable"": false
+        },
+        {
+          ""name"": ""email"",
+          ""type"": ""String"",
+          ""unique"": true,
+          ""nullable"": false
+        },
+        {
+          ""name"": ""password"",
+          ""type"": ""String"",
+          ""nullable"": false
+        },
+        {
+          ""name"": ""role"",
+          ""type"": ""String"",
+          ""nullable"": false,
+          ""description"": ""Possible values: 'patient', 'family', 'caregiver', 'expert'""
+        },
+        {
+          ""name"": ""created_at"",
+          ""type"": ""Date"",
+          ""nullable"": false
+        }
+      ]
+    },
+    {
+      ""name"": ""Photos"",
+      ""columns"": [
+        {
+          ""name"": ""photo_id"",
+          ""type"": ""ObjectId"",
+          ""primary_key"": true
+        },
+        {
+          ""name"": ""user_id"",
+          ""type"": ""ObjectId"",
+          ""foreign_key"": true,
+          ""references"": ""Users(user_id)""
+        },
+        {
+          ""name"": ""url"",
+          ""type"": ""String"",
+          ""nullable"": false
+        },
+        {
+          ""name"": ""description"",
+          ""type"": ""String"",
+          ""nullable"": true
+        },
+        {
+          ""name"": ""tags"",
+          ""type"": ""Array"",
+          ""nullable"": true
+        },
+        {
+          ""name"": ""created_at"",
+          ""type"": ""Date"",
+          ""nullable"": false
+        }
+      ]
+    },
+    {
+      ""name"": ""Comments"",
+      ""columns"": [
+        {
+          ""name"": ""comment_id"",
+          ""type"": ""ObjectId"",
+          ""primary_key"": true
+        },
+        {
+          ""name"": ""photo_id"",
+          ""type"": ""ObjectId"",
+          ""foreign_key"": true,
+          ""references"": ""Photos(photo_id)""
+        },
+        {
+          ""name"": ""user_id"",
+          ""type"": ""ObjectId"",
+          ""foreign_key"": true,
+          ""references"": ""Users(user_id)""
+        },
+        {
+          ""name"": ""content"",
+          ""type"": ""String"",
+          ""nullable"": false
+        },
+        {
+          ""name"": ""created_at"",
+          ""type"": ""Date"",
+          ""nullable"": false
+        }
+      ]
+    },
+    {
+      ""name"": ""Memories"",
+      ""columns"": [
+        {
+          ""name"": ""memory_id"",
+          ""type"": ""ObjectId"",
+          ""primary_key"": true
+        },
+        {
+          ""name"": ""user_id"",
+          ""type"": ""ObjectId"",
+          ""foreign_key"": true,
+          ""references"": ""Users(user_id)""
+        },
+        {
+          ""name"": ""title"",
+          ""type"": ""String"",
+          ""nullable"": false
+        },
+        {
+          ""name"": ""content"",
+          ""type"": ""String"",
+          ""nullable"": false
+        },
+        {
+          ""name"": ""created_at"",
+          ""type"": ""Date"",
+          ""nullable"": false
+        }
+      ]
+    },
+    {
+      ""name"": ""Reminders"",
+      ""columns"": [
+        {
+          ""name"": ""reminder_id"",
+          ""type"": ""ObjectId"",
+          ""primary_key"": true
+        },
+        {
+          ""name"": ""user_id"",
+          ""type"": ""ObjectId"",
+          ""foreign_key"": true,
+          ""references"": ""Users(user_id)""
+        },
+        {
+          ""name"": ""memory_id"",
+          ""type"": ""ObjectId"",
+          ""foreign_key"": true,
+          ""references"": ""Memories(memory_id)""
+        },
+        {
+          ""name"": ""reminder_time"",
+          ""type"": ""Date"",
+          ""nullable"": false
+        },
+        {
+          ""name"": ""created_at"",
+          ""type"": ""Date"",
+          ""nullable"": false
+        }
+      ]
+    },
+    {
+      ""name"": ""Chats"",
+      ""columns"": [
+        {
+          ""name"": ""chat_id"",
+          ""type"": ""ObjectId"",
+          ""primary_key"": true
+        },
+        {
+          ""name"": ""user_id"",
+          ""type"": ""ObjectId"",
+          ""foreign_key"": true,
+          ""references"": ""Users(user_id)""
+        },
+        {
+          ""name"": ""content"",
+          ""type"": ""String"",
+          ""nullable"": false
+        },
+        {
+          ""name"": ""created_at"",
+          ""type"": ""Date"",
+          ""nullable"": false
+        }
+      ]
+    }
+  ],
+  ""relationships"": [
+    {
+      ""type"": ""OneToMany"",
+      ""from"": ""Users"",
+      ""to"": ""Photos"",
+      ""key"": ""user_id""
+    },
+    {
+      ""type"": ""OneToMany"",
+      ""from"": ""Photos"",
+      ""to"": ""Comments"",
+      ""key"": ""photo_id""
+    },
+    {
+      ""type"": ""OneToMany"",
+      ""from"": ""Users"",
+      ""to"": ""Comments"",
+      ""key"": ""user_id""
+    },
+    {
+      ""type"": ""OneToMany"",
+      ""from"": ""Users"",
+      ""to"": ""Memories"",
+      ""key"": ""user_id""
+    },
+    {
+      ""type"": ""OneToMany"",
+      ""from"": ""Users"",
+      ""to"": ""Reminders"",
+      ""key"": ""user_id""
+    },
+    {
+      ""type"": ""OneToMany"",
+      ""from"": ""Memories"",
+      ""to"": ""Reminders"",
+      ""key"": ""memory_id""
+    },
+    {
+      ""type"": ""OneToMany"",
+      ""from"": ""Users"",
+      ""to"": ""Chats"",
+      ""key"": ""user_id""
+    }
+  ]
+}
+```"
+"[{'projectName': '장애인 친화 대중교통 안내 앱', 'projectTarget': '대중교통을 이용하는 보행 약자', 'mainFunction': ['장애물 없는 경로 안내', '실시간 대중교통 정보 제공', '주변 장애물 정보 알림'], 'techStack': ['React Native', 'Django', 'PostgreSQL'], 'projectDescription': '이 앱은 보행 약자들을 위한 지하철 길찾기 앱으로, 계단 없이 이동할 수 있는 경로를 안내합니다. 기존의 빠른 환승 정보나 지하철 운행 시간 외에도, 보행 약자를 위한 엘리베이터, 에스컬레이터 위치와 장애물 없는 출입구를 표시해줘 사용자가 편리하게 이동할 수 있습니다. 추가적으로, 실시간 교통 상황, 출입구 혼잡도, 장애물 정보 등을 제공해 안전하고 효율적인 경로를 추천하며, 대중교통 외에도 주변의 장애물 없는 보행 경로를 알려주는 기능도 포함됩니다. 이를 통해 보행약자는 더 많은 독립성을 갖고 편리하게 지하철을 이용할 수 있습니다.'}]","[{'requirementType': 'FUNCTIONAL', 'content': '사용자는 앱을 통해 엘리베이터와 에스컬레이터의 위치를 확인할 수 있어야 한다.'}, {'requirementType': 'FUNCTIONAL', 'content': '사용자는 실시간으로 대중교통의 운행 상황과 출입구의 혼잡도를 확인할 수 있어야 한다.'}, {'requirementType': 'FUNCTIONAL', 'content': '사용자는 장애물 없는 보행 경로를 확인하고 그에 따른 최적의 경로를 추천받을 수 있어야 한다.'}, {'requirementType': 'PERFORMANCE', 'content': '앱의 경로 추천 응답 시간은 3초 이내여야 한다.'}, {'requirementType': 'PERFORMANCE', 'content': '실시간 데이터 업데이트는 5분 이내에 이루어져야 하며, 95% 이상의 가용성을 유지해야 한다.'}, {'requirementType': 'PERFORMANCE', 'content': '사용자가 동시에 사용할 수 있는 최대 동시 접속자는 1000명 이상이어야 하며, 시스템은 이를 원활하게 처리할 수 있어야 한다.'}, {'requirementType': 'FUNCTIONAL', 'content': '사용자는 주변의 장애물 정보를 실시간으로 알림받을 수 있어야 한다.'}, {'requirementType': 'FUNCTIONAL', 'content': '사용자는 이전에 검색한 경로를 저장하고 쉽게 접근할 수 있는 기능을 제공받아야 한다.'}, {'requirementType': 'PERFORMANCE', 'content': '앱의 장애물 정보 알림 응답 시간은 2초 이내여야 한다.'}, {'requirementType': 'PERFORMANCE', 'content': '시스템은 99% 이상의 가용성을 유지하며, 최대 2000명의 동시 접속자를 지원해야 한다.'}]","{'project_info': {'title': '장애인 친화 대중교통 안내 앱', 'category': '모바일앱', 'target_users': ['대중교통을 이용하는 보행 약자', '장애인 가족 및 보호자', '대중교통 운영자'], 'core_features': ['장애물 없는 경로 안내', '실시간 대중교통 정보 제공', '주변 장애물 정보 알림', '엘리베이터 및 에스컬레이터 위치 확인', '출입구 혼잡도 정보 제공', '이전 검색 경로 저장 기능'], 'technology_stack': ['React Native', 'Django', 'PostgreSQL', 'WebSocket', 'Google Maps API'], 'problem_solving': {'current_problem': '대중교통을 이용하는 보행 약자들은 장애물로 인해 이동에 어려움을 겪고 있으며, 기존의 대중교통 앱은 이들의 특수한 요구를 충족하지 못하고 있습니다.', 'solution_idea': '이 앱은 보행 약자들이 지하철을 안전하고 편리하게 이용할 수 있도록 설계되었습니다. 사용자가 엘리베이터와 에스컬레이터의 위치를 실시간으로 확인할 수 있으며, 장애물 없는 경로를 추천합니다. 또한, 실시간으로 대중교통의 운행 상황과 출입구의 혼잡도를 제공하여 사용자에게 최적의 경로를 안내합니다. 이 앱은 사용자 경험을 극대화하기 위해 직관적인 UI/UX 디자인을 채택하고, WebSocket을 통해 실시간 데이터를 제공하여 빠른 응답성을 보장합니다.', 'expected_benefits': ['보행 약자의 이동 편의성 증대', '대중교통 이용률 향상', '사회적 포용성 증진']}}}","{'erd_tables': [{'name': 'Users', 'erd_columns': [{'name': 'user_id', 'data_type': 'SERIAL', 'is_primary_key': True, 'is_foreign_key': False, 'is_nullable': False}, {'name': 'username', 'data_type': 'VARCHAR(50)', 'is_primary_key': False, 'is_foreign_key': False, 'is_nullable': False}, {'name': 'email', 'data_type': 'VARCHAR(100)', 'is_primary_key': False, 'is_foreign_key': False, 'is_nullable': False}]}, {'name': 'Routes', 'erd_columns': [{'name': 'route_id', 'data_type': 'SERIAL', 'is_primary_key': True, 'is_foreign_key': False, 'is_nullable': False}, {'name': 'start_location', 'data_type': 'VARCHAR(100)', 'is_primary_key': False, 'is_foreign_key': False, 'is_nullable': False}, {'name': 'end_location', 'data_type': 'VARCHAR(100)', 'is_primary_key': False, 'is_foreign_key': False, 'is_nullable': False}, {'name': 'user_id', 'data_type': 'INTEGER', 'is_primary_key': False, 'is_foreign_key': True, 'is_nullable': False}]}, {'name': 'Elevators', 'erd_columns': [{'name': 'elevator_id', 'data_type': 'SERIAL', 'is_primary_key': True, 'is_foreign_key': False, 'is_nullable': False}, {'name': 'location', 'data_type': 'VARCHAR(100)', 'is_primary_key': False, 'is_foreign_key': False, 'is_nullable': False}]}, {'name': 'Escalators', 'erd_columns': [{'name': 'escalator_id', 'data_type': 'SERIAL', 'is_primary_key': True, 'is_foreign_key': False, 'is_nullable': False}, {'name': 'location', 'data_type': 'VARCHAR(100)', 'is_primary_key': False, 'is_foreign_key': False, 'is_nullable': False}]}, {'name': 'Notifications', 'erd_columns': [{'name': 'notification_id', 'data_type': 'SERIAL', 'is_primary_key': True, 'is_foreign_key': False, 'is_nullable': False}, {'name': 'message', 'data_type': 'TEXT', 'is_primary_key': False, 'is_foreign_key': False, 'is_nullable': False}, {'name': 'user_id', 'data_type': 'INTEGER', 'is_primary_key': False, 'is_foreign_key': True, 'is_nullable': False}]}], 'erd_relationships': [{'from_table': 'Users', 'to_table': 'Routes', 'relationship_type': 'one-to-many', 'foreign_key': 'user_id', 'constraint_name': 'fk_user_routes'}, {'from_table': 'Users', 'to_table': 'Notifications', 'relationship_type': 'one-to-many', 'foreign_key': 'user_id', 'constraint_name': 'fk_user_notifications'}]}","아래는 ""장애인 친화 대중교통 안내 앱""의 ERD(Entity Relationship Diagram) 구조를 JSON 형태로 표현한 것입니다. 이 ERD는 사용자의 요구사항과 프로젝트 정보를 바탕으로 설계되었습니다.
+
+```json
+{
+  ""erd_tables"": [
+    {
+      ""name"": ""Users"",
+      ""columns"": [
+        {""name"": ""user_id"", ""data_type"": ""SERIAL"", ""is_primary_key"": true, ""is_foreign_key"": false, ""is_nullable"": false},
+        {""name"": ""username"", ""data_type"": ""VARCHAR(50)"", ""is_primary_key"": false, ""is_foreign_key"": false, ""is_nullable"": false},
+        {""name"": ""email"", ""data_type"": ""VARCHAR(100)"", ""is_primary_key"": false, ""is_foreign_key"": false, ""is_nullable"": false},
+        {""name"": ""role"", ""data_type"": ""VARCHAR(20)"", ""is_primary_key"": false, ""is_foreign_key"": false, ""is_nullable"": false}
+      ]
+    },
+    {
+      ""name"": ""Routes"",
+      ""columns"": [
+        {""name"": ""route_id"", ""data_type"": ""SERIAL"", ""is_primary_key"": true, ""is_foreign_key"": false, ""is_nullable"": false},
+        {""name"": ""start_location"", ""data_type"": ""VARCHAR(100)"", ""is_primary_key"": false, ""is_foreign_key"": false, ""is_nullable"": false},
+        {""name"": ""end_location"", ""data_type"": ""VARCHAR(100)"", ""is_primary_key"": false, ""is_foreign_key"": false, ""is_nullable"": false},
+        {""name"": ""is_accessible"", ""data_type"": ""BOOLEAN"", ""is_primary_key"": false, ""is_foreign_key"": false, ""is_nullable"": false}
+      ]
+    },
+    {
+      ""name"": ""TransportInfo"",
+      ""columns"": [
+        {""name"": ""info_id"", ""data_type"": ""SERIAL"", ""is_primary_key"": true, ""is_foreign_key"": false, ""is_nullable"": false},
+        {""name"": ""route_id"", ""data_type"": ""INTEGER"", ""is_primary_key"": false, ""is_foreign_key"": true, ""is_nullable"": false},
+        {""name"": ""status"", ""data_type"": ""VARCHAR(50)"", ""is_primary_key"": false, ""is_foreign_key"": false, ""is_nullable"": false},
+        {""name"": ""congestion_level"", ""data_type"": ""VARCHAR(50)"", ""is_primary_key"": false, ""is_foreign_key"": false, ""is_nullable"": false}
+      ]
+    },
+    {
+      ""name"": ""Obstacles"",
+      ""columns"": [
+        {""name"": ""obstacle_id"", ""data_type"": ""SERIAL"", ""is_primary_key"": true, ""is_foreign_key"": false, ""is_nullable"": false},
+        {""name"": ""location"", ""data_type"": ""VARCHAR(100)"", ""is_primary_key"": false, ""is_foreign_key"": false, ""is_nullable"": false},
+        {""name"": ""description"", ""data_type"": ""TEXT"", ""is_primary_key"": false, ""is_foreign_key"": false, ""is_nullable"": true}
+      ]
+    },
+    {
+      ""name"": ""ElevatorsEscalators"",
+      ""columns"": [
+        {""name"": ""device_id"", ""data_type"": ""SERIAL"", ""is_primary_key"": true, ""is_foreign_key"": false, ""is_nullable"": false},
+        {""name"": ""location"", ""data_type"": ""VARCHAR(100)"", ""is_primary_key"": false, ""is_foreign_key"": false, ""is_nullable"": false},
+        {""name"": ""device_type"", ""data_type"": ""VARCHAR(20)"", ""is_primary_key"": false, ""is_foreign_key"": false, ""is_nullable"": false}
+      ]
+    }
+  ],
+  ""erd_relationships"": [
+    {
+      ""from_table"": ""Users"",
+      ""to_table"": ""Routes"",
+      ""relationship_type"": ""one-to-many"",
+      ""foreign_key"": ""user_id"",
+      ""constraint_name"": ""fk_user_route""
+    },
+    {
+      ""from_table"": ""Routes"",
+      ""to_table"": ""TransportInfo"",
+      ""relationship_type"": ""one-to-many"",
+      ""foreign_key"": ""route_id"",
+      ""constraint_name"": ""fk_route_transport_info""
+    }
+  ]
+}
+```
+
+### 설명
+- **Users**: 사용자 정보를 저장하는 테이블로, 사용자 ID, 이름, 이메일, 역할 등의 정보를 포함합니다.
+- **Routes**: 대중교통 경로 정보를 저장하는 테이블로, 시작 위치, 종료 위치, 접근 가능 여부 등의 정보를 포함합니다.
+- **TransportInfo**: 대중교통 정보 테이블로, 특정 경로에 대한 실시간 상태와 혼잡도 정보를 포함합니다.
+- **Obstacles**: 장애물 정보를 저장하는 테이블로, 장애물의 위치와 설명을 포함합니다.
+- **ElevatorsEscalators**: 엘리베이터 및 에스컬레이터 정보를 저장하는 테이블로, 위치와 장치 유형을 포함합니다.
+
+### 관계
+- **Users**와 **Routes**는 일대다 관계를 가지며, 사용자가 여러 경로를 생성할 수 있습니다.
+- **Routes**와 **TransportInfo**는 일대다 관계를 가지며, 각 경로에 대해 여러 개의 대중교통 정보를 가질 수 있습니다.","```json
+{
+  ""entities"": [
+    {
+      ""name"": ""User"",
+      ""columns"": [
+        {""name"": ""user_id"", ""type"": ""UUID"", ""primary_key"": true},
+        {""name"": ""username"", ""type"": ""VARCHAR"", ""unique"": true, ""not_null"": true},
+        {""name"": ""email"", ""type"": ""VARCHAR"", ""unique"": true, ""not_null"": true},
+        {""name"": ""password"", ""type"": ""VARCHAR"", ""not_null"": true},
+        {""name"": ""created_at"", ""type"": ""TIMESTAMP"", ""default"": ""CURRENT_TIMESTAMP""}
+      ]
+    },
+    {
+      ""name"": ""Route"",
+      ""columns"": [
+        {""name"": ""route_id"", ""type"": ""UUID"", ""primary_key"": true},
+        {""name"": ""start_point"", ""type"": ""VARCHAR"", ""not_null"": true},
+        {""name"": ""end_point"", ""type"": ""VARCHAR"", ""not_null"": true},
+        {""name"": ""is_accessible"", ""type"": ""BOOLEAN"", ""not_null"": true},
+        {""name"": ""created_by"", ""type"": ""UUID"", ""foreign_key"": ""User.user_id""},
+        {""name"": ""created_at"", ""type"": ""TIMESTAMP"", ""default"": ""CURRENT_TIMESTAMP""}
+      ]
+    },
+    {
+      ""name"": ""TransportInfo"",
+      ""columns"": [
+        {""name"": ""info_id"", ""type"": ""UUID"", ""primary_key"": true},
+        {""name"": ""transport_type"", ""type"": ""VARCHAR"", ""not_null"": true},
+        {""name"": ""status"", ""type"": ""VARCHAR"", ""not_null"": true},
+        {""name"": ""congestion_level"", ""type"": ""VARCHAR""},
+        {""name"": ""last_updated"", ""type"": ""TIMESTAMP"", ""default"": ""CURRENT_TIMESTAMP""}
+      ]
+    },
+    {
+      ""name"": ""Obstacle"",
+      ""columns"": [
+        {""name"": ""obstacle_id"", ""type"": ""UUID"", ""primary_key"": true},
+        {""name"": ""location"", ""type"": ""VARCHAR"", ""not_null"": true},
+        {""name"": ""description"", ""type"": ""TEXT""},
+        {""name"": ""is_accessible"", ""type"": ""BOOLEAN"", ""not_null"": true},
+        {""name"": ""reported_by"", ""type"": ""UUID"", ""foreign_key"": ""User.user_id""},
+        {""name"": ""reported_at"", ""type"": ""TIMESTAMP"", ""default"": ""CURRENT_TIMESTAMP""}
+      ]
+    },
+    {
+      ""name"": ""ElevatorEscalator"",
+      ""columns"": [
+        {""name"": ""ee_id"", ""type"": ""UUID"", ""primary_key"": true},
+        {""name"": ""location"", ""type"": ""VARCHAR"", ""not_null"": true},
+        {""name"": ""type"", ""type"": ""VARCHAR"", ""not_null"": true},
+        {""name"": ""status"", ""type"": ""VARCHAR"", ""not_null"": true},
+        {""name"": ""last_maintenance"", ""type"": ""DATE""}
+      ]
+    },
+    {
+      ""name"": ""SearchHistory"",
+      ""columns"": [
+        {""name"": ""history_id"", ""type"": ""UUID"", ""primary_key"": true},
+        {""name"": ""user_id"", ""type"": ""UUID"", ""foreign_key"": ""User.user_id""},
+        {""name"": ""search_query"", ""type"": ""TEXT"", ""not_null"": true},
+        {""name"": ""search_date"", ""type"": ""TIMESTAMP"", ""default"": ""CURRENT_TIMESTAMP""}
+      ]
+    }
+  ],
+  ""relationships"": [
+    {
+      ""from"": ""Route"",
+      ""to"": ""User"",
+      ""type"": ""many-to-one"",
+      ""foreign_key"": ""created_by""
+    },
+    {
+      ""from"": ""Obstacle"",
+      ""to"": ""User"",
+      ""type"": ""many-to-one"",
+      ""foreign_key"": ""reported_by""
+    },
+    {
+      ""from"": ""SearchHistory"",
+      ""to"": ""User"",
+      ""type"": ""many-to-one"",
+      ""foreign_key"": ""user_id""
+    }
+  ]
+}
+```
+
+This JSON structure defines the entities, columns, and relationships for the ""장애인 친화 대중교통 안내 앱"" project. Each table is represented as an entity with its respective columns, data types, and constraints. Relationships between tables are also defined to ensure data integrity and establish connections between related data."
+"[{'projectName': '가상 피팅룸 서비스', 'projectTarget': '온라인 쇼핑을 즐기는 소비자들', 'mainFunction': ['사용자 체형에 맞춘 가상 피팅 기능', '스타일 기반의 개인화된 패션 추천', '실제 고객 리뷰 기반의 상품 추천'], 'techStack': ['React', 'Node.js', 'TensorFlow'], 'projectDescription': '이 웹사이트는 나만의 퍼스널 쇼퍼 역할을 하는 혁신적인 쇼핑몰입니다. 사용자의 얼굴, 체형을 분석하여 그에 맞는 옷과 화장품을 추천해주는 기능을 제공합니다. 또한, 내 체형에 맞는 마네킹 모델을 사용해 가상으로 옷을 미리 입어볼 수 있는 피팅 기능이 있어, 쇼핑 전에 실제 착용감을 확인할 수 있습니다. 이 외에도 스타일 분석을 통해 개인화된 패션 제안을 해주며, 쇼핑의 재미와 편리함을 극대화하는 사용자 맞춤형 쇼핑 경험을 제공합니다.'}]","[{'requirementType': 'FUNCTIONAL', 'content': '사용자는 자신의 얼굴과 체형을 사진으로 업로드하여 분석 결과에 기반한 맞춤형 옷과 화장품을 추천받을 수 있어야 한다.'}, {'requirementType': 'FUNCTIONAL', 'content': '사용자는 자신에게 맞는 마네킹 모델을 선택하고 해당 모델에 가상으로 옷을 입혀 볼 수 있는 기능을 제공해야 한다.'}, {'requirementType': 'FUNCTIONAL', 'content': '실제 고객 리뷰를 기반으로 추천하는 상품 목록을 사용자에게 제공하여, 쇼핑 결정을 도울 수 있어야 한다.'}, {'requirementType': 'PERFORMANCE', 'content': '사용자 사진을 업로드하고 분석 결과를 제공하는데 최대 5초의 응답 시간을 유지해야 한다.'}, {'requirementType': 'PERFORMANCE', 'content': '시스템은 동시 사용자 1000명에 대해 안정적인 서비스를 제공할 수 있어야 하며, 서버 가용성은 99.9% 이상이어야 한다.'}, {'requirementType': 'PERFORMANCE', 'content': '가상 피팅 기능에서 모델이 의상을 변경할 때마다 2초 이내에 모습을 업데이트해야 한다.'}, {'requirementType': 'FUNCTIONAL', 'content': '사용자는 추천받은 패션 아이템에 대해 추가적인 스타일링 팁과 함께 시각적으로 확인할 수 있는 기능을 제공해야 한다.'}, {'requirementType': 'FUNCTIONAL', 'content': '사용자는 자신의 스타일 선호도를 설정하고, 이를 기반으로 개인화된 추천을 받을 수 있는 기능을 제공해야 한다.'}, {'requirementType': 'PERFORMANCE', 'content': '사용자가 스타일 선호도를 설정할 때, 시스템은 3초 이내에 변경 사항을 반영해야 한다.'}, {'requirementType': 'PERFORMANCE', 'content': '시스템은 최대 5000개의 상품을 동시에 검색하고 필터링할 수 있어야 하며, 응답 시간은 3초 이내여야 한다.'}, {'requirementType': 'FUNCTIONAL', 'content': '사용자는 가상 피팅룸에서 여러 의상을 동시에 비교할 수 있는 기능을 제공해야 한다.'}]","{'project_info': {'title': '가상 피팅룸 서비스', 'category': '웹앱', 'target_users': ['온라인 쇼핑을 즐기는 소비자', '패션에 관심이 많은 20-30대', '체형에 맞는 스타일을 찾고자 하는 사용자'], 'core_features': ['사용자 체형에 맞춘 가상 피팅 기능', '스타일 기반의 개인화된 패션 추천', '실제 고객 리뷰 기반의 상품 추천', '다양한 마네킹 모델 선택 기능', '스타일링 팁 제공 기능', '여러 의상 비교 기능'], 'technology_stack': ['React', 'Node.js', 'TensorFlow', 'MongoDB', 'AWS'], 'problem_solving': {'current_problem': '온라인 쇼핑에서 소비자들은 체형에 맞는 의상을 찾기 어렵고, 실제 착용감을 확인할 수 없어 구매 후 불만족이 발생하는 문제가 있습니다.', 'solution_idea': '이 서비스는 사용자가 자신의 얼굴과 체형을 사진으로 업로드하면, AI가 이를 분석하여 최적의 의상과 화장품을 추천합니다. 가상 피팅 기능을 통해 사용자는 선택한 마네킹 모델에 의상을 입혀 볼 수 있으며, 실제 고객 리뷰를 기반으로 한 추천 시스템이 쇼핑 결정을 도와줍니다. 또한, 사용자의 스타일 선호도를 반영하여 개인화된 패션 제안을 제공함으로써, 쇼핑의 재미와 편리함을 극대화합니다. 이러한 접근은 사용자 경험을 혁신적으로 개선하고, 기존의 온라인 쇼핑몰과의 차별화된 가치를 제공합니다.', 'expected_benefits': ['사용자는 자신의 체형에 맞는 의상을 쉽게 찾을 수 있어 쇼핑 만족도가 높아집니다.', '비즈니스는 고객의 재구매율을 높이고, 고객 충성도를 강화할 수 있습니다.', '사회적으로는 소비자들이 더 나은 구매 결정을 내릴 수 있도록 도와줍니다.']}}}","{'erd_tables': [{'name': '사용자', 'erd_columns': [{'name': '사용자ID', 'data_type': 'INT', 'is_primary_key': True, 'is_foreign_key': False, 'is_nullable': False}, {'name': '이름', 'data_type': 'VARCHAR(100)', 'is_primary_key': False, 'is_foreign_key': False, 'is_nullable': False}, {'name': '스타일선호도', 'data_type': 'VARCHAR(255)', 'is_primary_key': False, 'is_foreign_key': False, 'is_nullable': True}]}, {'name': '상품', 'erd_columns': [{'name': '상품ID', 'data_type': 'INT', 'is_primary_key': True, 'is_foreign_key': False, 'is_nullable': False}, {'name': '상품명', 'data_type': 'VARCHAR(100)', 'is_primary_key': False, 'is_foreign_key': False, 'is_nullable': False}, {'name': '카테고리', 'data_type': 'VARCHAR(100)', 'is_primary_key': False, 'is_foreign_key': False, 'is_nullable': False}, {'name': '고객리뷰', 'data_type': 'TEXT', 'is_primary_key': False, 'is_foreign_key': False, 'is_nullable': True}]}, {'name': '마네킹모델', 'erd_columns': [{'name': '모델ID', 'data_type': 'INT', 'is_primary_key': True, 'is_foreign_key': False, 'is_nullable': False}, {'name': '모델명', 'data_type': 'VARCHAR(100)', 'is_primary_key': False, 'is_foreign_key': False, 'is_nullable': False}]}, {'name': '추천', 'erd_columns': [{'name': '추천ID', 'data_type': 'INT', 'is_primary_key': True, 'is_foreign_key': False, 'is_nullable': False}, {'name': '사용자ID', 'data_type': 'INT', 'is_primary_key': False, 'is_foreign_key': True, 'is_nullable': False}, {'name': '상품ID', 'data_type': 'INT', 'is_primary_key': False, 'is_foreign_key': True, 'is_nullable': False}]}, {'name': '가상피팅', 'erd_columns': [{'name': '피팅ID', 'data_type': 'INT', 'is_primary_key': True, 'is_foreign_key': False, 'is_nullable': False}, {'name': '사용자ID', 'data_type': 'INT', 'is_primary_key': False, 'is_foreign_key': True, 'is_nullable': False}, {'name': '모델ID', 'data_type': 'INT', 'is_primary_key': False, 'is_foreign_key': True, 'is_nullable': False}, {'name': '상품ID', 'data_type': 'INT', 'is_primary_key': False, 'is_foreign_key': True, 'is_nullable': False}]}], 'erd_relationships': [{'from_table': '사용자', 'to_table': '추천', 'relationship_type': 'one-to-many', 'foreign_key': '사용자ID', 'constraint_name': 'FK_사용자_추천'}, {'from_table': '상품', 'to_table': '추천', 'relationship_type': 'one-to-many', 'foreign_key': '상품ID', 'constraint_name': 'FK_상품_추천'}, {'from_table': '사용자', 'to_table': '가상피팅', 'relationship_type': 'one-to-many', 'foreign_key': '사용자ID', 'constraint_name': 'FK_사용자_가상피팅'}, {'from_table': '마네킹모델', 'to_table': '가상피팅', 'relationship_type': 'one-to-many', 'foreign_key': '모델ID', 'constraint_name': 'FK_마네킹모델_가상피팅'}, {'from_table': '상품', 'to_table': '가상피팅', 'relationship_type': 'one-to-many', 'foreign_key': '상품ID', 'constraint_name': 'FK_상품_가상피팅'}]}","아래는 ""가상 피팅룸 서비스""를 위한 ERD(Entity Relationship Diagram) 데이터입니다. 이 ERD는 사용자, 의상, 마네킹 모델, 리뷰, 추천 시스템 등을 포함하여 각 테이블의 구조와 관계를 정의합니다.
+
+```json
+{
+  ""erd_tables"": [
+    {
+      ""name"": ""Users"",
+      ""columns"": [
+        {""name"": ""user_id"", ""data_type"": ""ObjectId"", ""is_primary_key"": true, ""is_foreign_key"": false, ""is_nullable"": false},
+        {""name"": ""username"", ""data_type"": ""String"", ""is_primary_key"": false, ""is_foreign_key"": false, ""is_nullable"": false},
+        {""name"": ""body_type"", ""data_type"": ""String"", ""is_primary_key"": false, ""is_foreign_key"": false, ""is_nullable"": true},
+        {""name"": ""style_preference"", ""data_type"": ""String"", ""is_primary_key"": false, ""is_foreign_key"": false, ""is_nullable"": true}
+      ]
+    },
+    {
+      ""name"": ""Clothes"",
+      ""columns"": [
+        {""name"": ""clothing_id"", ""data_type"": ""ObjectId"", ""is_primary_key"": true, ""is_foreign_key"": false, ""is_nullable"": false},
+        {""name"": ""clothing_name"", ""data_type"": ""String"", ""is_primary_key"": false, ""is_foreign_key"": false, ""is_nullable"": false},
+        {""name"": ""size"", ""data_type"": ""String"", ""is_primary_key"": false, ""is_foreign_key"": false, ""is_nullable"": false},
+        {""name"": ""style_type"", ""data_type"": ""String"", ""is_primary_key"": false, ""is_foreign_key"": false, ""is_nullable"": true}
+      ]
+    },
+    {
+      ""name"": ""Mannequins"",
+      ""columns"": [
+        {""name"": ""mannequin_id"", ""data_type"": ""ObjectId"", ""is_primary_key"": true, ""is_foreign_key"": false, ""is_nullable"": false},
+        {""name"": ""mannequin_type"", ""data_type"": ""String"", ""is_primary_key"": false, ""is_foreign_key"": false, ""is_nullable"": false}
+      ]
+    },
+    {
+      ""name"": ""Reviews"",
+      ""columns"": [
+        {""name"": ""review_id"", ""data_type"": ""ObjectId"", ""is_primary_key"": true, ""is_foreign_key"": false, ""is_nullable"": false},
+        {""name"": ""user_id"", ""data_type"": ""ObjectId"", ""is_primary_key"": false, ""is_foreign_key"": true, ""is_nullable"": false},
+        {""name"": ""clothing_id"", ""data_type"": ""ObjectId"", ""is_primary_key"": false, ""is_foreign_key"": true, ""is_nullable"": false},
+        {""name"": ""rating"", ""data_type"": ""Number"", ""is_primary_key"": false, ""is_foreign_key"": false, ""is_nullable"": false},
+        {""name"": ""comment"", ""data_type"": ""String"", ""is_primary_key"": false, ""is_foreign_key"": false, ""is_nullable"": true}
+      ]
+    },
+    {
+      ""name"": ""Recommendations"",
+      ""columns"": [
+        {""name"": ""recommendation_id"", ""data_type"": ""ObjectId"", ""is_primary_key"": true, ""is_foreign_key"": false, ""is_nullable"": false},
+        {""name"": ""user_id"", ""data_type"": ""ObjectId"", ""is_primary_key"": false, ""is_foreign_key"": true, ""is_nullable"": false},
+        {""name"": ""clothing_id"", ""data_type"": ""ObjectId"", ""is_primary_key"": false, ""is_foreign_key"": true, ""is_nullable"": false},
+        {""name"": ""reason"", ""data_type"": ""String"", ""is_primary_key"": false, ""is_foreign_key"": false, ""is_nullable"": true}
+      ]
+    },
+    {
+      ""name"": ""Fittings"",
+      ""columns"": [
+        {""name"": ""fitting_id"", ""data_type"": ""ObjectId"", ""is_primary_key"": true, ""is_foreign_key"": false, ""is_nullable"": false},
+        {""name"": ""user_id"", ""data_type"": ""ObjectId"", ""is_primary_key"": false, ""is_foreign_key"": true, ""is_nullable"": false},
+        {""name"": ""clothing_id"", ""data_type"": ""ObjectId"", ""is_primary_key"": false, ""is_foreign_key"": true, ""is_nullable"": false},
+        {""name"": ""mannequin_id"", ""data_type"": ""ObjectId"", ""is_primary_key"": false, ""is_foreign_key"": true, ""is_nullable"": false}
+      ]
+    }
+  ],
+  ""erd_relationships"": [
+    {
+      ""from_table"": ""Users"",
+      ""to_table"": ""Reviews"",
+      ""relationship_type"": ""one-to-many"",
+      ""foreign_key"": ""user_id"",
+      ""constraint_name"": ""FK_Users_Reviews""
+    },
+    {
+      ""from_table"": ""Clothes"",
+      ""to_table"": ""Reviews"",
+      ""relationship_type"": ""one-to-many"",
+      ""foreign_key"": ""clothing_id"",
+      ""constraint_name"": ""FK_Clothes_Reviews""
+    },
+    {
+      ""from_table"": ""Users"",
+      ""to_table"": ""Recommendations"",
+      ""relationship_type"": ""one-to-many"",
+      ""foreign_key"": ""user_id"",
+      ""constraint_name"": ""FK_Users_Recommendations""
+    },
+    {
+      ""from_table"": ""Clothes"",
+      ""to_table"": ""Recommendations"",
+      ""relationship_type"": ""one-to-many"",
+      ""foreign_key"": ""clothing_id"",
+      ""constraint_name"": ""FK_Clothes_Recommendations""
+    },
+    {
+      ""from_table"": ""Users"",
+      ""to_table"": ""Fittings"",
+      ""relationship_type"": ""one-to-many"",
+      ""foreign_key"": ""user_id"",
+      ""constraint_name"": ""FK_Users_Fittings""
+    },
+    {
+      ""from_table"": ""Clothes"",
+      ""to_table"": ""Fittings"",
+      ""relationship_type"": ""one-to-many"",
+      ""foreign_key"": ""clothing_id"",
+      ""constraint_name"": ""FK_Clothes_Fittings""
+    },
+    {
+      ""from_table"": ""Mannequins"",
+      ""to_table"": ""Fittings"",
+      ""relationship_type"": ""one-to-many"",
+      ""foreign_key"": ""mannequin_id"",
+      ""constraint_name"": ""FK_Mannequins_Fittings""
+    }
+  ]
+}
+```
+
+### 설명
+- **Users**: 사용자 정보를 저장하는 테이블입니다. 사용자 ID, 사용자 이름, 체형, 스타일 선호도를 포함합니다.
+- **Clothes**: 의상 정보를 저장하는 테이블입니다. 의상 ID, 의상 이름, 사이즈, 스타일 유형을 포함합니다.
+- **Mannequins**: 마네킹 모델 정보를 저장하는 테이블입니다. 마네킹 ID와 마네킹 유형을 포함합니다.
+- **Reviews**: 사용자 리뷰 정보를 저장하는 테이블입니다. 리뷰 ID, 사용자 ID, 의상 ID, 평점, 코멘트를 포함합니다.
+- **Recommendations**: 추천 정보를 저장하는 테이블입니다. 추천 ID, 사용자 ID, 의상 ID, 추천 이유를 포함합니다.
+- **Fittings**: 가상 피팅 정보를 저장하는 테이블입니다. 피팅 ID, 사용자 ID, 의상 ID, 마네킹 ID를 포함합니다.
+
+각 테이블 간의 관계는 외래 키를 통해 정의되어 있으며, 사용자와 의상, 마네킹 모델 간의 관계를 명확하게 나타냅니다.","```json
+{
+  ""entities"": [
+    {
+      ""name"": ""Users"",
+      ""columns"": [
+        {
+          ""name"": ""user_id"",
+          ""type"": ""ObjectId"",
+          ""primary_key"": true
+        },
+        {
+          ""name"": ""username"",
+          ""type"": ""String"",
+          ""unique"": true
+        },
+        {
+          ""name"": ""email"",
+          ""type"": ""String"",
+          ""unique"": true
+        },
+        {
+          ""name"": ""password"",
+          ""type"": ""String""
+        },
+        {
+          ""name"": ""body_shape_data"",
+          ""type"": ""String""
+        },
+        {
+          ""name"": ""style_preferences"",
+          ""type"": ""Array""
+        },
+        {
+          ""name"": ""created_at"",
+          ""type"": ""Date""
+        },
+        {
+          ""name"": ""updated_at"",
+          ""type"": ""Date""
+        }
+      ]
+    },
+    {
+      ""name"": ""Products"",
+      ""columns"": [
+        {
+          ""name"": ""product_id"",
+          ""type"": ""ObjectId"",
+          ""primary_key"": true
+        },
+        {
+          ""name"": ""name"",
+          ""type"": ""String""
+        },
+        {
+          ""name"": ""category"",
+          ""type"": ""String""
+        },
+        {
+          ""name"": ""price"",
+          ""type"": ""Number""
+        },
+        {
+          ""name"": ""description"",
+          ""type"": ""String""
+        },
+        {
+          ""name"": ""image_url"",
+          ""type"": ""String""
+        },
+        {
+          ""name"": ""created_at"",
+          ""type"": ""Date""
+        },
+        {
+          ""name"": ""updated_at"",
+          ""type"": ""Date""
+        }
+      ]
+    },
+    {
+      ""name"": ""Reviews"",
+      ""columns"": [
+        {
+          ""name"": ""review_id"",
+          ""type"": ""ObjectId"",
+          ""primary_key"": true
+        },
+        {
+          ""name"": ""user_id"",
+          ""type"": ""ObjectId"",
+          ""foreign_key"": true,
+          ""references"": ""Users""
+        },
+        {
+          ""name"": ""product_id"",
+          ""type"": ""ObjectId"",
+          ""foreign_key"": true,
+          ""references"": ""Products""
+        },
+        {
+          ""name"": ""rating"",
+          ""type"": ""Number""
+        },
+        {
+          ""name"": ""comment"",
+          ""type"": ""String""
+        },
+        {
+          ""name"": ""created_at"",
+          ""type"": ""Date""
+        }
+      ]
+    },
+    {
+      ""name"": ""FittingSessions"",
+      ""columns"": [
+        {
+          ""name"": ""session_id"",
+          ""type"": ""ObjectId"",
+          ""primary_key"": true
+        },
+        {
+          ""name"": ""user_id"",
+          ""type"": ""ObjectId"",
+          ""foreign_key"": true,
+          ""references"": ""Users""
+        },
+        {
+          ""name"": ""selected_mannequin"",
+          ""type"": ""String""
+        },
+        {
+          ""name"": ""outfit_combination"",
+          ""type"": ""Array""
+        },
+        {
+          ""name"": ""created_at"",
+          ""type"": ""Date""
+        }
+      ]
+    },
+    {
+      ""name"": ""Recommendations"",
+      ""columns"": [
+        {
+          ""name"": ""recommendation_id"",
+          ""type"": ""ObjectId"",
+          ""primary_key"": true
+        },
+        {
+          ""name"": ""user_id"",
+          ""type"": ""ObjectId"",
+          ""foreign_key"": true,
+          ""references"": ""Users""
+        },
+        {
+          ""name"": ""recommended_products"",
+          ""type"": ""Array""
+        },
+        {
+          ""name"": ""created_at"",
+          ""type"": ""Date""
+        }
+      ]
+    }
+  ],
+  ""relationships"": [
+    {
+      ""type"": ""OneToMany"",
+      ""from"": ""Users"",
+      ""to"": ""Reviews"",
+      ""key"": ""user_id""
+    },
+    {
+      ""type"": ""OneToMany"",
+      ""from"": ""Products"",
+      ""to"": ""Reviews"",
+      ""key"": ""product_id""
+    },
+    {
+      ""type"": ""OneToMany"",
+      ""from"": ""Users"",
+      ""to"": ""FittingSessions"",
+      ""key"": ""user_id""
+    },
+    {
+      ""type"": ""OneToMany"",
+      ""from"": ""Users"",
+      ""to"": ""Recommendations"",
+      ""key"": ""user_id""
+    }
+  ]
+}
+```
+
+This JSON structure represents an ERD for the virtual fitting room service. It includes entities for users, products, reviews, fitting sessions, and recommendations, along with their respective columns and relationships. The relationships are defined to show how users interact with products through reviews, fitting sessions, and personalized recommendations."
+"[{'projectName': '스마트 건강 관리 비서', 'projectTarget': '바쁜 일상 속에서 건강 관리를 원하는 사용자', 'mainFunction': ['일정 관리 및 알림 기능', '건강 체크 리스트 제공', '쇼핑 연동 기능'], 'techStack': ['React Native', 'Node.js', 'MongoDB'], 'projectDescription': '이 앱은 개인 맞춤형 비서 역할을 하는 어플리케이션으로, 사용자의 중요한 일정과 일상적인 습관을 관리해줍니다. 예를 들어, 약 복용 시간, 영양제 섭취, 중요한 약속 등을 캘린더와 연동하여 알람을 보내주고, 잊지 않도록 도와줍니다. 추가 기능으로는 ‘건강 체크 리스트’를 제공하여, 매일 해야 할 간단한 건강 관리(물 마시기, 운동하기 등)를 체크리스트로 만들어 알림을 통해 사용자에게 알려주고, 일정 완료 시 보상을 주는 시스템을 도입할 수 있습니다. 또한, 일정에 맞춰 필요한 물품을 미리 주문하거나 준비할 수 있도록 쇼핑 연동 기능을 추가하면 더욱 유용합니다. 사용자는 이 앱을 통해 바쁜 일상 속에서도 중요한 일을 빠뜨리지 않고 관리할 수 있습니다'}]","[{'requirementType': 'FUNCTIONAL', 'content': '사용자는 앱에서 약 복용 시간과 영양제 섭취 일정을 설정할 수 있어야 하며, 설정된 시간에 알림을 받을 수 있어야 한다.'}, {'requirementType': 'FUNCTIONAL', 'content': '사용자는 매일 해야 할 건강 관리 목록을 체크리스트 형태로 제공받고, 완료한 항목에 대해 보상을 받을 수 있어야 한다.'}, {'requirementType': 'FUNCTIONAL', 'content': '사용자는 일정에 맞춰 필요한 물품을 미리 주문할 수 있는 쇼핑 연동 기능을 통해, 제품을 선택하고 주문할 수 있어야 한다.'}, {'requirementType': 'PERFORMANCE', 'content': '앱의 응답 시간은 사용자 요청 후 2초 이내에 이루어져야 한다.'}, {'requirementType': 'PERFORMANCE', 'content': '애플리케이션은 최소 1000명의 동시 사용자를 지원할 수 있어야 하며, 사용자 수가 증가해도 5초 이내에 모든 요청을 처리할 수 있어야 한다.'}, {'requirementType': 'PERFORMANCE', 'content': '알림 시스템은 99.9%의 가용성을 유지해야 하며, 알림 발송은 최대 1분 이내에 이루어져야 한다.'}, {'requirementType': 'FUNCTIONAL', 'content': '사용자는 자신의 건강 상태에 따라 맞춤형 건강 관리 팁을 제공받을 수 있어야 한다.'}, {'requirementType': 'FUNCTIONAL', 'content': '사용자는 건강 체크리스트의 항목에 대해 개인 목표를 설정하고, 목표 달성 여부를 시각적으로 확인할 수 있어야 한다.'}, {'requirementType': 'PERFORMANCE', 'content': '앱은 데이터베이스에서 사용자의 건강 기록을 조회할 때, 1초 이내에 결과를 반환해야 한다.'}, {'requirementType': 'PERFORMANCE', 'content': '앱의 전체 가용성은 99.5% 이상이어야 하며, 유지보수 시간은 연간 10시간 이내로 제한되어야 한다.'}]","{'project_info': {'title': '스마트 건강 관리 비서', 'category': '모바일앱', 'target_users': ['바쁜 직장인', '건강 관리에 관심 있는 일반 사용자', '노인 및 만성 질환자'], 'core_features': ['일정 관리 및 알림 기능', '건강 체크 리스트 제공', '쇼핑 연동 기능', '맞춤형 건강 관리 팁 제공', '목표 설정 및 시각적 피드백 기능'], 'technology_stack': ['React Native', 'Node.js', 'MongoDB', 'Firebase (푸시 알림)', 'AWS (서버 및 데이터 저장)'], 'problem_solving': {'current_problem': '바쁜 일상 속에서 건강 관리를 소홀히 하는 사용자들이 많으며, 개인 맞춤형 관리가 부족하여 건강 문제를 예방하기 어렵다.', 'solution_idea': '이 앱은 사용자의 건강 관리 일정을 통합하여 관리할 수 있는 플랫폼을 제공합니다. 사용자는 약 복용 및 영양제 섭취 일정을 설정하고, 알림을 통해 잊지 않도록 도와줍니다. 건강 체크 리스트와 목표 설정 기능을 통해 사용자는 일상적인 건강 관리 습관을 기를 수 있으며, 쇼핑 연동 기능을 통해 필요한 물품을 미리 주문할 수 있습니다. 이러한 통합된 접근 방식은 사용자에게 건강 관리의 편리함을 제공하고, 개인 맞춤형 피드백을 통해 지속적인 동기 부여를 합니다.', 'expected_benefits': ['사용자는 건강 관리의 일관성을 유지할 수 있다.', '비즈니스는 건강 관리 시장에서의 경쟁력을 강화할 수 있다.', '사회적으로는 건강한 생활 습관을 장려하여 공공 건강 증진에 기여할 수 있다.']}}}","{'erd_tables': [{'name': 'Users', 'erd_columns': [{'name': 'user_id', 'data_type': 'ObjectId', 'is_primary_key': True, 'is_foreign_key': False, 'is_nullable': False}, {'name': 'username', 'data_type': 'String', 'is_primary_key': False, 'is_foreign_key': False, 'is_nullable': False}, {'name': 'email', 'data_type': 'String', 'is_primary_key': False, 'is_foreign_key': False, 'is_nullable': False}, {'name': 'password', 'data_type': 'String', 'is_primary_key': False, 'is_foreign_key': False, 'is_nullable': False}]}, {'name': 'HealthRecords', 'erd_columns': [{'name': 'record_id', 'data_type': 'ObjectId', 'is_primary_key': True, 'is_foreign_key': False, 'is_nullable': False}, {'name': 'user_id', 'data_type': 'ObjectId', 'is_primary_key': False, 'is_foreign_key': True, 'is_nullable': False}, {'name': 'date', 'data_type': 'Date', 'is_primary_key': False, 'is_foreign_key': False, 'is_nullable': False}, {'name': 'health_status', 'data_type': 'String', 'is_primary_key': False, 'is_foreign_key': False, 'is_nullable': True}]}, {'name': 'Medications', 'erd_columns': [{'name': 'medication_id', 'data_type': 'ObjectId', 'is_primary_key': True, 'is_foreign_key': False, 'is_nullable': False}, {'name': 'user_id', 'data_type': 'ObjectId', 'is_primary_key': False, 'is_foreign_key': True, 'is_nullable': False}, {'name': 'medication_name', 'data_type': 'String', 'is_primary_key': False, 'is_foreign_key': False, 'is_nullable': False}, {'name': 'dosage', 'data_type': 'String', 'is_primary_key': False, 'is_foreign_key': False, 'is_nullable': False}, {'name': 'schedule', 'data_type': 'String', 'is_primary_key': False, 'is_foreign_key': False, 'is_nullable': False}]}, {'name': 'Checklists', 'erd_columns': [{'name': 'checklist_id', 'data_type': 'ObjectId', 'is_primary_key': True, 'is_foreign_key': False, 'is_nullable': False}, {'name': 'user_id', 'data_type': 'ObjectId', 'is_primary_key': False, 'is_foreign_key': True, 'is_nullable': False}, {'name': 'task', 'data_type': 'String', 'is_primary_key': False, 'is_foreign_key': False, 'is_nullable': False}, {'name': 'is_completed', 'data_type': 'Boolean', 'is_primary_key': False, 'is_foreign_key': False, 'is_nullable': False}]}, {'name': 'ShoppingOrders', 'erd_columns': [{'name': 'order_id', 'data_type': 'ObjectId', 'is_primary_key': True, 'is_foreign_key': False, 'is_nullable': False}, {'name': 'user_id', 'data_type': 'ObjectId', 'is_primary_key': False, 'is_foreign_key': True, 'is_nullable': False}, {'name': 'product_name', 'data_type': 'String', 'is_primary_key': False, 'is_foreign_key': False, 'is_nullable': False}, {'name': 'quantity', 'data_type': 'Number', 'is_primary_key': False, 'is_foreign_key': False, 'is_nullable': False}, {'name': 'order_date', 'data_type': 'Date', 'is_primary_key': False, 'is_foreign_key': False, 'is_nullable': False}]}], 'erd_relationships': [{'from_table': 'Users', 'to_table': 'HealthRecords', 'relationship_type': 'one-to-many', 'foreign_key': 'user_id', 'constraint_name': 'fk_users_health_records'}, {'from_table': 'Users', 'to_table': 'Medications', 'relationship_type': 'one-to-many', 'foreign_key': 'user_id', 'constraint_name': 'fk_users_medications'}, {'from_table': 'Users', 'to_table': 'Checklists', 'relationship_type': 'one-to-many', 'foreign_key': 'user_id', 'constraint_name': 'fk_users_checklists'}, {'from_table': 'Users', 'to_table': 'ShoppingOrders', 'relationship_type': 'one-to-many', 'foreign_key': 'user_id', 'constraint_name': 'fk_users_shopping_orders'}]}","아래는 ""스마트 건강 관리 비서"" 프로젝트를 위한 ERD(Entity Relationship Diagram) 데이터입니다. 이 ERD는 사용자의 건강 관리 일정, 체크리스트, 쇼핑 연동 기능 등을 지원하는 테이블 구조와 관계를 포함하고 있습니다.
+
+```json
+{
+  ""erd_tables"": [
+    {
+      ""name"": ""Users"",
+      ""columns"": [
+        {""name"": ""user_id"", ""data_type"": ""ObjectId"", ""is_primary_key"": true, ""is_foreign_key"": false, ""is_nullable"": false},
+        {""name"": ""username"", ""data_type"": ""String"", ""is_primary_key"": false, ""is_foreign_key"": false, ""is_nullable"": false},
+        {""name"": ""email"", ""data_type"": ""String"", ""is_primary_key"": false, ""is_foreign_key"": false, ""is_nullable"": false},
+        {""name"": ""password"", ""data_type"": ""String"", ""is_primary_key"": false, ""is_foreign_key"": false, ""is_nullable"": false}
+      ]
+    },
+    {
+      ""name"": ""HealthSchedules"",
+      ""columns"": [
+        {""name"": ""schedule_id"", ""data_type"": ""ObjectId"", ""is_primary_key"": true, ""is_foreign_key"": false, ""is_nullable"": false},
+        {""name"": ""user_id"", ""data_type"": ""ObjectId"", ""is_primary_key"": false, ""is_foreign_key"": true, ""is_nullable"": false},
+        {""name"": ""schedule_type"", ""data_type"": ""String"", ""is_primary_key"": false, ""is_foreign_key"": false, ""is_nullable"": false},
+        {""name"": ""schedule_time"", ""data_type"": ""DateTime"", ""is_primary_key"": false, ""is_foreign_key"": false, ""is_nullable"": false},
+        {""name"": ""notification_sent"", ""data_type"": ""Boolean"", ""is_primary_key"": false, ""is_foreign_key"": false, ""is_nullable"": false}
+      ]
+    },
+    {
+      ""name"": ""HealthChecklists"",
+      ""columns"": [
+        {""name"": ""checklist_id"", ""data_type"": ""ObjectId"", ""is_primary_key"": true, ""is_foreign_key"": false, ""is_nullable"": false},
+        {""name"": ""user_id"", ""data_type"": ""ObjectId"", ""is_primary_key"": false, ""is_foreign_key"": true, ""is_nullable"": false},
+        {""name"": ""task_name"", ""data_type"": ""String"", ""is_primary_key"": false, ""is_foreign_key"": false, ""is_nullable"": false},
+        {""name"": ""is_completed"", ""data_type"": ""Boolean"", ""is_primary_key"": false, ""is_foreign_key"": false, ""is_nullable"": false}
+      ]
+    },
+    {
+      ""name"": ""ShoppingItems"",
+      ""columns"": [
+        {""name"": ""item_id"", ""data_type"": ""ObjectId"", ""is_primary_key"": true, ""is_foreign_key"": false, ""is_nullable"": false},
+        {""name"": ""user_id"", ""data_type"": ""ObjectId"", ""is_primary_key"": false, ""is_foreign_key"": true, ""is_nullable"": false},
+        {""name"": ""item_name"", ""data_type"": ""String"", ""is_primary_key"": false, ""is_foreign_key"": false, ""is_nullable"": false},
+        {""name"": ""quantity"", ""data_type"": ""Integer"", ""is_primary_key"": false, ""is_foreign_key"": false, ""is_nullable"": false},
+        {""name"": ""is_ordered"", ""data_type"": ""Boolean"", ""is_primary_key"": false, ""is_foreign_key"": false, ""is_nullable"": false}
+      ]
+    },
+    {
+      ""name"": ""Rewards"",
+      ""columns"": [
+        {""name"": ""reward_id"", ""data_type"": ""ObjectId"", ""is_primary_key"": true, ""is_foreign_key"": false, ""is_nullable"": false},
+        {""name"": ""user_id"", ""data_type"": ""ObjectId"", ""is_primary_key"": false, ""is_foreign_key"": true, ""is_nullable"": false},
+        {""name"": ""reward_description"", ""data_type"": ""String"", ""is_primary_key"": false, ""is_foreign_key"": false, ""is_nullable"": false},
+        {""name"": ""is_claimed"", ""data_type"": ""Boolean"", ""is_primary_key"": false, ""is_foreign_key"": false, ""is_nullable"": false}
+      ]
+    }
+  ],
+  ""erd_relationships"": [
+    {
+      ""from_table"": ""Users"",
+      ""to_table"": ""HealthSchedules"",
+      ""relationship_type"": ""one-to-many"",
+      ""foreign_key"": ""user_id"",
+      ""constraint_name"": ""fk_user_health_schedule""
+    },
+    {
+      ""from_table"": ""Users"",
+      ""to_table"": ""HealthChecklists"",
+      ""relationship_type"": ""one-to-many"",
+      ""foreign_key"": ""user_id"",
+      ""constraint_name"": ""fk_user_health_checklist""
+    },
+    {
+      ""from_table"": ""Users"",
+      ""to_table"": ""ShoppingItems"",
+      ""relationship_type"": ""one-to-many"",
+      ""foreign_key"": ""user_id"",
+      ""constraint_name"": ""fk_user_shopping_item""
+    },
+    {
+      ""from_table"": ""Users"",
+      ""to_table"": ""Rewards"",
+      ""relationship_type"": ""one-to-many"",
+      ""foreign_key"": ""user_id"",
+      ""constraint_name"": ""fk_user_reward""
+    }
+  ]
+}
+```
+
+### 설명
+- **Users**: 사용자 정보를 저장하는 테이블입니다. 각 사용자는 고유한 ID, 사용자 이름, 이메일 및 비밀번호를 가집니다.
+- **HealthSchedules**: 사용자의 건강 관리 일정을 저장하는 테이블입니다. 각 일정은 사용자 ID와 연결되어 있으며, 일정 유형, 시간 및 알림 전송 여부를 포함합니다.
+- **HealthChecklists**: 사용자의 건강 체크리스트를 저장하는 테이블입니다. 각 체크리스트 항목은 사용자 ID와 연결되어 있으며, 작업 이름과 완료 여부를 포함합니다.
+- **ShoppingItems**: 사용자가 주문할 쇼핑 아이템을 저장하는 테이블입니다. 각 아이템은 사용자 ID와 연결되어 있으며, 아이템 이름, 수량 및 주문 여부를 포함합니다.
+- **Rewards**: 사용자가 받을 수 있는 보상을 저장하는 테이블입니다. 각 보상은 사용자 ID와 연결되어 있으며, 보상 설명 및 수령 여부를 포함합니다.
+
+이 ERD는 사용자의 건강 관리와 관련된 다양한 기능을 지원하기 위해 설계되었습니다.","```json
+{
+  ""entities"": [
+    {
+      ""name"": ""User"",
+      ""columns"": [
+        { ""name"": ""user_id"", ""type"": ""ObjectId"", ""primary_key"": true },
+        { ""name"": ""name"", ""type"": ""String"", ""required"": true },
+        { ""name"": ""email"", ""type"": ""String"", ""required"": true, ""unique"": true },
+        { ""name"": ""password"", ""type"": ""String"", ""required"": true },
+        { ""name"": ""age"", ""type"": ""Number"" },
+        { ""name"": ""gender"", ""type"": ""String"" },
+        { ""name"": ""created_at"", ""type"": ""Date"", ""default"": ""Date.now"" }
+      ]
+    },
+    {
+      ""name"": ""Schedule"",
+      ""columns"": [
+        { ""name"": ""schedule_id"", ""type"": ""ObjectId"", ""primary_key"": true },
+        { ""name"": ""user_id"", ""type"": ""ObjectId"", ""required"": true, ""ref"": ""User"" },
+        { ""name"": ""title"", ""type"": ""String"", ""required"": true },
+        { ""name"": ""description"", ""type"": ""String"" },
+        { ""name"": ""start_time"", ""type"": ""Date"", ""required"": true },
+        { ""name"": ""end_time"", ""type"": ""Date"" },
+        { ""name"": ""reminder"", ""type"": ""Boolean"", ""default"": false }
+      ]
+    },
+    {
+      ""name"": ""HealthChecklist"",
+      ""columns"": [
+        { ""name"": ""checklist_id"", ""type"": ""ObjectId"", ""primary_key"": true },
+        { ""name"": ""user_id"", ""type"": ""ObjectId"", ""required"": true, ""ref"": ""User"" },
+        { ""name"": ""task"", ""type"": ""String"", ""required"": true },
+        { ""name"": ""completed"", ""type"": ""Boolean"", ""default"": false },
+        { ""name"": ""date"", ""type"": ""Date"", ""required"": true }
+      ]
+    },
+    {
+      ""name"": ""ShoppingItem"",
+      ""columns"": [
+        { ""name"": ""item_id"", ""type"": ""ObjectId"", ""primary_key"": true },
+        { ""name"": ""user_id"", ""type"": ""ObjectId"", ""required"": true, ""ref"": ""User"" },
+        { ""name"": ""name"", ""type"": ""String"", ""required"": true },
+        { ""name"": ""quantity"", ""type"": ""Number"", ""required"": true },
+        { ""name"": ""purchased"", ""type"": ""Boolean"", ""default"": false }
+      ]
+    },
+    {
+      ""name"": ""HealthTip"",
+      ""columns"": [
+        { ""name"": ""tip_id"", ""type"": ""ObjectId"", ""primary_key"": true },
+        { ""name"": ""content"", ""type"": ""String"", ""required"": true },
+        { ""name"": ""category"", ""type"": ""String"" },
+        { ""name"": ""created_at"", ""type"": ""Date"", ""default"": ""Date.now"" }
+      ]
+    },
+    {
+      ""name"": ""UserGoal"",
+      ""columns"": [
+        { ""name"": ""goal_id"", ""type"": ""ObjectId"", ""primary_key"": true },
+        { ""name"": ""user_id"", ""type"": ""ObjectId"", ""required"": true, ""ref"": ""User"" },
+        { ""name"": ""description"", ""type"": ""String"", ""required"": true },
+        { ""name"": ""target_date"", ""type"": ""Date"" },
+        { ""name"": ""achieved"", ""type"": ""Boolean"", ""default"": false }
+      ]
+    }
+  ],
+  ""relationships"": [
+    {
+      ""type"": ""OneToMany"",
+      ""from"": ""User"",
+      ""to"": ""Schedule"",
+      ""key"": ""user_id""
+    },
+    {
+      ""type"": ""OneToMany"",
+      ""from"": ""User"",
+      ""to"": ""HealthChecklist"",
+      ""key"": ""user_id""
+    },
+    {
+      ""type"": ""OneToMany"",
+      ""from"": ""User"",
+      ""to"": ""ShoppingItem"",
+      ""key"": ""user_id""
+    },
+    {
+      ""type"": ""OneToMany"",
+      ""from"": ""User"",
+      ""to"": ""UserGoal"",
+      ""key"": ""user_id""
+    }
+  ]
+}
+```
+
+This JSON structure defines the entities and relationships for the ""스마트 건강 관리 비서"" project. Each entity represents a table in the database, with columns specifying the attributes of each table. The relationships section outlines how these entities are connected, primarily through the `user_id` foreign key, establishing a one-to-many relationship between the User and other entities."

@@ -37,6 +37,8 @@ def pipeline_data(request: DashboardRequest):
     for name, gr in group_list.items():
         json_temp_1 = gr.to_dict(orient='records')
 
+#############################################################################################################
+
     ### stat 2 start
     filtered_users = {}
 
