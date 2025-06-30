@@ -98,7 +98,7 @@ def pipeline_data(request: DashboardRequest):
         
         # 중복 제거: 같은 final_userId, state, importance, role, actionId 조합의 중복 행 제거
         dedup_stats = combined_stats.drop_duplicates(
-            subset=['final_userId', 'details.state', 'details.importance', 'details.actionId', 'role']
+            subset=['final_userId', 'details.state', 'details.importance', 'details.actionId']
         )
         
         # 최종 집계
