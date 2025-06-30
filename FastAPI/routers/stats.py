@@ -1,7 +1,6 @@
 # routers/stats.py
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter
 import pandas as pd
-import os
 from models.requests import DashboardRequest
 from models.response import DashboardResponse
 import json
@@ -45,7 +44,6 @@ def pipeline_data(request: DashboardRequest):
         'details.importance',
         'details.startDate',
         'details.endDate',
-        'details.participants'
     ]]
 
     filtered = filtered.dropna(subset=['participants_userId'])
@@ -74,120 +72,108 @@ def pipeline_data(request: DashboardRequest):
 
 
     # ===== Statistics 1 Start =====
-    group_list = {}
 
     # state, importance 기준 grouping -> count 목적
     # 이벤트 발생자와 참여자 모두 집계
     all_stat1_results = []
 
-    for i, (name, user_df) in enumerate(user_dfs.items(), start=1):
+    for user_df in user_dfs.values():
+        # 발생자 데이터 준비
+        initiator_data = user_df[['userId', 'details.state', 'details.importance', 'details.actionId']].copy()
+        initiator_data['role'] = 'initiator'
+        initiator_data = initiator_data.rename(columns={'userId': 'final_userId'})
         
-        # 이벤트 발생자 집계
-        initiator_grouped = user_df.groupby(['userId', 'details.state', 'details.importance']).size().reset_index(name='count')
-        initiator_grouped['role'] = 'initiator'
+        # 참여자 데이터 준비  
+        participant_data = user_df[['participants_userId', 'details.state', 'details.importance', 'details.actionId']].copy()
+        participant_data['role'] = 'participant'
+        participant_data = participant_data.rename(columns={'participants_userId': 'final_userId'})
         
-        # 참여자 집계
-        participants_grouped = user_df.groupby(['participants_userId', 'details.state', 'details.importance']).size().reset_index(name='count')
-        participants_grouped['role'] = 'participant'
-        participants_grouped = participants_grouped.rename(columns={'participants_userId': 'userId'})
-
         # 합치기
-        combined = pd.concat([initiator_grouped, participants_grouped], ignore_index=True)
-        all_stat1_results.append(combined)
+        user_all_data = pd.concat([initiator_data, participant_data], ignore_index=True)
+        all_stat1_results.append(user_all_data)
+
+    # 모든 유저 데이터 합치기
+    if all_stat1_results:
+        combined_stats = pd.concat(all_stat1_results, ignore_index=True)
         
-        # 모든 유저의 결과 합치기
-        if all_stat1_results:
-            final_stat1 = pd.concat(all_stat1_results, ignore_index=True)
-            # 같은 userId, state, importance, role 조합이 있다면 count 합계
-            stat1_result = final_stat1.groupby(['userId', 'details.state', 'details.importance'])['count'].sum().reset_index().to_dict(orient='records')
-        else:
-            stat1_result = []
-
-        # dict type(json)으로 변환
-        for name, gr in group_list.items():
-            stat1_result = gr.to_dict(orient='records')
-
-        # ===== Statistics 2 Start=====
-        filtered_users = {}
-
-        # DONE 상태의 action만 뽑아오기
-        done_df = exploded[exploded['details.state'] == 'DONE'][[
-            'userId', 'participants_userId', 'details.state', 'details.importance', 
-            'details.startDate', 'details.endDate', 'workspaceId', 
-            'details.actionId', 'details.name', 'timestamp', 'event'
-        ]].copy()
-
-        done_df = done_df.dropna(subset=['participants_userId'])
-
-        deleted_action_ids = latest_actions[latest_actions['event'] == 'DELETE_PROJECT_PROGRESS_ACTION']['details.actionId'].unique()
-
-        # 삭제된 actionId 제거
-        done_df = done_df[~done_df['details.actionId'].isin(deleted_action_ids)]
-
-        # 날짜형 변환 및 duration 계산
-        done_df['details.startDate'] = pd.to_datetime(done_df['details.startDate'], utc=True)
-        done_df['details.endDate'] = pd.to_datetime(done_df['details.endDate'], utc=True)
-        done_df['duration_hours'] = ((done_df['details.endDate'] - done_df['details.startDate']).dt.total_seconds() / 3600)
-
-        # 결측치, 음수 제거
-        done_df = done_df.dropna(subset=['duration_hours'])
-        done_df = done_df[done_df['duration_hours'] >= 0]
-
-        # 참여자용 데이터 (participants_userId 기준 중복 제거)
-        participants_done_df = (
-            done_df
-            .sort_values('timestamp', ascending=False)
-            .drop_duplicates(
-                subset=[
-                    'workspaceId',
-                    'details.actionId',
-                    'participants_userId'
-                ],
-                keep="first"
-            )
+        # 중복 제거: 같은 final_userId, state, importance, role, actionId 조합의 중복 행 제거
+        dedup_stats = combined_stats.drop_duplicates(
+            subset=['final_userId', 'details.state', 'details.importance', 'details.actionId', 'role']
         )
-
-        # 이벤트 발생자용 데이터 (userId 기준 중복 제거)
-        initiator_done_df = (
-            done_df
-            .sort_values('timestamp', ascending=False)
-            .drop_duplicates(
-                subset=[
-                    'workspaceId',
-                    'details.actionId',
-                    'userId'
-                ],
-                keep="first"
-            )
+        
+        # 최종 집계
+        stat1_result = (
+            dedup_stats
+            .groupby(['final_userId', 'details.state', 'details.importance'])
+            .size()
+            .reset_index(name='count')
+            .rename(columns={'final_userId': 'userId'})
+            .to_dict(orient='records')
         )
+    else:
+        stat1_result = []
 
-        # 참여자 통계
-        participants_result = (
-            participants_done_df
-            .groupby(['participants_userId', 'details.importance'])
-            ['duration_hours']
-            .mean()
-            .reset_index(name='mean_hours')
-            .rename(columns={'participants_userId': 'userId'})
+
+    # ===== Statistics 2 Start=====
+    
+    # DONE 상태의 action만 뽑아오기
+    done_df = filtered[filtered['details.state'] == 'DONE'].copy()
+
+    # 날짜형 변환 및 duration 계산
+    done_df['details.startDate'] = pd.to_datetime(done_df['details.startDate'], utc=True)
+    done_df['details.endDate'] = pd.to_datetime(done_df['details.endDate'], utc=True)
+    done_df['duration_hours'] = ((done_df['timestamp'] - done_df['details.startDate']).dt.total_seconds() / 3600)
+
+    # 결측치, 음수 제거
+    done_df = done_df.dropna(subset=['duration_hours'])
+    done_df = done_df[done_df['duration_hours'] >= 0]
+
+    # 참여자용 중복 제거
+    participants_done_df = (
+        done_df
+        .sort_values('timestamp', ascending=False)
+        .drop_duplicates(
+            subset=['workspaceId', 'details.actionId', 'participants_userId'],
+            keep="first"
         )
-        participants_result['role'] = 'participant'
+    )
 
-        # 이벤트 발생자 통계
-        initiator_result = (
-            initiator_done_df
-            .groupby(['userId', 'details.importance'])
-            ['duration_hours']
-            .mean()
-            .reset_index(name='mean_hours')
+    # 발생자용 중복 제거  
+    initiator_done_df = (
+        done_df
+        .sort_values('timestamp', ascending=False)
+        .drop_duplicates(
+            subset=['workspaceId', 'details.actionId', 'userId'],
+            keep="first"
         )
-        initiator_result['role'] = 'initiator'
+    )
 
-        final_result = pd.concat([participants_result, initiator_result], ignore_index=True)
-        final_result = final_result.drop('role', axis=1)
-        filtered_users['stat2_result'] = final_result
+    # 참여자 통계
+    participants_result = (
+        participants_done_df
+        .groupby(['participants_userId', 'details.importance'])
+        ['duration_hours']
+        .mean()
+        .reset_index(name='mean_hours')
+        .rename(columns={'participants_userId': 'userId'})
+    )
+    participants_result['role'] = 'participant'
 
-        stat2_result = final_result.to_dict(orient='records')
+    # 발생자 통계
+    initiator_result = (
+        initiator_done_df
+        .groupby(['userId', 'details.importance'])
+        ['duration_hours']
+        .mean()
+        .reset_index(name='mean_hours')
+    )
+    initiator_result['role'] = 'initiator'
 
+    # 결과 통합 (role 정보 유지)
+    final_result = pd.concat([participants_result, initiator_result], ignore_index=True)
+    final_result = final_result.drop('role', axis=1)
+    stat2_result = final_result.to_dict(orient='records')
+        
     return DashboardResponse(
         task_imbalance = {"data": stat1_result},
         processing_time = {"data": stat2_result}
