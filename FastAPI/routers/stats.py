@@ -77,30 +77,51 @@ def pipeline_data(request: DashboardRequest):
     # 이벤트 발생자와 참여자 모두 집계
     all_stat1_results = []
 
-    for user_df in user_dfs.values():
-        # 발생자 데이터 준비
-        initiator_data = user_df[['userId', 'details.state', 'details.importance', 'details.actionId']].copy()
-        initiator_data['role'] = 'initiator'
-        initiator_data = initiator_data.rename(columns={'userId': 'final_userId'})
+    for uid, user_df in user_dfs.items():
+        # 현재 사용자 ID 추출 (df_123 -> 123)
+        current_user_id = int(uid.split('_')[1])
         
-        # 참여자 데이터 준비  
-        participant_data = user_df[['participants_userId', 'details.state', 'details.importance', 'details.actionId']].copy()
-        participant_data['role'] = 'participant'
-        participant_data = participant_data.rename(columns={'participants_userId': 'final_userId'})
-        
-        # 합치기
-        user_all_data = pd.concat([initiator_data, participant_data], ignore_index=True)
-        all_stat1_results.append(user_all_data)
+        # 해당 사용자와 관련된 모든 액션에 대해 처리
+        for _, row in user_df.iterrows():
+            action_id = row['details.actionId']
+            
+            # 이 사용자가 해당 액션에서 어떤 역할인지 판단
+            if row['userId'] == current_user_id:
+                # 발생자 역할
+                user_data = {
+                    'final_userId': current_user_id,
+                    'details.state': row['details.state'],
+                    'details.importance': row['details.importance'],
+                    'details.actionId': action_id,
+                    'role': 'initiator'
+                }
+                all_stat1_results.append(user_data)
+                
+            if row['participants_userId'] == current_user_id:
+                # 참여자 역할
+                user_data = {
+                    'final_userId': current_user_id,
+                    'details.state': row['details.state'],
+                    'details.importance': row['details.importance'],
+                    'details.actionId': action_id,
+                    'role': 'participant'
+                }
+                all_stat1_results.append(user_data)
 
     # 모든 유저 데이터 합치기
     if all_stat1_results:
-        combined_stats = pd.concat(all_stat1_results, ignore_index=True)
+        combined_stats = pd.DataFrame(all_stat1_results)
         
-        # 중복 제거: 같은 final_userId, state, importance, role, actionId 조합의 중복 행 제거
-        dedup_stats = combined_stats.drop_duplicates(
-            subset=['final_userId', 'details.state', 'details.importance', 'details.actionId']
+        # 같은 사용자가 같은 액션에 여러 역할을 가질 경우 발생자 우선
+        dedup_stats = (
+            combined_stats
+            .sort_values('role')  # 'initiator'가 'participant'보다 앞에 옴
+            .drop_duplicates(
+                subset=['final_userId', 'details.actionId'], 
+                keep='first'
+            )
         )
-        
+
         # 최종 집계
         stat1_result = (
             dedup_stats
